@@ -1,0 +1,8 @@
+{
+  "globals": {
+    "site_title": "Adventures in JavaScript Development",
+    "site_description": "",
+    "site_url": "http://rmurphey.com",
+    "analytics": "UA-143877-10"
+  }
+}
