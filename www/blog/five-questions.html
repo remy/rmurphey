@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Five Questions</title><meta name="description" content="Five Questions"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="I recently started in a new role: I&#39;m the dev lead of a project that was
+already in the hands of a group of skilled developers before I showed up, a
+project whose scope and technologies extend far beyond the experiences I&#39;ve had
+up until now.
+As you might imagine, there have been a lot of challenges, but one that&#39;s been
+particularly interesting has been figuring out how to meaningfully contribute
+to decisions about systems I don&#39;t intimately understand. It&#39;s easy to be
+inclined to sit those conversations out: I really don&#39;t yet know enough to
+participate, and the &quot;who am I to have a say?&quot; instinct is strong.
+The problem: that attitude will ensure that I never know enough to
+participate, and though I am definitely out of my comfort zone, my job -- the
+job I asked to do, and the job I have been asked to do -- is to participate,
+to learn, and to change the definition of my comfort zone.
+While I may not have the project-specific experience to lean on, I&#39;m finding
+that there are a few questions that help me understand, discuss, and -- ultimately -- consent or object to a technical plan. They&#39;re questions that
+seem to work well across a spectrum of discussions; they work whether we&#39;re
+talking about a wholly new system, a migration from an old system, or a
+solution to a particularly prickly problem.
+These questions don&#39;t just help me gain a better understanding of a topic, or
+help me make better decisions; they&#39;ve also helped me reframe my understanding
+of my role as a lead.
+Question 1: What are we doing and why?When I hear the answer, I&#39;m listening for whether the developer is clearly
+articulating the problem and the solution. Do we clearly understand the
+problem? Is the solution magical, or can we explain why it works? Are we
+solving more than the problem, and thereby incurring unnecessary risk? Does the
+developer agree that the work is necessary?
+Question 2: How could it go wrong?A developer who says nothing can go wrong probably hasn&#39;t been a developer
+for very long. I want to hear far-fetched scenarios, and an explanation for
+why they&#39;re far-fetched. I want to hear worst-case scenarios; good developers
+have already thought about these plenty, they&#39;ve worked to avoid them, and
+yet they acknowledge their existence. The goal of this question isn&#39;t to plan
+for everything; rather, the answers provide context for poking at assumptions.
+Question 3: How will we know if it&#39;s going wrong?This is probably my favorite question. If we&#39;re talking about developing a new
+system or project, it&#39;s a question of how we&#39;ll know we&#39;re off track, which
+leads to clear milestones and check-in points. If it&#39;s a migration to a new
+system, or a solution to a bad bug, it&#39;s a question of how we&#39;ll know that
+the new state is less good than we thought it would be. If the answer is
+&quot;customers will tell us,&quot; we&#39;re in dangerous territory. For services, I hope to hear answers about automated monitoring, but manual checks will suffice. For
+new projects, I hope to hear near-term goals that will help us gauge progress.
+Question 4: What will we do if it goes wrong?The answer to this may not always be knowable -- obviously we won&#39;t always know
+the ways things will go wrong -- but it&#39;s a useful exercise nonetheless. The
+answer may be &quot;we&#39;ll have to revert back to the old system and that will be
+very hard,&quot; but that at least helps me understand the stakes of the decision.
+For new projects, this is a great way to identify the point of no return --
+that is, the point in the project where starting over or changing course
+becomes prohibitive.
+Question 5: Is there an &quot;undo&quot; button?Sometimes, the worst happens. Do we have an escape hatch? How hard will it be
+to add one later vs. adding one now? Again, it may be OK if we don&#39;t have a
+rollback plan, but knowing that answer should help guide the decision
+about whether to proceed."><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Five Questions"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-five-questions-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2015/11/25/building-for-http2" title="Building for HTTP/2">Next</a></li><li class="prev"><a href="/blog/2015/08/04/pausing-office-hours" title="Pausing Office Hours">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2015/10/08/five-questions" rel="bookmark" title="Permanent Link: Five Questions">Five Questions</a></h1><div class="post-content"><p>I recently started in a new role: I&#39;m the dev lead of a project that was
+already in the hands of a group of skilled developers before I showed up, a
+project whose scope and technologies extend far beyond the experiences I&#39;ve had
+up until now.</p>
+<p>As you might imagine, there have been a lot of challenges, but one that&#39;s been
+particularly interesting has been figuring out how to meaningfully contribute
+to decisions about systems I don&#39;t intimately understand. It&#39;s easy to be
+inclined to sit those conversations out: I really don&#39;t yet know enough to
+participate, and the &quot;who am I to have a say?&quot; instinct is strong.</p>
+<p>The problem: that attitude will ensure that I <em>never</em> know enough to
+participate, and though I am definitely out of my comfort zone, my job -- the
+job I asked to do, and the job I have been asked to do -- is to participate,
+to learn, and to change the definition of my comfort zone.</p>
+<p>While I may not have the project-specific experience to lean on, I&#39;m finding
+that there are a few questions that help me understand, discuss, and -- ultimately -- consent or object to a technical plan. They&#39;re questions that
+seem to work well across a spectrum of discussions; they work whether we&#39;re
+talking about a wholly new system, a migration from an old system, or a
+solution to a particularly prickly problem.</p>
+<p>These questions don&#39;t just help me gain a better understanding of a topic, or
+help me make better decisions; they&#39;ve also helped me reframe my understanding
+of my role as a lead.</p>
+<h2>Question 1: What are we doing and why?</h2><p>When I hear the answer, I&#39;m listening for whether the developer is clearly
+articulating the problem and the solution. Do we clearly understand the
+problem? Is the solution magical, or can we explain why it works? Are we
+solving more than the problem, and thereby incurring unnecessary risk? Does the
+developer agree that the work is necessary?</p>
+<h2>Question 2: How could it go wrong?</h2><p>A developer who says nothing can go wrong probably hasn&#39;t been a developer
+for very long. I want to hear far-fetched scenarios, and an explanation for
+why they&#39;re far-fetched. I want to hear worst-case scenarios; good developers
+have already thought about these plenty, they&#39;ve worked to avoid them, and
+yet they acknowledge their existence. The goal of this question isn&#39;t to plan
+for everything; rather, the answers provide context for poking at assumptions.</p>
+<h2>Question 3: How will we know if it&#39;s going wrong?</h2><p>This is probably my favorite question. If we&#39;re talking about developing a new
+system or project, it&#39;s a question of how we&#39;ll know we&#39;re off track, which
+leads to clear milestones and check-in points. If it&#39;s a migration to a new
+system, or a solution to a bad bug, it&#39;s a question of how we&#39;ll know that
+the new state is less good than we thought it would be. If the answer is
+&quot;customers will tell us,&quot; we&#39;re in dangerous territory. For services, I hope to hear answers about automated monitoring, but manual checks will suffice. For
+new projects, I hope to hear near-term goals that will help us gauge progress.</p>
+<h2>Question 4: What will we do if it goes wrong?</h2><p>The answer to this may not always be knowable -- obviously we won&#39;t always know
+the ways things will go wrong -- but it&#39;s a useful exercise nonetheless. The
+answer may be &quot;we&#39;ll have to revert back to the old system and that will be
+very hard,&quot; but that at least helps me understand the stakes of the decision.
+For new projects, this is a great way to identify the point of no return --
+that is, the point in the project where starting over or changing course
+becomes prohibitive.</p>
+<h2>Question 5: Is there an &quot;undo&quot; button?</h2><p>Sometimes, the worst happens. Do we have an escape hatch? How hard will it be
+to add one later vs. adding one now? Again, it may be OK if we don&#39;t have a
+rollback plan, but knowing that answer should help guide the decision
+about whether to proceed.</p>
+<hr>
+<p>I&#39;m learning that a lot of what makes me kind of OK (I hope!) at this dev lead
+thing isn&#39;t a deep knowledge of the specific technologies that are the
+underpinning of the project (though it&#39;s certainly important that I be able to
+find my way around). Rather, it&#39;s my ability to ask these questions, and to
+hear and understand the answers, and interpret them into action. I&#39;m thankful
+to the team that is giving me the chance.</p><p class="follow">Posted 8-Oct 2015.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2015/10/08/five-questions/';
+var disqus_title = 'Five Questions';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

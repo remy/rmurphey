@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>How I learned CSS</title><meta name="description" content="How I learned CSS"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="I remember when I first tried to understand how to produce designs for the web -- coming from the paper-based world, it was hard for me to accept everything that was suddenly out of my control. When I first tried to grasp CSS with the help of now-defunct Adobe GoLive, I bailed pretty quickly. Table-based layout and font tags didn&#39;t make much sense to me either -- why did I have to slice up a page into a bunch of adjoining cells, instead of just drawing independent boxes like I did in Quark?
+A couple of years later, I decided to try again, motivated by the realization that my eight-years-younger brother seemed to be better at this web stuff than I was. I spent untold hours trying to wrap my brain around the difference between margin and padding and exactly how to get floated elements to bend to my will. I remember the epiphany that one could use left-floated list items for a horizontal menu, or that the right DOCTYPE can force Internet explorer to behave more like a real browser.
+These days, I have an honest-to-god job doing this stuff, and every now and then, someone will ask me how they can learn it too. It all makes so much more sense to me than it used to that it&#39;s hard to remember how I got here. In the interest of getting this stuff written down for passing along, though, here are a few thoughts:"><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="How I learned CSS"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-how-i-learned-css-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2007/12/30/determine-the-order-of-two-dom-elements" title="Determine the order of two DOM elements">Next</a></li><li class="prev"><a href="/blog/2007/12/14/jquery-ie7-operation-aborted-error" title="jQuery IE7 &quot;Operation Aborted&quot; error">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2007/12/24/how-i-learned-css" rel="bookmark" title="Permanent Link: How I learned CSS">How I learned CSS</a></h1><div class="post-content"><p>I remember when I first tried to understand how to produce designs for the web -- coming from the paper-based world, it was hard for me to accept everything that was suddenly out of my control. When I first tried to grasp CSS with the help of now-defunct Adobe GoLive, I bailed pretty quickly. Table-based layout and font tags didn&#39;t make much sense to me either -- why did I have to slice up a page into a bunch of adjoining cells, instead of just drawing independent boxes like I did in Quark?</p>
+<p>A couple of years later, I decided to try again, motivated by the realization that my <a href="http://gmurphey.com/">eight-years-younger brother</a> seemed to be better at this web stuff than I was. I spent untold hours trying to wrap my brain around <a href="http://www.sustainablewebdesign.com/resources/601/">the difference between margin and padding</a> and exactly how to <a href="http://css.maxdesign.com.au/floatutorial/">get floated elements to bend to my will</a>. I remember the epiphany that one could <a href="http://www.sovavsiti.cz/css/horizontal_menu.html">use left-floated list items for a horizontal menu</a>, or that <a href="http://www.netmechanic.com/news/vol4/html_no22.htm">the right DOCTYPE can force Internet explorer to behave more like a real browser</a>.</p>
+<p>These days, I have an honest-to-god job doing this stuff, and every now and then, someone will ask me how they can learn it too. It all makes so much more sense to me than it used to that it&#39;s hard to remember how I got here. In the interest of getting this stuff written down for passing along, though, here are a few thoughts:</p>
+<p><h3>The Tools</h3>
+These are things without which the rest is impossible:</p>
+<ul>
+<li>
+<strong>A text editor</strong> Notepad will do just fine; for a few bucks, you can get <a href="http://macromates.com/">TextMate</a> for Mac or the <a href="http://www.e-texteditor.com/">e Text Editor</a> for PC. If you use Dreamweaver, hide everything but the file navigator panel and the code editing view. <em>You will learn nothing from Dreamweaver&#39;s &quot;design&quot; view.</em>
+</li>
+<li>
+<strong><a href="http://www.mozilla.com/en-US/firefox/">Firefox</a></strong> You&#39;ll need to test anything you do in Internet Explorer, but first, you&#39;ll get it working in Firefox. Whereas Internet Explorer enjoys mocking web standards, Firefox does its best to adhere to them; plus, it has all sorts of extensions that make it easier to troubleshoot your work.</li>
+<li>
+<strong><a href="https://addons.mozilla.org/en-US/firefox/addon/60">Firefox Web Developer Toolbar</a></strong> This has all sorts of useful tools in it, including a real-time CSS editor that opens in the browser&#39;s sidebar so you try changes to your CSS and see the results immediately.</li>
+<li>
+<strong><a href="https://addons.mozilla.org/en-US/firefox/addon/1843">Firebug</a></strong> This is most useful for Javascript debugging, but it has some nice features for debugging CSS as well.</li>
+<li>
+<strong><a href="http://users.skynet.be/mgueury/mozilla/">HTML Validator</a></strong> Incredibly helpful for finding errors in your HTML.</li>
+</ul>
+
+<p>(An aside: A few months ago I booted up an old laptop and found a preview release of Firefox 1.0 installed beside a well-worn Internet Explorer 6; when I abandoned the laptop, I was in the process of abandoning IE too. I can&#39;t help but wonder how difficult my learning would have continued to be without the arrival of Firefox, which, with the extensions mentioned above, makes it so much more possible to learn all of this stuff in a very tangible, immediate sort of way.)</p>
+<p><h3>Learning with Firefox</h3>
+Once you have the tools above, open Firefox and start with a page someone else built -- like the one you&#39;re on right now -- and see what&#39;s inside. It pays to be curious about every web page you visit; if you see something interesting, view the source and figure out how it got there. Some tips:</p>
+<ul>
+<li>
+<code>Ctrl-U</code> will show you the HTML for a page, and with the HTML Validator extension, you can &quot;clean up&quot; the HTML so it&#39;s easier to read.</li>
+<li>
+<code>Ctrl-Shift-E</code> will open the Web Developer Toolbar CSS editor, which will show you the CSS for the page, with a tab for each CSS file. You can edit the CSS in the editor and see the effects immediately.</li>
+<li>
+<code>F12</code> will open Firebug. In the top left of the panel that opens, click the Inspect menu item, then move your mouse back to the page itself and click on an element to find out more about it. You can also click on the HTML tab to view the HTML and expand and collapse sections of it to see the structure of the page. Hovering over an element in the HTML panel will highlight it on the page; clicking on an element will let you find out more about it in the Style and Layout tabs of Firebug. (Firebug is an incredibly powerful tool that you really need to play with to fully appreciate. It&#39;s a completely non-destructive tool -- you can&#39;t hurt anything with it unless you try really, really hard -- so don&#39;t be afraid to click around and see what happens.)</li>
+<li>Remember that these days, lots of page elements are built with Javascript rather than with straight HTML. <code>Ctrl-U</code> will show you only the HTML; Firebug will show you the &quot;generated source,&quot; including any elements built with Javascript. Firebug also lets you look at the Javascript on a page, which can be helpful when you&#39;re trying to understand how something got there.
+</li>
+</ul>
+
+<p><h3>POSH</h3>
+<a href="http://www.456bereastreet.com/archive/200711/posh_plain_old_semantic_html/">Plain-old semantic HTML</a>. When you go to make a web page, write the simplest HTML you can, and use standard HTML elements whenever humanly possible. Start by creating HTML that represents the actual sections of the page -- header, navigation, sidebar, content, footer -- and give the elements names that say what they <em>are</em>, not where they go. When you think you&#39;re done, view the HTML in a browser, without CSS, and see if it makes sense. Then, <em>and only then</em>, open the browser&#39;s CSS editor and start styling the elements. See how far you can get without adding any design-related markup to your HTML. If you find yourself writing convoluted HTML or adding purely presentational markup, to make something work, it&#39;s time to reconsider your approach. Once you have a good stylesheet started, copy it to your text editor and continue working on it there.</p>
+<p><h3>Strategies</h3>
+It helps to give yourself deadlines, even if they&#39;re imaginary. I&#39;ve learned more about HTML, CSS and Javascript in the past 12 months than I learned in the three years before, and I think that&#39;s largely because deadlines have forced me to solve problems rather than pondering them.</p>
+<p>Don&#39;t be afraid to do something less than perfectly; there can be value in just getting it done. I constantly look back at things I did three months ago -- let alone three years ago, and sometimes three weeks ago -- and I cringe when I think how differently I would do them today. But half the reason I know what I know now is precisely because I <em>didn&#39;t</em> know it then, and I learned it along the way. Understanding the building blocks of the web is an iterative process, and you&#39;ll do better if you remember that <strong>you cannot know everything you wish you knew</strong>.</p><p class="follow">Posted 24-Dec 2007.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2007/12/24/how-i-learned-css/';
+var disqus_title = 'How I learned CSS';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

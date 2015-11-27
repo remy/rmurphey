@@ -1,0 +1,432 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Writing Unit Tests for Existing JavaScript</title><meta name="description" content="Writing Unit Tests for Existing JavaScript"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="My team at Bazaarvoice has been spending a lot of time lately thinking about quality and how we can have greater confidence that our software is working as it should.
+We&#39;ve long had functional tests in place that attempt to ask questions like &quot;When a user clicks a button, will The Widget do The Thing?&quot; These tests tell us a fair amount about the state of our product, but we&#39;ve found that they&#39;re brittle -- even after we abstracted away the CSS selectors that they rely on -- and that they take approximately forever to run, especially if we want to run them in all of the browsers we support. The quality of the tests themselves is all over the map, too -- some of them are in fact unit tests, not really testing anything functional at all.
+A few months ago we welcomed a new QA lead to our team as part of our renewed focus on quality. Having a team member who is taking a thoughtful, systematic approach to quality is a game-changer -- he&#39;s not just making sure that new features work, but rather has scrutinized our entire approach to delivering quality software, to great effect."><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Writing Unit Tests for Existing JavaScript"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-unit-tests-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2014/11/01/flying-lessons" title="Flying Lessons">Next</a></li><li class="prev"><a href="/blog/2012/12/10/js-conditionals" title="Two Things about Conditionals in JavaScript">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2014/07/13/unit-tests" rel="bookmark" title="Permanent Link: Writing Unit Tests for Existing JavaScript">Writing Unit Tests for Existing JavaScript</a></h1><div class="post-content"><p>My team at <a href="http://www.bazaarvoice.com/careers/">Bazaarvoice</a> has been spending a lot of time lately thinking about quality and how we can have greater confidence that our software is working as it should.</p>
+<p>We&#39;ve long had functional tests in place that attempt to ask questions like &quot;When a user clicks a button, will The Widget do The Thing?&quot; These tests tell us a fair amount about the state of our product, but we&#39;ve found that they&#39;re brittle -- even after we abstracted away the CSS selectors that they rely on -- and that they take approximately forever to run, especially if we want to run them in all of the browsers we support. The quality of the tests themselves is all over the map, too -- some of them are in fact unit tests, not really testing anything <em>functional</em> at all.</p>
+<p>A few months ago we welcomed a new QA lead to our team as part of our renewed focus on quality. Having a team member who is taking a thoughtful, systematic approach to quality is a game-changer -- he&#39;s not just making sure that new features work, but rather has scrutinized our entire approach to delivering quality software, to great effect.</p>
+<p>One of the things he has repeatedly emphasized is the need to push our tests down the stack. Our functional tests should be black-box -- writing them shouldn&#39;t require detailed knowledge of how the software works under the hood. Our unit tests, on the other hand, should provide broad and detailed coverage of the actual code base. In an ideal world, functional tests can be few and slow-ish, because they serve as an infrequent smoke test of the application; unit tests should be thorough, but execute quickly enough that we run them all the time.</p>
+<p>Until now, our unit tests have been entirely focused on utility and framework code -- do we properly parse a URL, for example? -- not on code that&#39;s up close and personal with getting The Widget to do The Thing. I&#39;d told myself that this was fine and right and good, but in reality I was pretty terrified of trying to bolt unit tests onto feature code of incredibly varying quality, months or even years after it was first written.</p>
+<p>A week or so ago, thanks to some coaxing/chiding from fellow team members, I decided to bite the bullet and see just how bad it would be. A week later, I feel like I&#39;ve taken the first ten steps in a marathon. Of course, taking those first steps involves making the decision to run, and doing enough training ahead of time that you don&#39;t die, so in that regard I&#39;ve come a long way already. Here&#39;s what I&#39;ve done and learned so far.</p>
+<h3>Step 0</h3><p>I was lucky in that I wasn&#39;t starting entirely from scratch, but if you don&#39;t already have a unit testing framework in place, don&#39;t fret -- it&#39;s pretty easy to set up. We use <a href="http://gruntjs.com/">Grunt</a> with <a href="http://visionmedia.github.io/mocha/">Mocha</a> as our test framework and <a href="https://github.com/LearnBoost/expect.js/">expect.js</a> as our assertion library, but if I were starting over today I&#39;d take a pretty serious look at <a href="http://theintern.io/">Intern</a>.</p>
+<p>Our unit tests are organized into suites. Each suite consists of a number of files, each of which tests a single AMD module. Most of the modules under test when I started down this path were pretty isolated -- they didn&#39;t have a ton of dependencies generally, and had very few runtime dependencies. They didn&#39;t interact with other modules that much. Almost all of the existing unit test files loaded a module, executed its methods, and inspected the return value. No big deal.</p>
+<p>Feature-related code -- especially already-written feature-related code -- is a different story. Views have templates. Models expect data. Models pass information to views, and views pass information to models. Some models need parents; others expect children. And pretty much everything depended on a global-ish message broker to pass information around.</p>
+<p>Since the code was originally written without tests, we are guaranteed that it would be in various states of testability, but a broad rewrite for testability is of course off the table. We&#39;ll rewrite targeted pieces, but doing so comes with great risk. For the most part, our goal will be to write tests for what we have, then refactor cautiously once tests are in place.</p>
+<p>We decided that the first place to start was with models, so I found the simplest model I could:</p>
+<pre><code class="language-javascript">define([
+  &#39;framework/bmodel&#39;,
+  &#39;underscore&#39;
+], function (BModel, _) {
+  return BModel.extend({
+    options : {},
+    name : &#39;mediaViewer&#39;,
+
+    init : function (config, options) {
+      _.extend(this.options, options);
+    }
+  });
+});
+</code></pre>
+<p>Why do we have a model that does approximately nothing? I&#39;m not going to attempt to answer that, though there are Reasons -- but for the sake of this discussion, it certainly provides an easy place to start.</p>
+<p>I created a new suite for model tests, and added a file to the suite to test the model. I could tell you that I naively plowed ahead thinking that I could just load the module and write some assertions, but that would be a lie.</p>
+<h3>Mocking: Squire.js</h3><p>I knew from writing other tests, on this project and projects in the past, that I was going to need to &quot;mock&quot; some of my dependencies. For example, we have a module called <code>ENV</code> that is used for ... well, way too much, though it&#39;s better than it used to be. A large portion of <code>ENV</code> isn&#39;t used by any given module, but <code>ENV</code> itself is required by essentially every model and view.</p>
+<p><a href="https://github.com/iammerrick/Squire.js/">Squire.js</a> is a really fantastic library for doing mocking in RequireJS-land. It lets you override how a certain dependency will be fulfilled; so, when a module under test asks for <code>&#39;ENV&#39;</code>, you can use Squire to say &quot;use this object that I&#39;ve hand-crafted for this specific test instead.&quot;</p>
+<p>I created an Injector module that does the work of loading Squire, plus mocking a couple of things that will be missing when the tests are executed in Node-land.</p>
+<pre><code class="language-javascript">define([
+  &#39;squire&#39;,
+  &#39;jquery&#39;
+], function (Squire, $) {
+  return function () {
+    var injector;
+
+    if (typeof window === &#39;undefined&#39;) {
+      injector = new Squire(&#39;_BV&#39;);
+
+      injector.mock(&#39;jquery&#39;, function () {
+        return $;
+      });
+
+      injector.mock(&#39;window&#39;, function () {
+        return {};
+      });
+    }
+    else {
+      injector = new Squire();
+    }
+
+    return injector;
+  };
+});
+</code></pre>
+<p>Next, I wired up the test to see how far I could get without mocking anything. Note that the main module doesn&#39;t actually load the thing we&#39;re going to test -- first, it sets up the mocks by calling the <code>injector</code> function, and then it uses the created injector to require the module we want to test. Just like a normal <code>require</code>, the <code>injector.require</code> is async, so we have to let our test framework know to wait until it&#39;s loaded before proceeding with our assertions.</p>
+<pre><code class="language-javascript">define([
+  &#39;test/unit/injector&#39;
+], function (injector) {
+  injector = injector();
+
+  var MediaViewer;
+
+  describe(&#39;MediaViewer Model&#39;, function () {
+    before(function (done) {
+      injector.require([
+        &#39;bv/c2013/model/mediaViewer&#39;
+      ], function (M) {
+        MediaViewer = M;
+        done();
+      });
+    });
+
+    it(&#39;should be named&#39;, function () {
+      var m = new MediaViewer({});
+      expect(m.name).to.equal(&#39;mediaViewer&#39;);
+    });
+
+    it(&#39;should mix in provided options&#39;, function () {
+      var m = new MediaViewer({}, { foo : &#39;bar&#39; });
+      expect(m.options.foo).to.equal(&#39;bar&#39;);
+    });
+  });
+});
+</code></pre>
+<p>This, of course, still failed pretty spectacularly. In real life, a model gets instantiated with a component, and a model also expects to have access to an <code>ENV</code> that has knowledge of the component. Creating a &quot;real&quot; component and letting the &quot;real&quot; <code>ENV</code> know about it would be an exercise in <a href="https://www.youtube.com/watch?v=7s664NsLeFM">inventing the universe</a>, and this is exactly what mocks are for.</p>
+<p>While the &quot;real&quot; <code>ENV</code> is a Backbone model that is instantiated using customer-specific configuration data, a much simpler <code>ENV</code> suffices for the sake of testing a model&#39;s functionality:</p>
+<pre><code class="language-javascript">define([
+  &#39;backbone&#39;
+], function (Backbone) {
+  return function (injector, opts) {
+    injector.mock(&#39;ENV&#39;, function () {
+      var ENV = new Backbone.Model({
+        componentManager : {
+          find : function () {
+            return opts.component;
+          }
+        }
+      });
+
+      return ENV;
+    });
+
+    return injector;
+  };
+});
+</code></pre>
+<p>Likewise, a &quot;real&quot; component is complicated and difficult to create, but the pieces of a component that this model needs to function are limited. Here&#39;s what the component mock ended up looking like:</p>
+<pre><code class="language-javascript">define([
+  &#39;underscore&#39;
+], function (_) {
+  return function (settings) {
+    settings = settings || {};
+
+    settings.features = settings.features || [];
+
+    return {
+      trigger : function () {},
+      hasFeature : function (refName, featureName) {
+        return _.contains(settings.features, featureName);
+      },
+      getScope : function () {
+        return &#39;scope&#39;;
+      },
+      contentType : settings.contentType,
+      componentId : settings.id,
+      views : {}
+    };
+  };
+});
+</code></pre>
+<p>In the case of both mocks, we&#39;ve taken some dramatic shortcuts: the real <code>hasFeature</code> method of a component is a lot more complicated, but in the component mock we create a <code>hasFeature</code> method whose return value can be easily known by the test that uses the mock. Likewise, the behavior of the <code>componentManager</code>&#39;s <code>find</code> method is complex in real life, but in our mock, the method just returns the same thing all the time. Our mocks are designed to be configurable by -- and predictable for -- the test that uses it.</p>
+<p>Knowing what to mock and when and how is a learned skill. It&#39;s entirely possible to mock something in such a way that a unit test passes but the actual functionality is broken. We actually have pretty decent tests around our real component code, but not so much around our real <code>ENV</code> code. We should probably fix that, and then I can feel better about mocking <code>ENV</code> as needed.</p>
+<p>So far, my approach has been: try to make a test pass without mocking anything, and then mock as little as possible after that. I&#39;ve also made a point of trying to centralize our mocks in a single place, so we aren&#39;t reinventing the wheel for every test.</p>
+<p>Finally: when I first set up the injector module, I accidentally made it so that the same injector would be shared by any test that included the module. This is bad, because you end up sharing mocks across tests -- violating the &quot;only mock what you must&quot; rule. The injector module shown above is correct in that it returns a function that can be used to create a new injector, rather than the injector itself.</p>
+<p>Here&#39;s what the final MediaViewer test ended up looking like:</p>
+<pre><code class="language-javascript">define([
+  // This properly sets up Squire and mocks window and jQuery
+  // if necessary (for running tests from the command line).
+  &#39;test/unit/injector&#39;,
+
+  // This is a function that mocks the ENV module.
+  &#39;test/unit/mocks/ENV&#39;,
+
+  // This is a function that mocks a component.
+  &#39;test/unit/mocks/component&#39;
+], function (injector, ENVMock, component) {
+  injector = injector();
+
+  // This will become the constructor for the model under test.
+  var MediaViewer;
+
+  // Create an object that can serve as a model&#39;s component.
+  var c = component();
+
+  // We also need to mock the ENV module and make it aware of
+  // the fake component we just created.
+  ENVMock(injector, { component : c });
+
+  describe(&#39;MediaViewer Model&#39;, function () {
+    before(function (done) {
+      injector.require([
+        &#39;bv/c2013/model/mediaViewer&#39;
+      ], function (M) {
+        MediaViewer = M;
+        done();
+      });
+    });
+
+    it(&#39;should be named&#39;, function () {
+      var m = new MediaViewer({
+        component : c
+      }, {});
+      expect(m.name).to.equal(&#39;mediaViewer&#39;);
+    });
+
+    it(&#39;should mix in provided options&#39;, function () {
+      var m = new MediaViewer({
+        component : c
+      }, { foo : &#39;bar&#39; });
+
+      expect(m.options.foo).to.equal(&#39;bar&#39;);
+    });
+  });
+});
+</code></pre>
+<h3>Spying: Sinon</h3><p>After my stunning success with writing 49 lines of test code to test a 13-line model, I was feeling optimistic about testing views, too. I decided to tackle this fairly simple view first:</p>
+<pre><code class="language-javascript">define([
+  &#39;framework/bview&#39;,
+  &#39;underscore&#39;,
+  &#39;hbs!contentAuthorProfileInline&#39;,
+  &#39;mf!bv/c2013/messages/avatar&#39;,
+  &#39;bv/util/productInfo&#39;,
+  &#39;framework/util/bvtracker&#39;,
+  &#39;util/specialKeys&#39;
+], function (BView, _, template, msgPack, ProductInfo, BVTracker, specialKeys) {
+  return BView.extend({
+    name : &#39;inlineProfile&#39;,
+
+    templateName : &#39;contentAuthorProfileInline&#39;,
+
+    events : {
+      &#39;click .bv-content-author-name .bv-fullprofile-popup-target&#39; : &#39;launchProfile&#39;
+    },
+
+    template : template,
+
+    msgpacks : [msgPack],
+
+    launchProfile : function (e) {
+      // use r&amp;r component outlet to trigger full profile popup component event
+      this.getTopModel().trigger( &#39;showfullprofile&#39;, this.model.get(&#39;Author&#39;) );
+
+      BVTracker.feature({
+        type : &#39;Used&#39;,
+        name : &#39;Click&#39;,
+        detail1 : &#39;ViewProfileButton&#39;,
+        detail2 : &#39;AuthorAvatar&#39;,
+        bvProduct : ProductInfo.getType(this),
+        productId : ProductInfo.getId(this)
+      });
+    }
+  });
+});
+</code></pre>
+<p>It turned out that I needed to do the same basic mocking for this as I did for the model, but this code presented a couple of interesting things to consider.</p>
+<p>First, I wanted to test that <code>this.getTopModel().trigger(...)</code> triggered the proper event, but the <code>getTopModel</code> method was implemented in <code>BView</code>, not the code under test, and without a whole lot of gymnastics, it wasn&#39;t going to return an object with a <code>trigger</code> method.</p>
+<p>Second, I wanted to know that <code>BVTracker.feature</code> was getting called with the right values, so I needed a way to inspect the object that got passed to it, but without doing something terrible like exposing it globally.</p>
+<p>Enter <a href="http://sinonjs.org">Sinon</a> and its <a href="http://sinonjs.org/docs/#spies">spies</a>. Spies let you observe methods as they are called. You can either let the method still do its thing while watching how it is called, or simply replace the method with a spy.</p>
+<p>I solved the first problem by defining my own <code>getTopModel</code> method on the model instance, and having it return an object. I gave that object a <code>trigger</code> method that was actually just a spy -- for the sake of my test, I didn&#39;t care what trigger <em>did</em>, only how it was called. Other tests [will eventually] ensure that triggering this event has the desired effect on the targeted model, but for the sake of this test, we don&#39;t care.</p>
+<p>Here&#39;s what the test looks like:</p>
+<pre><code class="language-javascript">describe(&#39;#launchProfile&#39;, function () {
+  var spy;
+  var v;
+
+  before(function () {
+    spy = sinon.spy();
+
+    v = new InlineProfile({
+      // model and component are defined elsewhere
+      component : component,
+      model : model
+    });
+
+    model.set(&#39;Author&#39;, &#39;author&#39;);
+
+    v.getTopModel = function () {
+      return {
+        trigger : spy
+      };
+    };
+  });
+
+  it(&#39;should trigger showfullprofile event on top model&#39;, function () {
+    v.launchProfile();
+
+    expect(spy.lastCall.args[0]).to.equal(&#39;showfullprofile&#39;);
+    expect(spy.lastCall.args[1]).to.equal(&#39;author&#39;);
+  });
+});
+</code></pre>
+<p>I solved the second problem -- the need to see what&#39;s getting passed to <code>BVTracker.feature</code> -- by creating a <code>BVTracker</code> mock where every method is just a spy:</p>
+<pre><code class="language-javascript">// This is a mock for BVTracker that can be used by unit tests.
+define([
+  &#39;underscore&#39;
+], function (_) {
+  return function (injector, opts) {
+    var BVTracker = {};
+
+    injector.mock(&#39;framework/util/bvtracker&#39;, function () {
+      _([
+        &#39;error&#39;,
+        &#39;pageview&#39;,
+        &#39;feature&#39;
+      ]).each(function (event) {
+        BVTracker[event] = sinon.spy();
+      });
+    });
+
+    return BVTracker;
+  };
+});
+</code></pre>
+<p>My test looked at the <code>BVTracker.feature</code> spy to see what it got when the view&#39;s <code>launchProfile</code> method was called:</p>
+<pre><code class="language-javascript">it(&#39;should send a feature analytics event&#39;, function () {
+  v.launchProfile();
+
+  var evt = BVTracker.feature.lastCall.args[0];
+
+  expect(evt.type).to.equal(&#39;Used&#39;);
+  expect(evt.name).to.equal(&#39;Click&#39;);
+  expect(evt.detail1).to.equal(&#39;ViewProfileButton&#39;);
+  expect(evt.detail2).to.equal(&#39;AuthorAvatar&#39;);
+  expect(evt.bvProduct).to.equal(&#39;RatingsAndReviews&#39;);
+  expect(evt.productId).to.equal(&#39;product1&#39;);
+});
+</code></pre>
+<p>I&#39;ve barely touched on what you can do with spies, or with Sinon in general. Besides providing simple spy functionality, Sinon delivers a host of functionality that makes tests easier to write -- swaths of which I haven&#39;t even begun to explore. One part I have explored is its ability to create fake XHRs and to fake whole servers, allowing you to test how your code behaves when things go wrong on the server. Do yourself a favor and spend some time reading through the excellent <a href="http://sinonjs.org/docs/">docs</a>.</p>
+<h3>What to test ... and not</h3><p>I&#39;ve written tests now for a tiny handful of models and views. Setting up the mocks was a bit of a hurdle -- and there were plenty of other hurdles that are too specific to our project for me to talk about them in detail -- but overall, the hardest part has been figuring out what, exactly, to test. I crafted the examples above to be pretty straightforward, but reality is a lot more complicated.</p>
+<p>Writing tests for existing code requires first understanding the code that&#39;s being tested and identifying interesting moments in that code. If there&#39;s an operation that affects the &quot;public&quot; experience of the module -- for example, if the value of a model attribute changes -- then we need to write a test that covers that operation&#39;s side effect(s). If there&#39;s code that runs conditionally, we need to test the behavior of that code when that condition is true -- and when it&#39;s not. If there are six possible conditions, we need to test them all. If a model behaves completely differently when it has a parent -- and this happens far too often in our code -- then we need to simulate the parent case, and simulate the standalone case.</p>
+<p>It can be tempting to try to test the implementation details of existing code -- and difficult to realize that you&#39;re doing it even when you don&#39;t mean to. I try to stay focused on testing how other code might consume and interact with the module I&#39;m testing. For example, if the module I&#39;m testing triggers an event in a certain situation, I&#39;m going to write a test that proves it, because some other code is probably expecting that event to get triggered. However, I&#39;m not going to test that a method of a certain name gets called in a certain case -- that&#39;s an implementation detail that might change.</p>
+<p>The exercise of writing unit tests against existing code proves to be a phenomenal incentive to write better code in the future. One comes to develop a great appreciation of methods that have return values, not side effects. One comes to loathe the person -- often one&#39;s past self -- who authored complex, nested conditional logic. One comes to worship small methods that do exactly one thing.</p>
+<p>So far, I haven&#39;t rewritten any of the code I&#39;ve been testing, even when I&#39;ve spotted obvious flaws, and even when rewriting would make the tests themselves easier to write. I don&#39;t know how long I&#39;ll be able to stick to this; there are some specific views and models that I know will be nearly impossible to test without revisiting their innards. When that becomes necessary, I&#39;m hoping I can do it incrementally, testing as I go -- and that our functional tests will give me the cover I need to know I haven&#39;t gone horribly wrong.</p>
+<h3>Spreading the love</h3><p>Our team&#39;s next step is to widen the effort to get better unit test coverage of our code. We have something like 100 modules that need testing, and their size and complexity are all over the map. Over the coming weeks, we&#39;ll start to divide and conquer.</p>
+<p>One thing I&#39;ve done to try to make the effort easier is to create a scaffolding task using Grunt. Running <code>grunt scaffold-test:model:modelName</code> will generate a basic file that includes mocking that&#39;s guaranteed to be needed, as well as the basic instantiation that will be required and a couple of simple tests.</p>
+<p>There&#39;s another senior team member who has led an effort in the past to apply unit tests to an existing code base, and he&#39;s already warned me to expect a bit of a bumpy road as the team struggles through the inevitable early challenges of trying to write unit tests for existing feature code. I expect there to be a pretty steep hill to climb at first, but at the very least, the work I&#39;ve done so far has -- hopefully -- gotten us to the top of the vertical wall that had been standing in our way.</p>
+<h3>Further Reading</h3><p>I&#39;m not exactly the first person to write about this. You may find these items interesting:</p>
+<ul>
+<li><a href="http://stackoverflow.com/questions/3476054/can-unit-testing-be-successfully-added-into-an-existing-production-project-if-s">On adding unit tests to existing code</a></li>
+<li><a href="http://programmers.stackexchange.com/questions/207401/writing-tests-for-existing-code">On whether it&#39;s worth the effort</a></li>
+<li><a href="http://www.amazon.com/gp/product/0131177052">Working Effectively with Legacy Code</a></li>
+</ul><p class="follow">Posted 13-Jul 2014.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2014/07/13/unit-tests/';
+var disqus_title = 'Writing Unit Tests for Existing JavaScript';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

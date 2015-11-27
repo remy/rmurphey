@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Browser Testing and Code Coverage with Karma, Tape, and Webpack</title><meta name="description" content="Browser Testing and Code Coverage with Karma, Tape, and Webpack"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="We recently set up a new project at Bazaarvoice for centralizing common UI modules. We started by using node-tap for unit tests, but given that these are UI modules, we quickly switched to using tape, because it has a fairly easy browser testing story with the help of Karma.
+One thing that node-tap provided that tape did not provide out of the box was the ability to measure the code coverage of unit tests. Karma does provide this, but getting it hooked up while using Webpack -- which is our build tool of choice these days -- wasn&#39;t quite as clear as I would have liked. If you&#39;re looking to use Karma, tape, and Webpack, then hopefully this post will help you spend a bit less time than I did.
+What You&#39;ll NeedBy the time it was all said and done, I needed to npm install the following modules:
+
+karma
+karma-phantomjs-launcher
+karma-chrome-launcher
+karma-tap
+karma-webpack
+karma-coverage
+istanbul-instrumenter-loader
+tape
+"><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Browser Testing and Code Coverage with Karma, Tape, and Webpack"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-karma-webpack-tape-code-coverage-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2015/07/27/tech-podcast-recording-tips" title="So You're Going on a Podcast">Next</a></li><li class="prev"><a href="/blog/2015/05/11/ttl-podcast" title="The TTL Podcast">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2015/07/20/karma-webpack-tape-code-coverage" rel="bookmark" title="Permanent Link: Browser Testing and Code Coverage with Karma, Tape, and Webpack">Browser Testing and Code Coverage with Karma, Tape, and Webpack</a></h1><div class="post-content"><p>We recently set up a new project at Bazaarvoice for centralizing common UI modules. We started by using <a href="https://github.com/isaacs/node-tap">node-tap</a> for unit tests, but given that these are <em>UI</em> modules, we quickly switched to using <a href="https://github.com/substack/tape">tape</a>, because it has a fairly easy browser testing story with the help of <a href="http://karma-runner.github.io/0.13/index.html">Karma</a>.</p>
+<p>One thing that node-tap provided that tape did not provide out of the box was the ability to measure the code coverage of unit tests. Karma <em>does</em> provide this, but getting it hooked up while using <a href="http://webpack.github.io/">Webpack</a> -- which is our build tool of choice these days -- wasn&#39;t quite as clear as I would have liked. If you&#39;re looking to use Karma, tape, and Webpack, then hopefully this post will help you spend a bit less time than I did.</p>
+<h2>What You&#39;ll Need</h2><p>By the time it was all said and done, I needed to <code>npm install</code> the following modules:</p>
+<ul>
+<li>karma</li>
+<li>karma-phantomjs-launcher</li>
+<li>karma-chrome-launcher</li>
+<li>karma-tap</li>
+<li>karma-webpack</li>
+<li>karma-coverage</li>
+<li>istanbul-instrumenter-loader</li>
+<li>tape</li>
+</ul>
+<p>The directory structure was simple:</p>
+<ul>
+<li>a root directory, containing karma.conf.js and package.json</li>
+<li>a lib subdirectory, containing module files</li>
+<li>a test/unit subdirectory, containing the unit tests</li>
+</ul>
+<p>An example application file at lib/global/index.js looked like this:</p>
+<pre><code class="language-js">/**
+ *  @fileOverview Provides a reference to the global object
+ *
+ *  Functions created via the Function constructor in strict mode are sloppy
+ *  unless the function body contains a strict mode pragma. This is a reliable
+ *  way to obtain a reference to the global object in any ES3+ environment.
+ *  see http://stackoverflow.com/a/3277192/46867
+ */
+&#39;use strict&#39;;
+
+module.exports = (new Function(&#39;return this;&#39;))();
+</code></pre>
+<p>An example test in test/unit/global/index.js looked like this:</p>
+<pre><code class="language-js">var test = require(&#39;tape&#39;);
+var global = require(&#39;../../../lib/global&#39;);
+
+test(&#39;Exports window&#39;, function (t) {
+  t.equal(global, window);
+  t.end();
+});
+</code></pre>
+<h2>Testing CommonJS Modules in the Browser</h2><p>The applications that consume these UI modules use Webpack, so we author the modules (and their tests) as CommonJS modules. Of course, browsers can&#39;t consume CommonJS directly, so we need to generate files that browsers <em>can</em> consume. There are several tools we can choose for this task, but since we&#39;ve otherwise standardized on Webpack, we wanted to use Webpack here as well.</p>
+<p>Since our goal is to load the tests in the browser, we use the test file as the &quot;entry&quot; file. Webpack processes the dependencies of an entry file to generate a new file that contains the entry file&#39;s contents as well as the contents of its dependencies. This new file is the one that Karma will load into the browser to run the tests.</p>
+<p>Getting this to happen is pretty straightforward with the <code>karma-webpack</code> plugin to Karma. The only catch was the need to tell Webpack how to deal with the <code>fs</code> dependency in tape. Here&#39;s the initial Karma configuration that got the tests running:</p>
+<pre><code class="language-js">var webpack = require(&#39;webpack&#39;);
+
+module.exports = function(config) {
+  config.set({
+    plugins: [
+      require(&#39;karma-webpack&#39;),
+      require(&#39;karma-tap&#39;),
+      require(&#39;karma-chrome-launcher&#39;),
+      require(&#39;karma-phantomjs-launcher&#39;)
+    ],
+
+    basePath: &#39;&#39;,
+    frameworks: [ &#39;tap&#39; ],
+    files: [ &#39;test/**/*.js&#39; ],
+
+    preprocessors: {
+      &#39;test/**/*.js&#39;: [ &#39;webpack&#39; ]
+    },
+
+    webpack: {
+      node : {
+        fs: &#39;empty&#39;
+      }
+    },
+
+    webpackMiddleware: {
+      noInfo: true
+    },
+
+    reporters: [ &#39;dots&#39; ],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    browsers: [&#39;Chrome&#39;],
+    singleRun: false
+  })
+};
+</code></pre>
+<p>However, as I mentioned above, I wanted to get code coverage information. Karma offers the <a href="https://github.com/karma-runner/karma-coverage">karma-coverage</a> plugin, but that alone was insufficient in Webpack land: it would end up instrumenting the whole Webpack output -- including the test code itself! -- and thus reporting highly inaccurate coverage numbers.</p>
+<p>I ended up reading a <a href="https://github.com/webpack/karma-webpack/issues/21">karma-webpack issue</a> that told me someone else had already solved this exact problem by creating a <a href="https://github.com/deepsweet/istanbul-instrumenter-loader">Webpack loader</a> to instrument modules at build time. By adjusting our Webpack configuration to only apply this loader to application modules -- not to test code or vendor code -- the Webpack output ends up properly instrumented for the karma-coverage plugin to work with it. Our final Karma config ends up looking like this:</p>
+<pre><code class="language-js">var webpack = require(&#39;webpack&#39;);
+
+module.exports = function(config) {
+  config.set({
+    plugins: [
+      require(&#39;karma-webpack&#39;),
+      require(&#39;karma-tap&#39;),
+      require(&#39;karma-chrome-launcher&#39;),
+      require(&#39;karma-phantomjs-launcher&#39;),
+      require(&#39;karma-coverage&#39;)
+    ],
+
+    basePath: &#39;&#39;,
+    frameworks: [ &#39;tap&#39; ],
+    files: [ &#39;test/**/*.js&#39; ],
+
+    preprocessors: {
+      &#39;test/**/*.js&#39;: [ &#39;webpack&#39; ]
+    },
+
+    webpack: {
+      node : {
+        fs: &#39;empty&#39;
+      },
+
+      // Instrument code that isn&#39;t test or vendor code.
+      module: {
+        postLoaders: [{
+          test: /\.js$/,
+          exclude: /(test|node_modules)\//,
+          loader: &#39;istanbul-instrumenter&#39;
+        }]
+      }
+    },
+
+    webpackMiddleware: {
+      noInfo: true
+    },
+
+    reporters: [
+      &#39;dots&#39;,
+      &#39;coverage&#39;
+    ],
+
+    coverageReporter: {
+      type: &#39;text&#39;,
+      dir: &#39;coverage/&#39;
+    },
+
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    browsers: [&#39;Chrome&#39;],
+    singleRun: false
+  })
+};
+</code></pre>
+<p>Even with the coverage hiccup, the speed with which I was able to get Karma set up the way I wanted -- and working with <a href="http://travis-ci.org/">TravisCI</a> -- was nothing short of breathtaking. I&#39;m late to the Karma party, but I had no idea it could be this easy. If you haven&#39;t checked it out yet, you should.</p><p class="follow">Posted 20-Jul 2015.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2015/07/20/karma-webpack-tape-code-coverage/';
+var disqus_title = 'Browser Testing and Code Coverage with Karma, Tape, and Webpack';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

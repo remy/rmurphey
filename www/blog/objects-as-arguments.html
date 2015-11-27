@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Objects as Arguments: Where do you draw the line?</title><meta name="description" content="Objects as Arguments: Where do you draw the line?"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="I was reviewing some code last week and came across a snippet that looked a lot like this:
+{% codeblock lang:javascript %}
+var someObject = {
+  // ...
+  onSuccess : function(resp) {
+    // ...
+    this.someMethod(resp.token, resp.host, resp.key, resp.secret);
+  },"><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Objects as Arguments: Where do you draw the line?"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-objects-as-arguments-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2011/05/20/getting-better-at-javascript" title="Getting Better at JavaScript">Next</a></li><li class="prev"><a href="/blog/2011/04/15/modern-javascript" title="Modern JavaScript">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2011/04/25/objects-as-arguments" rel="bookmark" title="Permanent Link: Objects as Arguments: Where do you draw the line?">Objects as Arguments: Where do you draw the line?</a></h1><div class="post-content"><p>I was reviewing some code last week and came across a snippet that looked a lot like this:</p>
+<p>{% codeblock lang:javascript %}
+var someObject = {
+  // ...</p>
+<p>  onSuccess : function(resp) {
+    // ...
+    this.someMethod(resp.token, resp.host, resp.key, resp.secret);
+  },</p>
+<p>  someMethod : function(token, host, key, secret) {
+    // ...
+  }
+};
+{% endcodeblock %}</p>
+<p>My immediate response was to suggest that it didn&#39;t make sense to be passing
+four separate arguments to <code>someMethod</code>, especially when the arguments were
+being &quot;unpacked&quot; from an already-existing object. Certainly we could just pass
+the <code>resp</code> object directly to <code>someMethod</code>, and let <code>someMethod</code> unpack it as
+necessary -- we&#39;d save some bytes, and we&#39;d also leave ourselves some room to
+grow. &quot;I&#39;m not a big fan of functions that take four arguments,&quot; I said in my
+GitHub comment.</p>
+<p>To the original author&#39;s credit, &quot;because I say so&quot; wasn&#39;t sufficient reason to
+rewrite code that was working just fine, thank you very much. If four arguments
+was too many, was two arguments too many? Why draw the line at four? Surely the
+four-argument signature helped indicate to future developers what was required
+in order for the function to ... function. Right? My hackles momentarily
+raised, I parried by pointing out that if the arguments were actually required
+by the function, maybe the function ought to actually check for their presence
+before using them. Ha! While the original author was distracted by my disarming
+logic, I fretted over the fact that I use a function that take four arguments
+every day: <code>dojo.connect(node, &#39;click&#39;, contextObj, &#39;handlerMethod&#39;)</code>. Ohnoes.</p>
+<p>So where do you draw the line? Certainly you could write that <code>dojo.connect</code>
+call like so:</p>
+<p>{% codeblock lang:javascript %}
+dojo.connect({
+  node : node,
+  event : &#39;click&#39;,
+  context : contextObj,
+  method : &#39;handlerMethod&#39;
+});
+{% endcodeblock %}</p>
+<p>This, though, might make you poke your eyes out. It certainly isn&#39;t as concise
+as the four-argument approach, and it makes a lot of things like
+<a href="http://ejohn.org/blog/partial-functions-in-javascript/">partial</a>
+<a href="http://dojotoolkit.org/reference-guide/dojo/partial.html#dojo-partial">application</a>
+a lot harder. Clearly there&#39;s more to this than &quot;if there&#39;s more than four
+arguments, put them in an object&quot; ... but what are the rules?</p>
+<h2>Optional Arguments</h2><p>Probably the most compelling reason to use an object is when there are several
+optional arguments. For example, last fall I was reviewing some code from a
+potential training client, and I came across this:</p>
+<p>{% codeblock lang:javascript %}
+addBling(&#39;#awesome&#39;, &#39;fuchsia&#39;, &#39;slow&#39;, null, null, 3, &#39;done!&#39;);
+{% endcodeblock %}</p>
+<p>No one can argue that this is not terrible, and yet every experienced
+JavaScript developer knows how the developer(s) who wrote it arrived there. At
+first, the function needed three arguments, and all was good with the world.
+But then, it seemed like the same function could be used to do another thing by
+just passing two more arguments -- no big deal, because if those two arguments
+weren&#39;t present, then just the first three would suffice. Five arguments
+certainly isn&#39;t <em>that</em> bad, right? After that, though, things went south: for
+whatever undoubtedly marketing-department-driven reason, suddenly both the
+original three-argument case and the later five-argument case both needed to
+receive two more arguments, and these two new arguments were mandatory. Now
+both cases had seven-argument signatures, and in some cases, two of those seven
+arguments needed to be null so nothing would break.</p>
+<p>This case demonstrates the most compelling reason to switch to using an object
+instead: optional arguments. When the developer discovered that the original,
+three-argument <code>addBling</code> could be used for the five-argument case as well, it
+was probably time to refactor:</p>
+<p>{% codeblock lang:javascript %}
+// original
+addBling(&#39;#awesome&#39;, &#39;fuchsia&#39;, &#39;slow&#39;);</p>
+<p>// new hotness
+addBling(&#39;#awesome&#39;, {
+  color : &#39;fuchsia&#39;,
+  speed : &#39;slow&#39;
+});
+{% endcodeblock %}</p>
+<p>Then, the same function could be used while passing it more information about
+how to behave in the five-argument case:</p>
+<p>{% codeblock lang:javascript %}
+addBling(&#39;#omgSoAwesome&#39;, {
+  color : &#39;fuchsia&#39;,
+  speed : &#39;slow&#39;,
+  unicorns : 3,
+  rainbows : 5
+});
+{% endcodeblock %}</p>
+<p>Then, when it came time to add yet more bling, the function signature wouldn&#39;t need to change,</p>
+<p>{% codeblock lang:javascript %}
+addBling(&#39;#awesome&#39;, {
+  color : &#39;fuchsia&#39;,
+  speed : &#39;slow&#39;,
+  timesToBlink : 3,
+  alertOnSuccess : &#39;done!&#39;
+});</p>
+<p>addBling(&#39;#omgSoAwesome&#39;, {
+  color : &#39;purple&#39;,
+  speed : &#39;fast&#39;,
+  unicorns : 3,
+  rainbows : 5,
+  timesToBlink : 9001,
+  alertOnSuccess : &#39;woohoo!&#39;
+});
+{% endcodeblock %}</p>
+<h2>Extensibility and Future-Proofing</h2><p>Another case for passing in an object is when you want the flexibility that an
+object provides, even if your code doesn&#39;t require it for now:</p>
+<p>{% codeblock lang:javascript %}
+var Person = function(args) {
+  this.firstName = args.firstName;
+  this.lastName = args.lastName;
+  return this;
+};
+{% endcodeblock %}</p>
+<p>For now, you only want to be able to provide the first and last name of the
+person -- it would work just fine to create a function signature for the
+<code>Person</code> constructor that took exactly those two arguments, because indeed they
+are required. On the other hand, though, this is incredibly short-sighted --
+while first and last name may be all that you care about now, there&#39;s obviously
+more to a person than those two attributes, and eventually you may want to
+provide attributes such as age, occupation, etc. Doing this with individual
+arguments quickly becomes unsustainable. Besides that, though, it also makes
+assigning instance properties a pain in the ass. By passing an object, we can
+rewrite the above code as such:</p>
+<p>{% codeblock lang:javascript %}
+var Person = function(args) {
+  dojo.mixin(this, args);
+  // jQuery: $.extend(this, args);
+  return this;
+};
+{% endcodeblock %}</p>
+<p>Now -- assuming this is what we want -- we can mix in <em>any</em> settings we provide
+in the <code>args</code> argument. Dojo, for example, bakes this ability in to anything
+that inherits from <code>dijit._Widget</code>:</p>
+<p>{% codeblock lang:javascript %}
+var thinger = new my.Thinger({
+  title : &#39;Favorite Animals&#39;,
+  animals : [ &#39;Narwhal&#39;, &#39;Lemur&#39;, &#39;Honey Badger&#39; ]
+});
+{% endcodeblock %}</p>
+<h2>Use Objects for Related Data</h2><p>An important qualifier here is that all of the properties of an object that
+we&#39;ve talked about passing to our <code>Person</code> constructor are related -- they all
+are saying something about the Person you&#39;re creating. What if creating our
+Person was asynchronous, and we wanted to run a function once our Person was
+created? In a (contrived) case like that, I think it does make sense to pass in
+a separate argument:</p>
+<p>{% codeblock lang:javascript %}
+new Person(configObj, fn);
+{% endcodeblock %}</p>
+<p>In this particular example, we still only have two arguments -- we haven&#39;t
+wandered into that muddy realm of four or more. That said, I think this
+distinction is part of what makes <code>dojo.connect(node, &#39;click&#39;, contextObj,
+&#39;handlerMethod&#39;)</code> OK: the arguments are four distinctly different types of
+information. Taken together, they have an almost narrative quality: when this
+node receives a click, use the context object&#39;s <code>handlerMethod</code>. A signature
+like <code>new Person(&#39;Rebecca&#39;, &#39;Murphey&#39;, 34, &#39;web developer&#39;, 2 /*cats*/, 2
+/*dogs*/)</code> doesn&#39;t <em>feel</em> the same as the <code>dojo.connect</code> example -- it&#39;s
+information that&#39;s too related to be expressed as independent arguments.</p>
+<h2>Four or More, Time to Refactor?</h2><p>I think the bottom line here is a) it&#39;s complicated, and b) if your function
+signature has four or more arguments, you should almost certainly consider
+whether there&#39;s a better way to do it. If the arguments are super-related, it
+may be they belong in an object, so you get the benefit of easy extensibility
+down the road. If there are optional arguments, you almost certainly want to
+wrap those in an object to avoid passing <code>null</code> over and over again.</p>
+<p>Personally, my threshold is actually closer to two arguments -- if I find
+myself wanting a third argument, I question whether my function is trying to do
+more than it should be doing -- maybe I should do some pre-processing of the
+input so I can get away with just passing in two arguments. Every additional
+argument is an indication of additional complexity, which means an additional
+opportunity for things to go wrong.</p>
+<h2>Other Considerations</h2><p>I posed this question to
+<a href="http://twitter.com/#!/rmurphey/status/62172041037623296">Twitter</a> and got a
+ton of interesting feedback. Here are some of the highlights that I didn&#39;t
+cover above:</p>
+<ul>
+<li><a href="https://twitter.com/raydaly/status/62320791232069632">@raydaly</a> no new nouns
+is my principle. If unrelated data needs to be passed, diff args.</li>
+<li><a href="https://twitter.com/dadaxl/status/62308649699250176">@dadaxl</a> I would pass
+an obj if I&#39;ve a dynamic bunch of args containing functions.</li>
+<li><a href="https://twitter.com/sh1mmer/status/62308597153021952">@sh1mmer</a> omg! Objects
+for the love of god! No one likes immutable APIs. Just ask @ls_n</li>
+<li><a href="https://twitter.com/mattrogish/status/62307288597266432">@MattRogish</a> Rails
+tends to do required things are named args, optional things are a hash</li>
+<li><a href="https://twitter.com/ryanflorence/status/62511600837468161">@ryanflorence</a>
+obfuscation often influences me, objects don&#39;t compress as well as multiple
+args.</li>
+<li><a href="https://twitter.com/getify/status/62512606132449280">@getify</a> if more than
+half of the args are optional...or if there are several boolean params which
+without names can be confusing</li>
+<li><a href="https://twitter.com/jcoglan/status/62253184369954816">@jcoglan</a> When further
+args are optional, or args.length&gt;3. Need to spot when options merit a
+refactoring, though.</li>
+<li><a href="https://twitter.com/digitalicarus/status/62247330354692096">@digitalicarus</a>
+A combo of sheer length, amount of reuse, if it&#39;s an API, and/or if it&#39;s
+designed to be called a variety of ways to a similar end.</li>
+<li><a href="https://twitter.com/bryanforbes/status/62237053148086272">@BryanForbes</a> If I
+have to start swapping arguments and type checking, it&#39;s time for one object
+or reworking my function.</li>
+<li><a href="https://twitter.com/myfreeweb/status/62229278581993472">@myfreeweb</a> I use an
+object when I start forgetting the order of args ... or there is no logical
+order like (key, value, callback) at all</li>
+<li><a href="https://twitter.com/zetafleet/status/62209835097268224">@zetafleet</a> When
+many of the arguments are optional or they&rsquo;re all getting stored or
+copied directly over to the object.</li>
+<li><a href="https://twitter.com/maravillas/status/62176422877335552">@maravillas</a> I
+usually don&#39;t make an obj just for passing data; if arglist is too long,
+maybe the function does too much and needs refactoring.</li>
+</ul>
+<h2>Postscript</h2><p>We ended up leaving the code that spurred this whole conversation exactly as it
+was.</p><p class="follow">Posted 25-Apr 2011.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2011/04/25/objects-as-arguments/';
+var disqus_title = 'Objects as Arguments: Where do you draw the line?';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

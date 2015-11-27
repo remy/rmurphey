@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Cycle through list elements with jQuery</title><meta name="description" content="Cycle through list elements with jQuery"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="I&#39;ve written several versions of this functionality, and each time I revisit it, it gets simpler and I feel silly for how complicated I made it before. The thing to remember when you&#39;re working with jQuery is to always leverage the DOM. Christian Montoya has a good writeup about how he came to the same realization, and it&#39;s worth a read.
+In the meantime, here&#39;s my latest iteration of cycling through items in an unordered list. In the example below, I&#39;ve just put straight-up text in the list items, but they could contain entire divs of content if you wanted.
+First, let&#39;s assume we have this HTML:"><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Cycle through list elements with jQuery"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-cycle-through-list-elements-with-jquery-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2008/01/10/solved-ajax-returns-bad-results-in-internet-explorer" title="Solved: AJAX returns bad results in Internet Explorer">Next</a></li><li class="prev"><a href="/blog/2008/01/06/unobtrusive-cross-browser-method-to-add-icons-to-links" title="Unobtrusive, cross-browser method to add icons to links">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2008/01/08/cycle-through-list-elements-with-jquery" rel="bookmark" title="Permanent Link: Cycle through list elements with jQuery">Cycle through list elements with jQuery</a></h1><div class="post-content"><p>I&#39;ve written several versions of this functionality, and each time I revisit it, it gets simpler and I feel silly for how complicated I made it before. The thing to remember when you&#39;re working with jQuery is to <strong>always leverage the DOM</strong>. <a href="http://www.christianmontoya.com/2007/12/10/how-i-learned-to-stop-programming-and-love-the-dom/">Christian Montoya has a good writeup</a> about how he came to the same realization, and it&#39;s worth a read.</p>
+<p>In the meantime, here&#39;s my latest iteration of cycling through items in an unordered list. In the example below, I&#39;ve just put straight-up text in the list items, but they could contain entire <code>div</code>s of content if you wanted.</p>
+<p>First, let&#39;s assume we have this HTML:</p>
+<p>{% codeblock lang:html %}</p>
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+</ul>
+{% endcodeblock %}
+
+We&#39;ll start by verifying that there&#39;s more than one item before we do all the rest of the work. (Of course, if your list length doesn&#39;t vary, this <code>if</code> isn&#39;t necessary.)
+
+{% codeblock lang:javascript %}
+var $list = $(&#39;#myList&#39;);
+
+if ($list.length &gt; 1) {
+  ...
+}
+{% endcodeblock %}
+
+
+Following the principles of progressive enhancement, we don&#39;t want to include navigation elements in the HTML if they will only work with Javascript; rather, we want to add them with Javascript:
+
+{% codeblock lang:javascript %}
+var $list = $(&#39;#myList&#39;);
+
+if ($list.length &gt; 1) {
+  // put the nav before the list
+  $list.before(&#39;&#39;);
+
+  // style the nav as needed
+  $(&#39;#nav&#39;).css({textAlign: &#39;right&#39;});
+  $(&#39;#nav img&#39;).css({cursor: &#39;pointer&#39;});
+  $(&#39;#nav img:first&#39;).attr(&#39;src&#39;,&#39;backButton.gif&#39;);
+  $(&#39;#nav img:last&#39;).attr(&#39;src&#39;,&#39;forwardButton.gif&#39;);
+}
+{% endcodeblock %}
+
+
+The comes the fun part: adding the behaviors to the nav buttons. This is where it pays to keep in mind the power of the DOM; in past iterations of this, I&#39;ve seriously overthought the logic.
+
+{% codeblock lang:javascript %}
+var $list = $(&#39;#myList&#39;);
+
+if ($list.length &gt; 1) {
+  // put the nav before the list
+  $list.before(&#39;&#39;);
+
+  // style the nav as needed
+  $(&#39;#nav&#39;).css({textAlign: &#39;right&#39;});
+  $(&#39;#nav img&#39;).css({cursor: &#39;pointer&#39;});
+
+  // add the back button behavior
+  $(&#39;#nav img:first&#39;).
+    attr(&#39;src&#39;,&#39;backButton.gif&#39;).
+    click(function() {
+      $(&#39;li:visible&#39;,$list).
+        hide().
+        prev(&#39;li&#39;).
+          show();
+    });
+
+  // add the forward button behavior
+  $(&#39;#nav img:last&#39;).
+    attr(&#39;src&#39;,&#39;forwardButton.gif&#39;).
+    click(function() {
+      $(&#39;li:visible&#39;,$list).
+        hide().
+        next(&#39;li&#39;).
+          show();
+    });
+
+}
+{% endcodeblock %}
+
+
+But what happens if there&#39;s not a next <code>li</code> when you click on the forward button, or a previous <code>li</code> when you click on the back button?
+
+{% codeblock lang:javascript %}
+var $list = $(&#39;#myList&#39;);
+
+if ($list.length &gt; 1) {
+  // put the nav before the list
+  $list.before(&#39;&#39;);
+
+  // style the nav as needed
+  $(&#39;#nav&#39;).css({textAlign: &#39;right&#39;});
+  $(&#39;#nav img&#39;).css({cursor: &#39;pointer&#39;});
+
+  // add the back button behavior
+  $(&#39;#nav img:first&#39;).
+    attr(&#39;src&#39;,&#39;backButton.gif&#39;).
+    click(function() {
+      $(&#39;li:visible&#39;,$list).
+        hide().
+        prev(&#39;li&#39;).
+          show();
+
+      // if there wasn&#39;t a previous li,
+      // show the last li in the list
+      if ($(&#39;li:visible&#39;,$list).length
+{% endcodeblock %}
+
+One last thing: we need to hide all the list items and then show the first one:
+
+{% codeblock lang:javascript %}
+var $list = $(&#39;#myList&#39;);
+
+if ($list.length &gt; 1) {
+
+  // hide all the list items and show the first one
+  $(&#39;li&#39;,$list).hide().eq(0).show();
+
+  // put the nav before the list
+  $list.before(&#39;&#39;);
+
+  // style the nav as needed
+  $(&#39;#nav&#39;).css({textAlign: &#39;right&#39;});
+  $(&#39;#nav img&#39;).css({cursor: &#39;pointer&#39;});
+
+  // add the back button behavior
+  $(&#39;#nav img:first&#39;).
+    attr(&#39;src&#39;,&#39;backButton.gif&#39;).
+    click(function() {
+      $(&#39;li:visible&#39;,$list).
+        hide().
+        prev(&#39;li&#39;).
+          show();
+
+      // if there wasn&#39;t a previous li,
+      // show the last li in the list
+      if ($(&#39;li:visible&#39;,$list).length
+{% endcodeblock %}
+
+For extra fun:
+
+<ul>
+<li>
+<a href="http://blog.rebeccamurphey.com/2007/12/11/jquery-plugin-randomly-reorder-children-elements/">Randomly reorder</a> the list items before you add the rest of the code</li>
+<li>Instead of <code>show()</code> and <code>hide()</code>, try <code>fadeIn()</code> and <code>fadeOut()</code>
+</li>
+</ul><p class="follow">Posted 8-Jan 2008.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2008/01/08/cycle-through-list-elements-with-jquery/';
+var disqus_title = 'Cycle through list elements with jQuery';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

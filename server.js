@@ -49,71 +49,71 @@ function redirect(res, url) {
 }
 
 /* legacy for feedburner */
-route.all('/feed/', function (req, res, next) {
-  // required by harp because it thinks I'm using express...
-  req.url = '/feed.xml';
-  next();
-});
+// route.all('/feed/', function (req, res, next) {
+//   // required by harp because it thinks I'm using express...
+//   req.url = '/feed.xml';
+//   next();
+// });
 
 /* redirect to s3 hosted urls */
-route.all(/\/downloads\/(.*)$/, function (req, res) {
-  redirect(res, 'http://download.remysharp.com/' + req.params[1]);
-});
+// route.all(/\/downloads\/(.*)$/, function (req, res) {
+//   redirect(res, 'http://download.remysharp.com/' + req.params[1]);
+// });
 
-route.post('/search', function (req, res) {
-  var query = req.url.split('?').slice(1).join('?');
-  var search = querystring.parse(query);
-
-  var client = new elasticsearch.Client({
-    host: process.env.BONSAI_URL,
-    // log: 'trace',
-  });
-
-  client.search({
-    index: 'blog-posts',
-    body: {
-      query: {
-        match: {
-          body: search.q,
-        },
-      },
-      highlight: {
-        'pre_tags': ['<strong class="highlight"><em>'],
-        'post_tags': ['</em></strong>'],
-        fields: {
-          body: {
-            'number_of_fragments': 10,
-            'fragment_size': 400,
-          },
-        },
-      },
-    },
-    fields: 'title,date,highlight',
-  }, function (error, response) {
-    if (error) {
-      res.writeHead(500, { 'content-type': 'application/json' });
-      return res.end(JSON.stringify({ error: true, message: error.message }));
-    }
-    res.writeHead(200, { 'content-type': 'application/json' });
-
-    if (response.hits.total === 0) {
-      return res.end('[]');
-    }
-
-    var results = response.hits.hits.map(function (res) {
-      var date = moment(res.fields.date.pop());
-      return {
-        title: res.fields.title.pop(),
-        date: date.format('D-MMM YYYY'),
-        score: res._score,
-        url: 'http://rmurphey.com/blog/' + date.format('YYYY/MM/DD') + '/' + res._id,
-        highlight: (res.highlight.body.pop() || ''),
-      };
-    });
-
-    res.end(JSON.stringify(results));
-  });
-});
+// route.post('/search', function (req, res) {
+//   var query = req.url.split('?').slice(1).join('?');
+//   var search = querystring.parse(query);
+//
+//   var client = new elasticsearch.Client({
+//     host: process.env.BONSAI_URL,
+//     // log: 'trace',
+//   });
+//
+//   client.search({
+//     index: 'blog-posts',
+//     body: {
+//       query: {
+//         match: {
+//           body: search.q,
+//         },
+//       },
+//       highlight: {
+//         'pre_tags': ['<strong class="highlight"><em>'],
+//         'post_tags': ['</em></strong>'],
+//         fields: {
+//           body: {
+//             'number_of_fragments': 10,
+//             'fragment_size': 400,
+//           },
+//         },
+//       },
+//     },
+//     fields: 'title,date,highlight',
+//   }, function (error, response) {
+//     if (error) {
+//       res.writeHead(500, { 'content-type': 'application/json' });
+//       return res.end(JSON.stringify({ error: true, message: error.message }));
+//     }
+//     res.writeHead(200, { 'content-type': 'application/json' });
+//
+//     if (response.hits.total === 0) {
+//       return res.end('[]');
+//     }
+//
+//     var results = response.hits.hits.map(function (res) {
+//       var date = moment(res.fields.date.pop());
+//       return {
+//         title: res.fields.title.pop(),
+//         date: date.format('D-MMM YYYY'),
+//         score: res._score,
+//         url: 'http://rmurphey.com/blog/' + date.format('YYYY/MM/DD') + '/' + res._id,
+//         highlight: (res.highlight.body.pop() || ''),
+//       };
+//     });
+//
+//     res.end(JSON.stringify(results));
+//   });
+// });
 
 /* allow fast redirects to edit pages */
 route.get(/^\/(.*)\/edit(\/)?$/, function (req, res, next) {
@@ -140,7 +140,7 @@ route.get(/^\/(.*)\/edit(\/)?$/, function (req, res, next) {
   }
 
   if (match.length) {
-    var url = 'https://github.com/remy/remysharp.com/blob/master/public/' +
+    var url = 'https://github.com/rmurphey/rmurphey/blob/master/public/' +
       match.shift() + '.md';
     return redirect(res, url);
   }
@@ -148,11 +148,6 @@ route.get(/^\/(.*)\/edit(\/)?$/, function (req, res, next) {
   next();
 });
 
-
-/* example redirect to s3 hosted urls */
-// route.all('/demo/{filename}', function (req, res) {
-//   redirect(res, 'http://download.remysharp.com/' + req.params.filename);
-// });
 
 /* redirect /blog/{slug} to the date formatted url */
 route.all('/{blog}?/{post}', function (req, res, next) {
@@ -263,7 +258,7 @@ function run() {
       if (mount) {
         mount(req, res, function serve404() {
           res.writeHead(404);
-          res.end(fourohfour);
+          // res.end(fourohfour);
         });
       } else {
         res.writeHead(404);
@@ -272,6 +267,7 @@ function run() {
     });
 
     console.log('Running harp-static on ' + port);
+    console.log('Env: ' + process.env.NODE_ENV);
     http.createServer(route).listen(port);
 
     fourohfour = require('fs').readFileSync(outputPath + '/404.html');
@@ -292,6 +288,7 @@ function run() {
       harp.mount(__dirname)(req, res);
     });
     console.log('Running harp-static on ' + port);
+    console.log('Env: ' + process.env.NODE_ENV);
     http.createServer(route).listen(port);
 
     server(__dirname + '/public');
@@ -314,8 +311,6 @@ Promise.all(slugs.map(stat)).then(function (dates) {
   global.recent = dates.sort(function (a, b) {
     return a.date.getTime() - b.date.getTime();
   }).reverse().slice(0, 3);
-
-  console.log(global.recent);
 
   if (process.argv[2] === 'compile') {
     process.env.NODE_ENV = 'production';

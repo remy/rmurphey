@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Deferreds coming to jQuery 1.5?</title><meta name="description" content="Deferreds coming to jQuery 1.5?"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="I have updated this post to show the code using the API that was released in jQuery 1.5.0.
+A few weeks ago, a major rewrite of jQuery&#39;s Ajax functionality
+landed in the jQuery GitHub repo. Thanks to Julian Aubourg, jQuery looks like it will get a feature
+that I&#39;ve desperately wished it had ever since I started spending time with
+Dojo:
+{% codeblock lang:javascript %}
+function doAjax(debug) {
+  var req = $.ajax({
+    url : &#39;foo.php&#39;,
+    dataType : &#39;json&#39;,
+    success : function(resp) {
+      console.log(resp);
+    }
+  });"><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Deferreds coming to jQuery 1.5?"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-deferreds-coming-to-jquery-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2011/03/17/the-future-of-jquery-fundamentals-and-a-confession" title="The Future of jQuery Fundamentals (and a confession)">Next</a></li><li class="prev"><a href="/blog/2010/11/20/on-conferencing" title="On Conferencing">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2010/12/25/deferreds-coming-to-jquery" rel="bookmark" title="Permanent Link: Deferreds coming to jQuery 1.5?">Deferreds coming to jQuery 1.5?</a></h1><div class="post-content"><p><em>I have updated this post to show the code using the API that was released in jQuery 1.5.0.</em></p>
+<p>A few weeks ago, a <a href="https://github.com/jquery/jquery/commit/ab3ba4a81252c4357a7aab5f24d765d41d47986e">major rewrite of jQuery&#39;s Ajax functionality</a>
+landed in the jQuery GitHub repo. Thanks to <a href="http://www.jaubourg.net/">Julian Aubourg</a>, jQuery looks like it will get a feature
+that I&#39;ve desperately wished it had ever since I started spending time with
+Dojo:</p>
+<p>{% codeblock lang:javascript %}
+function doAjax(debug) {
+  var req = $.ajax({
+    url : &#39;foo.php&#39;,
+    dataType : &#39;json&#39;,
+    success : function(resp) {
+      console.log(resp);
+    }
+  });</p>
+<p>  if (debug) {
+    req.success(function(resp) {
+      console.log(&quot;let&#39;s see that again!&quot;, resp);
+    });
+  }</p>
+<p>  // return the request object so other
+  // things can bind to it too!
+  return req;
+}</p>
+<p>doAjax().success(function(resp){
+  console.log(&quot;Once more, with feeling!&quot;, resp);
+});
+{% endcodeblock %}</p>
+<p>Starting with 1.5 (I&#39;m guessing), users will be able to easily attach callbacks
+to XHRs ... later! And pass around the return value of <code>$.ajax</code> as an actually
+useful object with a familiar API, rather than just getting back the native
+XHR! No longer will we have to bundle up callback functionality -- some of
+which might be optional, or depend on other code -- inside our success or error
+callbacks. So hott.</p>
+<p>When I heard that these Ajax changes had landed, I got to thinking about how
+Dojo provides its ability to belatedly attach success and error handlers to its
+XHRs: underlying its XHR methods is
+<a href="http://dojotoolkit.org/reference-guide/dojo/Deferred.html#dojo-deferred">dojo.Deferred</a>.
+It <strong>allows users to assign callback functions for success and error conditions
+for a task that may not complete immediately.</strong> Dojo makes use of this for its
+XHR stuff, but it&#39;s incredibly useful generically, too:</p>
+<p>{% codeblock lang:javascript %}
+function doSomethingAsync() {
+  var dfd = new dojo.Deferred();
+  setTimeout(function() {
+    dfd.resolve(&#39;hello world&#39;);
+  }, 5000);
+  return dfd.promise;
+};</p>
+<p>doSomethingAsync().then(function(resp) {
+  console.log(resp); // logs &#39;hello world&#39;
+});
+{% endcodeblock %}</p>
+<p>So, Dojo provided the late callback functionality via deferreds. jQuery now had
+late callback functionality. Was the deferred functionality hidden in the
+jQuery Ajax rewrite, waiting to be exposed? Julian and I and several others got
+to talking in the jQuery development IRC channel, and decided it seemed like an
+interesting and viable idea. A few days later, Julian&#39;s <a href="https://github.com/jquery/jquery/commit/116c82b027a03a7a5670fa580fa9af819cc1cc03">first draft of jQuery.Deferred</a>
+landed in a branch on GitHub.</p>
+<p>It&#39;s early days, but there have been a lot of good discussions already about
+the proposed API and how it should work. Through all of the conversations I&#39;ve
+been part of, it&#39;s become really clear that no one cares about deferreds until
+you show them what they actually mean: the ability to register an interest in
+the outcome of arbitrary asynchronous behavior, <em>even if the outcome has
+already occurred</em>. Even better, you can register your interest in the outcome
+of behavior that <em>may or may not be asynchronous</em>.</p>
+<p>I assure you that once you have experienced this, you will wonder how you lived
+without it.</p>
+<p>{% codeblock lang:javascript %}
+var cache = {};</p>
+<p>function doSomethingMaybeAsync(val) {
+  if (cache[val]) {
+    return cache[val];
+  }</p>
+<p>  return $.ajax({
+    url : &#39;foo.php&#39;,
+    data : { value : val },
+    dataType : &#39;json&#39;,
+    success : function(resp) {
+      cache[val] = resp;
+    }
+  });
+}</p>
+<p>$.when(doSomethingMaybeAsync(&#39;foo&#39;))
+  .then(function(resp){
+    alert(&quot;The value for foo is&quot;, resp);
+  });
+{% endcodeblock %}</p>
+<p>It&#39;ll also be possible to do something like you see below. I&#39;m not sure what
+the exact API will be for creating a generic deferred instance, but I hope it
+will be something along these lines:</p>
+<p>{% codeblock lang:javascript %}
+function doIt() {
+  var dfd = new $.Deferred();</p>
+<p>  setTimeout(function() {
+    dfd.resolve(&#39;hello world&#39;);
+  }, 5000);</p>
+<p>  return dfd.promise;
+}</p>
+<p>doIt().then(function(resp) { console.log(resp); }, errorFn);
+{% endcodeblock %}</p>
+<p>These changes are sitting in a <a href="https://github.com/jquery/jquery/tree/deferred">branch in the jQuery GitHub repo</a> as we speak, and I think
+it&#39;s likely we&#39;ll see them move to master sooner than later. It&#39;s a nice story
+of collaboration and community participation that helped make something good --
+the Ajax rewrite -- even better.</p>
+<p>It&#39;s exciting to see jQuery venture a bit more into the abstract. My
+experiences with Dojo core so far make me think there are probably more
+opportunities for these sorts of utilities that would be of high value for
+a substantial number of jQuery users. On the other hand, one of the constant
+themes of our conversations about deferreds has been the potential for
+confusion with the new methods. Will the API look familiar and jQuery-like, or
+will users be confused about the ability to chain methods on something other
+than a jQuery selection? Are there bigger-picture considerations when it comes
+to adding new constructors to the jQuery namespace? It&#39;ll be interesting to see
+how these questions sort themselves out, especially if other similar features
+appear that don&#39;t fall neatly under the well-established
+DOM/Ajax/Events/Effects umbrella.</p>
+<p>The <a href="https://github.com/jquery/jquery/commits/deferred">conversation&#39;s happening on GitHub</a> -- I hope you&#39;ll
+join in.</p><p class="follow">Posted 25-Dec 2010.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2010/12/25/deferreds-coming-to-jquery/';
+var disqus_title = 'Deferreds coming to jQuery 1.5?';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

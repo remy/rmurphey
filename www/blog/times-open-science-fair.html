@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Show &amp; Tell</title><meta name="description" content="Show &amp; Tell"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="I spoke at the Times Open Source Science Fair a couple of weeks ago. I&#39;ll admit that I was pretty skeptical of the concept when I was first asked, but as someone who used to work as an editor at a tiny newspaper in upstate New York, I wasn&#39;t about to say no when the Times asked me to come say hi.
+A few days before the event, I got an email asking me for information about what I&#39;d be showing off at my booth. Booth? Wat? They weren&#39;t kidding about the science fair thing, but what the heck was I going to show at a booth?
+It turns out this is basically the best idea ever. I recruited my Bocoup colleague Rick Waldron to join me, and together we spent a whirlwind hour showing off robots powered by JavaScript to an endless stream of people walking up to our booth. Rick did a great job of setting up a demo that people could play with, and they took turns moving sliding potentiometers that controlled servos that moved an arm with a gripper at the end, trying to pick up Bocoup stickers. Ours was one of about a dozen booths showing off open-source projects, and the room was a wonderful madhouse."><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Show &amp; Tell"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-times-open-science-fair-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2012/11/29/choosing-presentation-color-scheme" title="On Choosing a Syntax Highlighting Scheme for Your Next Presentation">Next</a></li><li class="prev"><a href="/blog/2012/11/21/recent-talks" title="Recent Talks">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2012/11/25/times-open-science-fair" rel="bookmark" title="Permanent Link: Show &amp; Tell">Show &amp; Tell</a></h1><div class="post-content"><p>I spoke at the <a href="http://opensourcesciencefair.com/">Times Open Source Science Fair</a> a couple of weeks ago. I&#39;ll admit that I was pretty skeptical of the concept when I was first asked, but as someone who used to work as an editor at a tiny newspaper in upstate New York, I wasn&#39;t about to say no when the Times asked me to come say hi.</p>
+<p>A few days before the event, I got an email asking me for information about what I&#39;d be showing off at my booth. Booth? Wat? They weren&#39;t kidding about the science fair thing, but what the heck was I going to show at a booth?</p>
+<p>It turns out this is basically the best idea ever. I recruited my Bocoup colleague <a href="http://twitter.com/rwaldron">Rick Waldron</a> to join me, and together we spent a whirlwind hour showing off <a href="https://github.com/rwldrn/johnny-five">robots powered by JavaScript</a> to an endless stream of people walking up to our booth. Rick did a great job of setting up a demo that people could play with, and they took turns moving <a href="https://www.sparkfun.com/products/9119">sliding potentiometers</a> that controlled <a href="https://www.sparkfun.com/products/9064">servos</a> that moved an arm with a gripper at the end, trying to pick up Bocoup stickers. Ours was one of about a <a href="http://open.blogs.nytimes.com/2012/11/21/open-source-science-fair-exhibitor-experiences/">dozen booths</a> showing off open-source projects, and the room was a wonderful madhouse.</p>
+<p>After a break for dinner, I, <a href="http://twitter.com/jashkenas">Jeremy Ashkenas</a>, and <a href="http://twitter.com/holman">Zach Holman</a> each gave 20-minute talks, but the talks were really just icing on the evening. The &quot;science fair&quot; format promoted such <em>intentional interaction</em>, in a way that traditional conferences just can&#39;t, no matter how great the hall track or the parties may be. The format invited and encouraged attendees to talk to the presenters -- indeed, if they didn&#39;t talk to the presenters, there wasn&#39;t much else for them to do. By the time the official talks came around, a super-casual, super-conversational atmosphere had already been established, and the energy that created was tangibly different from any event I&#39;ve been to before.</p>
+<p>I love conferences, and the sharing of knowledge that happens there, and there&#39;s a whole lot to be said for their speaker-audience format -- don&#39;t get me wrong. But I&#39;d also love to see more events figure out how to integrate this show and tell format. &quot;Booths&quot; don&#39;t need to mean &quot;vendors trying to sell things&quot; -- they can actually be a great opportunity to facilitate conversation, and to let open source contributors show off their hard work.</p><p class="follow">Posted 25-Nov 2012.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2012/11/25/times-open-science-fair/';
+var disqus_title = 'Show &amp; Tell';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

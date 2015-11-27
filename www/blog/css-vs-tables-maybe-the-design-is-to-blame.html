@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>CSS vs. Tables: Maybe the design is to blame?</title><meta name="description" content="CSS vs. Tables: Maybe the design is to blame?"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="There&#39;s been some backlash lately against CSS, and some of it seems so well reasoned that even I find myself wondering if tables are really so bad after all. From giveupandusetables.com, which says the maximum time to spend before abandoning CSS is 47 minutes, to the well-illustrated blog post by Ron Garret, the general argument is that CSS isn&#39;t up to the task of faithfully reproducing elaborate designs cross-browser in an acceptable amount of developer time.
+In his post about Garret&#39;s article, Dion Almaer at Ajaxian opines:
+CSS purist[s] may poo poo him and say &quot;he is just dumb and doesn&#39;t REALLY know CSS.&quot; The problem though is that most developers run into exactly the pain that he describes. We’ve all been there. It drives you nuts and when frustrated what do you do? You fluster about and change CSS like a mad man until it kinda looks right. And, you never learn what the real problem was, and thus destined to make the same mistake again.
+
+It seems that while developers are thinking about sacrificing web standards for the perceived simplicity of tables, the viability of the design rarely enters the debate, and that&#39;s a shame. In my experience, some of the most difficult designs to produce using CSS were fundamentally flawed from the get-go, created by designers who failed to grasp that the web is not like print."><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="CSS vs. Tables: Maybe the design is to blame?"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-css-vs-tables-maybe-the-design-is-to-blame-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2009/04/13/on-gaining-respect-as-a-front-end-developer" title="On gaining respect as a front-end developer">Next</a></li><li class="prev"><a href="/blog/2009/01/12/jquery-validation-and-tinymce" title="jQuery validation and TinyMCE">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2009/02/14/css-vs-tables-maybe-the-design-is-to-blame" rel="bookmark" title="Permanent Link: CSS vs. Tables: Maybe the design is to blame?">CSS vs. Tables: Maybe the design is to blame?</a></h1><div class="post-content"><p>There&#39;s been some backlash lately against CSS, and some of it seems so well reasoned that even I find myself wondering if tables are really so bad after all. From <a href="http://giveupandusetables.com/">giveupandusetables.com</a>, which says the maximum time to spend before abandoning CSS is 47 minutes, to the <a href="http://www.flownet.com/ron/css-rant.html">well-illustrated blog post by Ron Garret</a>, the general argument is that CSS isn&#39;t up to the task of faithfully reproducing elaborate designs cross-browser in an acceptable amount of developer time.</p>
+<p>In his post about Garret&#39;s article, <a href="http://ajaxian.com/archives/css-for-layout-another-rant">Dion Almaer at Ajaxian</a> opines:</p>
+<blockquote class="posterous_medium_quote">CSS purist[s] may poo poo him and say &quot;he is just dumb and doesn&#39;t REALLY know CSS.&quot; The problem though is that most developers run into exactly the pain that he describes. We’ve all been there. It drives you nuts and when frustrated what do you do? You fluster about and change CSS like a mad man until it kinda looks right. And, you never learn what the real problem was, and thus destined to make the same mistake again.</blockquote>
+
+<p>It seems that while developers are thinking about sacrificing web standards for the perceived simplicity of tables, the viability of the design rarely enters the debate, and that&#39;s a shame. In my experience, some of the most difficult designs to produce using CSS were fundamentally flawed from the get-go, created by designers who failed to grasp that the web is not like print.</p>
+<p><strong>The web is not like print.</strong> In print, designers have near-total control over the output, because the number of new &quot;pages&quot; -- items of content -- is limited by the cost of printing. If a print designer wants text vertically centered in a fixed-height column, or two columns that are exactly the same height, or rounded corners with drop shadows on top of gradients, there&#39;s no reason they can&#39;t have that. The cost of printing is sufficiently high, and print graphics programs are sufficiently sophisticated, that making those design decisions has no impact on the marginal cost of production.</p>
+<p>On the web, the marginal cost of creating a new page of content can be approximately zero, but to achieve that we <em>must</em> build pages that adapt to unpredictable content and unpredictable users. If we don&#39;t, we won&#39;t realize the economies of scale that the web has to offer. The tradeoff for that infinitesimally small marginal cost is that the rules have to be different, because the cost of implementing those print-centric design decisions is inordinately high. Instead of sophisticated graphics programs, the web has mere humans to turn PSDs into working pages; instead of content created by experts and pored over by editors, the web has volumes of user-generated content, and the ability to change it on a whim.</p>
+<p>On the web, equal-height columns will cease to be equal height when the content changes; vertically centered content will outgrow its fixed-height bounds; and rounded corners with drop shadows on gradients can&#39;t possibly be worth the cost of producing them. These are not problems with CSS that should be solved with tables. They are, fundamentally, problems with the design.</p>
+<p>When I talk about this to other developers (and any designers who are willing to give me the time of day after I&#39;m done pointing out how costly their design will be to produce), I make the analogy that it&#39;s just as absurd to impose these print-centric design conventions on the web as it would be to use holograms for every picture in a magazine. Sure, you <em>can</em>, but that doesn&#39;t mean you <em>should</em>.</p>
+<p><strong>So what&#39;s a web developer to do?</strong> When designs reach the desk of the CSS developer, more often than not they&#39;ve been through so many rounds of review, revision, and approval -- by people far-removed from the realities of the web -- that the developer has little choice but to toil away at reproducing them faithfully.</p>
+<p>The best defense may be a good offense, which is to say, the burden is on you, dear developer, to educate the misguided designers. Here are some tactics I&#39;ve used:</p>
+<ul>
+<li>Impose yourself early in the process, insisting on wireframes and information architecture documents (even if they&#39;re just sketches and an outline). Identify potential problems early on, but don&#39;t become a naysayer -- make sure you offer ideas, not just criticism.</li>
+<li>Push back -- gently but firmly -- on design decisions that have the potential to cause problems down the road. Ask lots of &quot;what if&quot; questions and insist on answers.</li>
+<li>Be honest about how long it will take you to accomplish a design -- with yourself and with your boss or client -- and identify opportunities to make cost-saving changes to the specifics of the design without changing its spirit.</li>
+<li>Have examples at the ready of similar problems solved in more web-centric ways. The <a href="http://developer.yahoo.com/ypatterns/">Yahoo! Design Patterns Library</a> can be an excellent resource for this, but look also to other sites in your industry or genre.</li>
+</ul>
+
+<p>The burden&#39;s also on you to get better at CSS. I am lucky in that, when I first started playing around with web production, I was a little intimidated by tables. A background in print production steeped in templates and stylesheets made tables seem awkward and strange to me; CSS, temperamental as it was, at least bore some resemblance to the cascading style sheets of print production programs like Quark and InDesign.</p>
+<p>These days, it&#39;s rarer and rarer (but not unheard of) that I find myself beating my head against the wall over a CSS problem. I&#39;ve learned HTML and CSS patterns that I reuse often, and I&#39;ve learned to spot -- and speak up about -- design-induced ratholes. If you&#39;re finding yourself sucked in by the latest round of CSS vs. tables debate, take heart, stand firm, and reconsider the source of your frustration.</p>
+<p><h3>Useful things:</h3></p>
+<ul>
+<li><a href="http://blog.rebeccamurphey.com/2007/12/24/learning-css-web-design/">How I learned CSS</a></li>
+<li><a href="http://www.stubbornella.org/content/2009/02/12/css-doesn%E2%80%99t-suck-you%E2%80%99re-just-doing-it-wrong/">CSS doesn&#39;t suck, you&#39;re just doing it wrong</a></li>
+<li><a href="http://www.slideshare.net/stubbornella/object-oriented-css">Object-oriented CSS</a></li>
+</ul><p class="follow">Posted 14-Feb 2009.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2009/02/14/css-vs-tables-maybe-the-design-is-to-blame/';
+var disqus_title = 'CSS vs. Tables: Maybe the design is to blame?';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

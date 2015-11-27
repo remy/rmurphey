@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Patterns for DRY-er JavaScript</title><meta name="description" content="Patterns for DRY-er JavaScript"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="I came across a little code the other day that reminded me I&#39;ve been meaning to write about JavaScript patterns I take for granted. The code in question was intended to set the value of some fields in a form when a checkbox was selected; when it was deselected, the same fields were to be emptied. It looked not unlike this:
+
+{% codeblock lang:javascript %}
+// config is defined outside of this snippet,
+// and may contain more than the properties
+// we care about 
+$(&#39;#myCheckbox&#39;).click(function() {
+  if (this.checked) {
+    $(&#39;#field_foo&#39;).val(config.foo);
+    $(&#39;#field_bar&#39;).val(config.bar);
+    $(&#39;#field_baz&#39;).val(config.baz);
+  } else {
+    $(&#39;#field_foo&#39;).val(&#39;&#39;);
+    $(&#39;#field_bar&#39;).val(&#39;&#39;);
+    $(&#39;#field_baz&#39;).val(&#39;&#39;);
+  }
+});
+{% endcodeblock %}
+This is a wholly readable bit of code -- there&#39;s almost no question what&#39;s going on here. On the other hand, it&#39;s pretty easy to see the rampant repetition; this code isn&#39;t interested in &quot;don&#39;t repeat yourself&quot; (DRY). We&#39;re calling the same method on every selection we make, and our selections are repeated in both the if and else block.   When I saw this code, I had an immediate inclination to rewrite it. Here&#39;s what I came up with first:"><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Patterns for DRY-er JavaScript"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-patterns-for-dry-er-javascript-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2010/07/27/i-need-to-say-a-few-things" title="I need to say a few things.">Next</a></li><li class="prev"><a href="/blog/2010/06/17/announcing-jquery-fundamentals-an-open-source-jquery-training-curriculum" title="Announcing jQuery Fundamentals: An Open-Source jQuery Training Curriculum">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2010/07/12/patterns-for-dry-er-javascript" rel="bookmark" title="Permanent Link: Patterns for DRY-er JavaScript">Patterns for DRY-er JavaScript</a></h1><div class="post-content"><p>I came across a little code the other day that reminded me I&#39;ve been meaning to write about JavaScript patterns I take for granted. The code in question was intended to set the value of some fields in a form when a checkbox was selected; when it was deselected, the same fields were to be emptied. It looked not unlike this:</p>
+
+<p>{% codeblock lang:javascript %}
+// config is defined outside of this snippet,
+// and may contain more than the properties
+// we care about 
+$(&#39;#myCheckbox&#39;).click(function() {
+  if (this.checked) {
+    $(&#39;#field_foo&#39;).val(config.foo);
+    $(&#39;#field_bar&#39;).val(config.bar);
+    $(&#39;#field_baz&#39;).val(config.baz);
+  } else {
+    $(&#39;#field_foo&#39;).val(&#39;&#39;);
+    $(&#39;#field_bar&#39;).val(&#39;&#39;);
+    $(&#39;#field_baz&#39;).val(&#39;&#39;);
+  }
+});
+{% endcodeblock %}</p>
+<p>This is a wholly readable bit of code -- there&#39;s almost no question what&#39;s going on here. On the other hand, it&#39;s pretty easy to see the rampant repetition; this code isn&#39;t interested in &quot;don&#39;t repeat yourself&quot; (DRY). We&#39;re calling the same method on every selection we make, and our selections are repeated in both the if and else block.   When I saw this code, I had an immediate inclination to rewrite it. Here&#39;s what I came up with first:</p>
+
+<p>{% codeblock lang:javascript %}
+// config is defined outside of this snippet,
+// and may contain more than the properties
+// we care about</p>
+<p>$(&#39;#myCheckbox&#39;).click(function() {
+  // note whether the checkbox is checked
+  var checked = this.checked;</p>
+<p>  // iterate over the keys we care about
+  $.each([&#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;], function(i,v) {
+    // find the field for the given key
+    $(&#39;#field_&#39; + v)
+      // and set its value either to the string
+      // stored for the key, or to an empty string,
+      // depending on whether the checkbox was checked
+      .val(checked ? config[v] : &#39;&#39;);
+  });
+});
+{% endcodeblock %}</p>
+<p>This looks approximately nothing like the initial code, and without the
+comments, the code itself would be substantially less readable than the
+original. The idealistic part of me -- the part that believes people who write
+JavaScript should understand JavaScript -- says this is an acceptable price to
+pay. And besides, there&#39;s something to be said for explaining the code in a
+comment that can be stripped by a minifier, rather than explaining the code via
+the code.  In this iteration, we&#39;ve introduced two patterns for DRY-er code:
+iterating over an array literal (or, alternately, an object) to achieve
+repetition without repeating ourselves, and using the ternary operator in place
+of an if/else statement when the simplicity of our logic allows it.  The array
+literal serves as a list of the fields we care about. When our checkbox is
+clicked, we iterate over this list, build up a selector for each item in the
+list, make our selection, and then set the field value using a <a href="a
+href=&quot;http://stackoverflow.com/questions/1788917/javascript-ternary-operator&quot;">a
+href=&quot;http://stackoverflow.com/questions/1788917/javascript-ternary-operator&quot;</a>ternary
+operator. We&#39;ve gone from 11 lines of code to six, with the added bonus
+that we have to do a lot less typing if we need our checkbox to affect more
+fields.
+
+(A side note: Is this premature optimization? I&#39;d argue no, if you&#39;ve
+learn to see these patterns before you start writing code. Once you learn how
+to spot these patterns in a requirement, writing code that embraces them can
+actually be easier than writing code that takes a more &quot;literal&quot; approach to
+the problem. For example, imagine if the checkbox affected 20 other fields
+instead of one? You&#39;d undoubtedly find yourself copying and pasting code if you
+took the more &quot;literal&quot; approach to the problem, and that would be your first
+clue that you were doing something inefficiently.)
+
+The great thing about using a pattern like this is that it rapidly exposes the
+actual meat of what you&#39;re doing, and makes refactoring far less painful. I
+also find that it helps me see opportunities for reuse that I might not have
+spotted in the more literal version of the code.  Let&#39;s say we&#39;re feeling all
+proud of ourselves for DRYing out our code using clever JavaScript that only
+super-smart people can read. Now there&#39;s another checkbox that needs similar
+behavior, but it&#39;s going to use a different config object and a different list
+of fields. No problem! You&#39;ve already written this code, so you can just copy
+and paste it and then change what&#39;s different. Sweet. Er ... suddenly you&#39;re
+not looking so DRY after all.  This is when another pattern comes into play:
+creating a function that returns another function with certain variables
+already baked in (that is, creating a closure). We&#39;ll execute this creator
+function and then use the function it returns in place of the anonymous
+function we were using previously when we bound to the click event.</p>
+
+<p>{% codeblock lang:javascript %}
+// handleClick accepts a config object
+// and a makeSelector function; it returns
+// a function that can be bound to
+// a click event, using the config object
+// and the makeSelector function to react
+// appropriately to the click
+var handleClick = function(fields, config, makeSelector) {
+  return function() {
+    var checked = this.checked;</p>
+<pre><code>fields &amp;&amp; $.each(fields, function(i, v) {
+  // build the selector using the provided
+  // makeSelector function
+  $(makeSelector(v))
+          // set the value using the
+          // config object, depending
+          // on whether the checkbox
+          // is checked
+          .val(checked ? config[v]: &#39;&#39;);
+});
+</code></pre><p>  };
+};</p>
+<p>$(&#39;#myCheckbox&#39;).click(
+  // use handleClick to create a function
+  // that has these variables baked in;
+  // pass the created function as the
+  // click handling function
+  handleClick(
+    [&#39;foo&#39;,&#39;bar&#39;,&#39;baz&#39;],
+    myCheckboxConfig,
+    function(field) { return &#39;#field_&#39; + field; }
+  )
+);</p>
+<p>$(&#39;#myOtherCheckbox&#39;).click(
+  handleClick(
+    [&#39;bim&#39;,&#39;bar&#39;,&#39;bop&#39;],
+    myOtherCheckboxConfig,
+    function(field) { return &#39;input[name=&quot;&#39; + field + &#39;&quot;]&#39;; }
+  )
+);
+{% endcodeblock %}</p>
+<p>By creating a function that returns a function, we can isolate what&#39;s different about the two different handlers while centralizing the pieces that are the same. If your event handling function was slightly less trivial than this one, or if you were binding to five different checkboxes instead of two, the benefit of consolidating the code would be even more substantial.  JavaScript offers plenty of patterns for writing DRY-er code; it&#39;s important to learn to both recognize and use them. It&#39;s also important to recognize when you&#39;re writing un-DRY code in the first place -- copying and pasting code is one crystal-clear indicator, but others are more subtle and you may not identify them on the first go-round. For example, take these two functions; each receives a list item as its only argument and returns either the next or previous list item, returning to the beginning or end of the list if there is no next or previous item.</p>
+
+<p>{% codeblock lang:javascript %}
+var getNextItem = function($item) {
+  return $item.next().length ?
+         $item.next() : $items.first();
+};</p>
+<p>var getPrevItem = function($item) {
+        return $item.prev().length ?
+                $item.prev() : $items.last();
+};
+{% endcodeblock %}</p>
+<p>This felt repetitive when I first wrote it, but I couldn&#39;t quickly come up with a single function that would work. A little thinking about it, though, led me to this single function which gets a second argument: direction. That argument is used to decide whether to run the item&#39;s next or previous method, and then whether to run the item&#39;s first or last method. Besides combining two functions into one, it also eliminates calling next or prev twice inside each function.</p>
+
+<p>{% codeblock lang:javascript %}
+var getItem = function($item, direction) {
+  var $returnItem = $item<a href="">direction</a>;
+  return $returnItem.length ?
+         $returnItem :
+         $items<a href="">(direction == &#39;next&#39;) ? &#39;first&#39; : &#39;last&#39;</a>;
+};
+{% endcodeblock %}</p>
+<p>Learning about patterns and then discovering opportunities to use them is one of the more pleasing parts of my job. I hope this helps you identify some of those opportunities for yourself :)</p><p class="follow">Posted 12-Jul 2010.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2010/07/12/patterns-for-dry-er-javascript/';
+var disqus_title = 'Patterns for DRY-er JavaScript';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

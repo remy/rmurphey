@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>jQuery validation: Indicate that at least one element in a group is required</title><meta name="description" content="jQuery validation: Indicate that at least one element in a group is required"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="I had a need today to indicate that at least one of a set of input fields was required. I was hoping there was a direct way to do this in the jQuery validation plugin; while the method isn&#39;t quite as straightforward as I was wishing for, it&#39;s still fairly simple.
+To start with, I put class=&quot;required_group&quot; on each of the elements in the group. Then, I added a custom validation method:
+{% codeblock lang:javascript %}
+jQuery.validator.addMethod(&#39;required_group&#39;, function(val, el) {
+    var $module = $(el).parents(&#39;div.panel&#39;);
+    return $module.find(&#39;.required_group:filled&#39;).length;
+});
+{% endcodeblock %}"><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="jQuery validation: Indicate that at least one element in a group is required"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-jquery-validation-indicate-that-at-least-one-element-in-a-group-is-required-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2009/09/16/on-speaking-at-the-2009-jquery-conference" title="On speaking at the 2009 jQuery Conference">Next</a></li><li class="prev"><a href="/blog/2009/04/13/on-gaining-respect-as-a-front-end-developer" title="On gaining respect as a front-end developer">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2009/04/15/jquery-validation-indicate-that-at-least-one-element-in-a-group-is-required" rel="bookmark" title="Permanent Link: jQuery validation: Indicate that at least one element in a group is required">jQuery validation: Indicate that at least one element in a group is required</a></h1><div class="post-content"><p>I had a need today to indicate that at least one of a set of input fields was required. I was hoping there was a direct way to do this in the <a href="http://bassistance.de/jquery-plugins/jquery-plugin-validation/">jQuery validation plugin</a>; while the method isn&#39;t quite as straightforward as I was wishing for, it&#39;s still fairly simple.</p>
+<p>To start with, I put <code>class=&quot;required_group&quot;</code> on each of the elements in the group. Then, I added a custom validation method:</p>
+<p>{% codeblock lang:javascript %}
+jQuery.validator.addMethod(&#39;required_group&#39;, function(val, el) {
+    var $module = $(el).parents(&#39;div.panel&#39;);
+    return $module.find(&#39;.required_group:filled&#39;).length;
+});
+{% endcodeblock %}</p>
+<p>... a custom class rule to take advantage of the new method:</p>
+<p>{% codeblock lang:javascript %}
+jQuery.validator.addClassRules(&#39;required_group&#39;, {
+    &#39;required_group&#39; : true
+});
+{% endcodeblock %}</p>
+<p>... and finally a custom message for the new method:</p>
+<p>{% codeblock lang:javascript %}
+jQuery.validator.messages.required_group = &#39;Please fill out at least one of these fields.&#39;;
+{% endcodeblock %}</p>
+<p>What I&#39;d love to see is a way to specify a dependent group without using a custom class rule, but I&#39;m not sure what this would look like, as all validation rules are either keyed off an element&#39;s class or the presence of the element&#39;s name in the rules object. Thoughts? I&#39;m open to the possibility that there&#39;s a far better way to solve this --</p><p class="follow">Posted 15-Apr 2009.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2009/04/15/jquery-validation-indicate-that-at-least-one-element-in-a-group-is-required/';
+var disqus_title = 'jQuery validation: Indicate that at least one element in a group is required';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

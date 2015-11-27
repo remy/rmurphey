@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Update page using JSON data</title><meta name="description" content="Update page using JSON data"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="updateWithJSON is a jQuery plugin that updates elements on your page based on key/value pairs in a JSON object. Usage:
+{% codeblock lang:javascript %}
+$.updateWithJSON(jsonData)
+{% endcodeblock %}
+Here&#39;s a demo, and here&#39;s how it works:
+
+iterate over each property/value combination in the JSON object
+look for an element in the DOM that matches the property name
+
+first, look for an element with a matching id attribute
+if no element with a matching ID is found, look for input, select or textarea elements with a matching name attribute
+
+
+update the value, contents or selection of the matched element(s) based on the value in the JSON object
+"><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Update page using JSON data"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-update-page-using-json-data-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2008/01/03/suspicious-stumbleupon-bounce-rates" title="Suspicious StumbleUpon Bounce Rates?">Next</a></li><li class="prev"><a href="/blog/2007/12/30/determine-the-order-of-two-dom-elements" title="Determine the order of two DOM elements">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2008/01/02/update-page-using-json-data" rel="bookmark" title="Permanent Link: Update page using JSON data">Update page using JSON data</a></h1><div class="post-content"><p><a href="http://www.rebeccamurphey.com/jquery/updateWithJSON/jquery.updateWithJSON.js">updateWithJSON</a> is a jQuery plugin that updates elements on your page based on key/value pairs in a JSON object. Usage:</p>
+<p>{% codeblock lang:javascript %}
+$.updateWithJSON(jsonData)
+{% endcodeblock %}</p>
+<p><a href="http://www.rebeccamurphey.com/jquery/updateWithJSON/">Here&#39;s a demo</a>, and here&#39;s how it works:</p>
+<ul>
+<li>iterate over each property/value combination in the JSON object</li>
+<li>look for an element in the DOM that matches the property name
+<ul>
+<li>first, look for an element with a matching <code>id</code> attribute</li>
+<li>if no element with a matching ID is found, look for input, select or textarea elements with a matching <code>name</code> attribute</li>
+</ul>
+</li>
+<li>update the value, contents or selection of the matched element(s) based on the value in the JSON object</li>
+</ul>
+
+<p>NOTE: If you have multiple checkboxes with the same <code>name</code> attribute, or a select that allows multiple values, you&#39;ll need to pass the values of the selected items in an array:</p>
+<p>{% codeblock lang:javascript %}
+{
+  text_input: &#39;value1&#39;,
+  checkbox_group: [&#39;value1&#39;,&#39;value2&#39;,&#39;value3&#39;],
+  multi_select: [&#39;value4&#39;,&#39;value5&#39;,&#39;value6&#39;]
+}
+{% endcodeblock %}</p>
+<p>If you use a <code>name</code> attribute like &quot;input[]&quot; on a set of related checkboxes, remember that you&#39;ll need to quote it in the JSON object:</p>
+<p>{% codeblock lang:javascript %}
+{
+  &#39;input1[]&#39;: [&#39;value1&#39;,&#39;value2&#39;,&#39;value3&#39;]
+}
+{% endcodeblock %}</p>
+<p><h3>The back story</h3>
+For a recent project, I needed to update elements on a page based on some server-side calculations. JSON is a handy way to transport data from the server back to the browser, and jQuery&#39;s <code>getJSON()</code> method makes it painless. So, for example, I was getting back</p>
+<p>{% codeblock lang:javascript %}
+{ foo: &#39;bar&#39; }
+{% endcodeblock %}</p>
+<p>with which I needed to update an element corresponding to &quot;foo&quot; and give it the value &quot;bar&quot;. Simple enough; on the page I was dealing with, it was easy to put a unique ID on every element that would need to be updated, and I matched that ID with the property name in the JSON object. It was (almost) as simple as this:</p>
+<p>{% codeblock lang:javascript %}
+$.each(data,function(name,value) {
+  $(&#39;#&#39;+name).val(value);
+}
+{% endcodeblock %}</p>
+<p>It&#39;s not always the case, though, that you can easily put a unique ID on each element that will need updating; for example, <a href="http://us.php.net/manual/en/language.variables.external.php#77344">PHP rewards you</a> if you put the same <code>name</code> attribute on related checkboxes. Having checkboxes with the same name but different IDs can quickly get confusing when you&#39;re dealing with data on the client side and on the server side. The solution above worked in my particular case, but I wanted something that would work more broadly -- say, on pages that had related checkboxes -- and that&#39;s how I came up with the plugin.</p><p class="follow">Posted 2-Jan 2008.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2008/01/02/update-page-using-json-data/';
+var disqus_title = 'Update page using JSON data';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

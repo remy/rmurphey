@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Modern JavaScript</title><meta name="description" content="Modern JavaScript"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="My presentation the jQuery Divide (video here) has been making the rounds on the internet again, six months after I delivered it at JSConf.eu in Berlin, and this time around, a colleague on IRC shared a link with me that drew from it: Is JavaScript the New Perl?
+Perl has a special place in my heart; it&#39;s the first language I used to solve a real-world problem, and I still have the second edition Learning Perl that my good friend Marcus got for me at the time. These days I struggle for it not to look mostly like a lot of gibberish, but in the late 1990s it was funtimes.
+Anyway. The post that linked to my presentation asked if JavaScript might be going through some of the same pains that Perl has gone through, and linked to an eerily relevant presentation about Modern Perl, a movement &quot;actively seeks to both to teach how to write good code and change perceptions of Perl that still linger from the dot.com 90s.&quot; It talks about the void that Perl sought to fill way back in 1987, and then steps through the highs and lows of the intervening 23 years."><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Modern JavaScript"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-modern-javascript-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2011/04/25/objects-as-arguments" title="Objects as Arguments: Where do you draw the line?">Next</a></li><li class="prev"><a href="/blog/2011/04/04/a-dojo-boilerplate" title="A Dojo Boilerplate">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2011/04/15/modern-javascript" rel="bookmark" title="Permanent Link: Modern JavaScript">Modern JavaScript</a></h1><div class="post-content"><p>My presentation <a href="http://www.slideshare.net/rmurphey/the-jquery-divide-5287573">the jQuery Divide</a> (<a href="http://jsconf.eu/2010/speaker/the_jquery_divide_by_rebecca_m.html">video here</a>) has been <a href="http://news.ycombinator.com/item?id=2429411">making the rounds</a> on the internet again, six months after I delivered it at JSConf.eu in Berlin, and this time around, a colleague on IRC shared a link with me that drew from it: <a href="http://www.dagolden.com/index.php/1446/is-javascript-the-new-perl/">Is JavaScript the New Perl?</a></p>
+<p>Perl has a special place in my heart; it&#39;s the first language I used to solve a real-world problem, and I still have the second edition Learning Perl that my good friend Marcus got for me at the time. These days I struggle for it not to look mostly like a lot of gibberish, but in the late 1990s it was funtimes.</p>
+<p>Anyway. The post that linked to my presentation asked if JavaScript might be going through some of the same pains that Perl has gone through, and linked to an eerily relevant presentation about Modern Perl, a movement &quot;actively seeks to both to teach how to write good code and change perceptions of Perl that still linger from the dot.com 90s.&quot; It talks about the void that Perl sought to fill way back in 1987, and then steps through the highs and lows of the intervening 23 years.</p>
+<p>One thing that struck me, reading the slides, is that Perl -- like other open-source, server-side languages -- has the distinct benefit of being community-driven. While, yes, JavaScript has a wonderful and vibrant community, the language itself is held hostage by browser vendors, some of whom have shown a strong inclination to not give a fuck about owning up to and fixing their egregious mistakes. Using new features of a language like Perl is, at the end of the day, a largely internal problem -- given enough time and money, switching to a new version of the language that offers new features for code organization, testing, and abstraction is a thing a project can do. Indeed, Perl as a community can even make bold decisions like deciding that a new version simply won&#39;t be back-compat with a version that came before, throwing away ideas that turned out to be duds; meanwhile, JavaScript web developers often must bend over backwards to ensure back-compat with decade-old technology, and the only way to transition away from that technology is to give up on a set of users entirely.</p>
+<p>We&#39;ve already seen what this means for JavaScript as a language: it was years after JavaScript&#39;s debut before we really started seeing <a href="http://www.yuiblog.com/blog/2007/06/12/module-pattern/">conversations</a> about what a module should look like in JavaScript, and <a href="http://tagneto.blogspot.com/2011/04/on-inventing-js-module-formats-and.html">we&#39;re still fighting over it</a> today. Without a solid dependency management system -- something you can take for granted in any 15-year-old community-driven language -- dependency management often means sticking another script tag on the page, and even the most popular JavaScript library on the planet <a href="http://bugs.jquery.com/ticket/7102">struggles</a> with how to participate in a fledgling ecosystem. With no arbiter of common, tested, community-approved, community-vetted solutions -- see Perl&#39;s CPAN -- it&#39;s an environment that&#39;s ripe for fragmentation, and shining examples of <a href="http://en.wikipedia.org/wiki/Not_Invented_Here">Not Invented Here (NIH)</a> litter the JavaScript landscape. Lacking even an agreed-upon method of expressing dependencies, the <em>findability</em> of good solutions is low, and coalescence only occurs around tools with extremely low barriers to entry and extremely high near-term reward.</p>
+<p>When Marcus was teaching me Perl, back in the dot com heyday of the late 1990s and before the world temporarily went to hell for a few years, there was great emphasis on TIMTOWTDI: there is more than one way to do it. That mantra made Perl beautiful and elegant and powerful. Too often, it also made it ridiculously hard for the next developer to build upon and maintain, especially as the problems developers were solving got more complicated than copying and pasting some code to support a contact form (sound familiar?). In the end, that mantra meant Perl&#39;s reputation suffered, as the consequences of code written by developers with a whole lot of freedom and not so much skill became clear.</p>
+<p>This, in a nutshell, is what I was talking about in Berlin: that the reputation of this language we love stands to suffer if we don&#39;t get around to working together to solve these larger problems, and educating the wider world of JavaScript developers as we figure it out. Unlike with Perl, the language itself isn&#39;t going to evolve in time to help us here -- unless and until we&#39;re willing to give up on huge swaths of users, we will, generously, be <a href="http://infrequently.org/2010/09/but-ie-9-is-just-around-the-corner/">stuck with the browser technology of 2009</a> for a long time to come. Unlike the Modern Perl movement, <strong>the patterns and tools and practices that will form the foundation of Modern JavaScript are going to have to come from outside implementations of the language itself</strong>.</p>
+<p>Realizing that, it becomes clear just how imperative it is that we, as a community, figure out dependency management, modularization, and intentional interoperability so that these patterns, tools, and practices can start to emerge organically. James Burke, the creator of <a href="http://requirejs.org/">RequireJS</a>, is something of a hero to me, not for creating RequireJS, but for taking on the challenge of interacting calmly and level-headedly with all sorts of stakeholders to try to make <a href="http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition">AMD modules</a> a viable reality. Tool and library developers need to stop debating whether this is a good idea and get to work on making it happen.</p>
+<p>Tools and libraries also need to take seriously the need for modularization -- though I confess I have many misgivings about the NIH aspect of Dustin Diaz&#39;s <a href="https://github.com/ender-js/Ender">Ender.js</a>, and wish that the considerable effort involved had been directed toward an established project with similar features, I can&#39;t help but hope it will pressure libraries like jQuery to make more efforts in the direction of modularization.</p>
+<p>An equally important aspect of modularization is ensuring minimal duplication of effort. As a community, we need to agree on a core set of functionality that ought to be provided by the language but isn&#39;t, and implement that itself as an interchangeable module. A page with both Underscore.js and jQuery on it has tremendous duplication of functionality, for example. Interchangeability will allow end users to roll exactly the tool they need, no more and no less. Eventually, standard toolkits could emerge that draw on the best of all worlds, rather than one-size-fits-all tools that exist in isolation.</p>
+<p>While I agree with what Tom Dale wrote in his oddly controversial post -- that <a href="http://tomdale.net/2011/04/imagine-a-beowulf-cluster-of-javascript-frameworks/">&quot;unless it is designed to work well together, it usually won&rsquo;t&quot;</a> -- the more I think about it, the more I realize that the problem lies in our current inability to reliably isolate functionality and express dependencies across tools. It&#39;s not that large tools like Dojo are the One True Way -- it&#39;s that large tools like Dojo are incredibly powerful precisely because they take seriously the need for a lightweight core leveraged by components that deliver specific, isolated functionality. JavaScript as a whole will become more powerful by embracing the pattern.</p>
+<p>The political problems here are obvious and several: such modularization will, by definition, lead to winners and losers; the identities of libraries as we know them stand to be diluted if it becomes trivial to use only parts of them. The emphasis will shift to curated toolkits that assemble best-of-breed solutions, and NIH efforts will compete on merit, not marketing. At the same time, though, trying new things will no longer involve learning a whole new set of tools, and developers won&#39;t be as stuck with a solution that made sense once upon a time but not anymore.</p>
+<p>A final and important piece of the puzzle is actually educating people about the patterns that are enabled when we embrace these tools and practices. The wider community of everyday devs who are just trying to get their job done has hopefully graduated from copying and pasting scripts, but there&#39;s a long path ahead, and part of the work of Modern JavaScript needs to be clearing that path for them.</p>
+<p>I said it in my Berlin talk, and I will say it again: <em>sharing what we know is as important as making new things</em>, even if it&#39;s not always quite as fun. All the script loaders, build tools, inheritance systems, array utilities, templating frameworks, and data abstractions in the world are meaningless if we don&#39;t help people understand how and why to use them.</p><p class="follow">Posted 15-Apr 2011.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2011/04/15/modern-javascript/';
+var disqus_title = 'Modern JavaScript';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>

@@ -21,10 +21,9 @@ nav.main-nav.clearfix.subpanel
         //- The actual links
         ul.post-nav
           li.home: a(href="/") Home
-          li.search: a#search(href="#search") Search
           if next
-            li.next: a(href="/#{ moment(next.date).format('YYYY/MM/DD') }/#{ next.slug }" title="#{ next.title }") Next
+            li.next: a(href="/blog/#{ moment(next.date).format('YYYY/MM/DD') }/#{ next.slug }" title="#{ next.title }") Next
           else
             li Latest
           if prev
-            li.prev: a(href="/#{ moment(prev.date).format('YYYY/MM/DD') }/#{ prev.slug }" title="#{ prev.title }") Previous
+            li.prev: a(href="/blog/#{ moment(prev.date).format('YYYY/MM/DD') }/#{ prev.slug }" title="#{ prev.title }") Previous

@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Fix uneven line lengths in headlines</title><meta name="description" content="Fix uneven line lengths in headlines"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="I used to work in newspapers, and we were diligent about fixing &quot;bad breaks&quot; in headlines. Nothing looks worse than a headline that&#39;s far longer on one line than on another. Desktop publishing software has some intelligence about these bad breaks, but the web, not so much. A little jQuery can clean up the bad breaks, though -- for example, this will clean up all the h2s.
+{% codeblock lang:javascript %}
+$(&#39;h2&#39;).each(function() {
+  $h2 = $(this);
+  // get the height of the existing element
+  var height = $h2.height();"><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Fix uneven line lengths in headlines"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');</script></head><body id="blog-fix-uneven-line-lengths-in-headlines-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2008/01/18/i-have-discovered-a-use-for-dreamweaver-s-design-view-no-really" title="I have discovered a use for Dreamweaver's design view (no really)">Next</a></li><li class="prev"><a href="/blog/2008/01/10/solved-ajax-returns-bad-results-in-internet-explorer" title="Solved: AJAX returns bad results in Internet Explorer">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2008/01/13/fix-uneven-line-lengths-in-headlines" rel="bookmark" title="Permanent Link: Fix uneven line lengths in headlines">Fix uneven line lengths in headlines</a></h1><div class="post-content"><p>I used to work in newspapers, and we were diligent about fixing &quot;bad breaks&quot; in headlines. Nothing looks worse than a headline that&#39;s far longer on one line than on another. Desktop publishing software has some intelligence about these bad breaks, but the web, not so much. A little jQuery can clean up the bad breaks, though -- for example, this will clean up all the <code>h2</code>s.</p>
+<p>{% codeblock lang:javascript %}
+$(&#39;h2&#39;).each(function() {
+  $h2 = $(this);</p>
+<p>  // get the height of the existing element
+  var height = $h2.height();</p>
+<p>  // get the text of the existing element
+  var text = $h2.text();</p>
+<p>  // put temporary text in the element
+  // that will make the element one line tall
+  $h2.text(&#39;temp&#39;);</p>
+<p>  // get the height of the one-line element
+  var singleLineHeight = $h2.height();</p>
+<p>  // check to see if the initial element was
+  // taller than the one-line element;
+  // if so, look for the midpoint of the
+  // initial text and split it there
+  if (height &gt; singleLineHeight) {
+    var length = text.length;
+    var mid = parseInt(length/2);
+    for (i=mid; i&gt;0; i--) {
+      if (text[i] == &#39; &#39;) {
+        var breakIndex = i;
+        break;
+      }
+    }
+    var newText = &#39;&#39;;
+    for (i=0; i&#39;;
+      } else {
+        newText = newText + text[i];
+      }
+    }
+    $h2.html(newText);</p>
+<p>  } else {</p>
+<pre><code>// otherwise, put the initial text
+// back in the element and move on
+$h2.text(text);
+</code></pre><p>  }
+});
+{% endcodeblock %}</p>
+<p>So you end up changing this:</p>
+<p>{% codeblock %}
+This is a very long headline that goes on and then breaks
+badly
+{% endcodeblock %}</p>
+<p>to something like this:</p>
+<p>{% codeblock %}
+This is a very long headline that
+goes on and then breaks badly
+{% endcodeblock %}</p>
+<p>You&#39;ll want to change the <code>$(&#39;h2&#39;)</code> selector to exactly what you need; in the case of this blog, <code>$(&#39;div.post h2 a&#39;)</code> is actually more appropriate. You&#39;re going to be best off if matching elements contain only text, and no HTML.</p>
+<p>Also, this will only work for elements that are one or two lines long; for headlines of arbitrary length, you&#39;d need to see exactly how the height of the initial element compared to the height of the temporary one-line element, and then split the headline multiple times. Then again, thinking back to my newspaper days where we had to convey a whole story in four words, you might ask yourself whether you actually need a headline that&#39;s more than two lines long.</p><p class="follow">Posted 13-Jan 2008.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+var disqus_url = 'http://rmurphey.com/2008/01/13/fix-uneven-line-lengths-in-headlines/';
+var disqus_title = 'Fix uneven line lengths in headlines';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>
