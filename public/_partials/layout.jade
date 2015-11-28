@@ -65,6 +65,7 @@ html#rmurphey-com
       pre, code {
         font-family: "Source Code Pro", monospace;
         font-weight: 400;
+        font-size: 90%;
       }
 
       pre strong, code strong {
@@ -77,10 +78,39 @@ html#rmurphey-com
 
       h1.banner span {
         font-weight: 300;
+        text-transform: lowercase;
       }
-      
+
+      h1.banner a {
+        color: inherit;
+      }
+
       .search input[type=submit] {
         margin-left: 1em;
+      }
+
+      .post-content p.date {
+        font-style: italic;
+      }
+
+      .post-content span.edit {
+        font-size: 80%;
+        color: #ccc;
+      }
+
+      .post-content span.edit a {
+        color: inherit;
+      }
+
+      .archives ul {
+        list-style-type: none;
+        text-indent: 0;
+        padding: 0;
+      }
+
+      .archives li {
+        display: inline-block;
+        margin-right: 1em;
       }
 
     script.
@@ -91,17 +121,33 @@ html#rmurphey-com
 
       ga('create', '#{analytics}', 'auto');
       ga('send', 'pageview');
+      
   body(id="#{current.path.join('-')}-page")
 
-    h1.banner.title rmurphey&nbsp;
-      span adventures in javascript
-
+    h1.banner.title
+      a(href="/") rmurphey&nbsp;
+      span
+        a(href="/") Adventures in JavaScript
 
     != partial('_partials/page-nav')
 
     block content
 
     footer.site-footer.clearfix.flex.subpanel
+      .flex-item.projects
+        h2 Projects
+        ul
+          li: a(href="https://github.com/rmurphey/js-assessment") js-assessment
+          li: a(href="http://ttlpodcast.com/") TTL Podcast
+          li: a(href="http://yayquery.com/") yayQuery
+      .flex-item.links
+        h2 Links
+        ul
+          li: a(href="/about.html") About
+          li: a(href="/feed.xml") RSS feed
+          li: a(href="https://github.com/rmurphey") GitHub
+          li: a(href="https://twitter.com/rmurphey") Twitter
+          li: a(href="https://speakerdeck.com/rmurphey") Speaker Deck
       .flex-item.archives
         h2 Archives
         ul
@@ -109,13 +155,6 @@ html#rmurphey-com
           - var thisyear = moment().format('YYYY') * 1
           while thisyear >= 2007
             li: a(href="/#{ thisyear }") #{ thisyear-- }
-      .flex-item.links
-        h2 Links
-        ul
-          li: a(href="/about.html") About
-          li: a(target="_blank" href="/feed.xml") RSS feed
-          li: a(target="_blank" href="https://github.com/rmurphey") On GitHub
-          li: a(target="_blank" href="https://twitter.com/rmurphey") On Twitter
       .flex-item.license
         h2 License
         p.vcard Copyright © #{ moment().format('YYYY') } <a class="url fn" href="#{site_url}">Rebecca Murphey</a>.
