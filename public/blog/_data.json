@@ -767,8 +767,7 @@
   "chrome-http2-log-parser": {
     "title": "Chrome HTTP/2 Log Parser",
     "date": "2015-11-28 21:11:40",
-    "complete": false,
-    "inprogress": true,
+    "published": true,
     "tags": [
       ""
     ]
