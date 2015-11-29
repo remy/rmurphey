@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>A Baseline for Front-End [JS] Developers, 2015</title><meta name="description" content="A Baseline for Front-End [JS] Developers, 2015"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="It&#39;s been almost three years since I wrote A Baseline for Front-End Developers, probably my most popular post ever. Three years later, I still get Twitter mentions from people who are discovering it for the first time.
+In some ways, my words have aged well: there is, shockingly, nothing from that 2012 post that has me hanging my head in shame. Still, though: three years is a long time, and a whole lot has changed. In 2012 I encouraged people to learn browser dev tools and get on the module bandwagon; CSS pre-processors and client-side templating were still worthy of mention as new-ish things that people might not be sold on; and JSHint was a welcome relief from the #getoffmylawn admonitions -- accurate though they may have been -- of JSLint.
+It&#39;s 2015. I want to write an update, but as I sit down to do just that, I realize a couple of things. One, it&#39;s arguably not fair to call this stuff a &quot;baseline&quot; -- if you thought that about the original post, you&#39;ll find it doubly true for this one. One could argue we should consider the good-enough-to-get-a-job skills to be the &quot;baseline.&quot; But there are a whole lot of front-end jobs to choose from, and getting one doesn&#39;t establish much of a baseline. For me, I don&#39;t want to get a job; I want to get invited to great jobs. I don&#39;t want to go to work; I want to go to work with talented people. And I don&#39;t want to be satisfied with knowing enough to do the work that needed to be done yesterday; I want to know how to do the work that will need to get done tomorrow."><meta name="twitter:creator" content="@rmurphey"/><meta name="twitter:title" content="A Baseline for Front-End [JS] Developers, 2015"/><meta name="twitter:site" content="@rmurphey"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+  body {
+    margin: 5%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    margin: 5% 20%;
+    font-size: 120%;
+  }
+}
+
+img.main {
+  width: 100%;
+}
+
+body {
+  font-family: "Open Sans";
+  font-weight: 300;
+}
+
+p, li {
+  line-height: 1.8em;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:hover {
+  color: #fb6b70;
+}
+
+a:visited {
+  color: #9a3337;
+}
+
+a {
+  color: #d9272e;
+  text-decoration: none;
+}
+
+pre, code {
+  font-family: "Source Code Pro", monospace;
+  font-weight: 400;
+  font-size: 90%;
+}
+
+pre strong, code strong {
+  font-weight: 700;
+}
+
+h1.banner {
+  font-size: 220%;
+}
+
+h1.banner span {
+  font-weight: 300;
+  text-transform: lowercase;
+}
+
+h1.banner a {
+  color: inherit;
+}
+
+.search input[type=submit] {
+  margin-left: 1em;
+}
+
+.post-content p.date {
+  font-style: italic;
+}
+
+.post-content span.edit {
+  font-size: 80%;
+  color: #ccc;
+}
+
+.post-content span.edit a {
+  color: inherit;
+}
+
+.archives ul {
+  list-style-type: none;
+  text-indent: 0;
+  padding: 0;
+}
+
+.archives li {
+  display: inline-block;
+  margin-right: 1em;
+}
+</style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-143877-10', 'auto');
+ga('send', 'pageview');
+</script></head><body id="blog-a-baseline-for-front-end-developers-2015-page"><h1 class="banner title"><a href="/">rmurphey&nbsp;</a><span><a href="/">Adventures in JavaScript</a></span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2015/05/11/ttl-podcast" title="The TTL Podcast">Next</a></li><li class="prev"><a href="/blog/2015/01/26/writing-conference-proposals" title="Writing Conference Proposals">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2015/03/23/a-baseline-for-front-end-developers-2015" rel="bookmark" title="Permanent Link: A Baseline for Front-End [JS] Developers, 2015">A Baseline for Front-End [JS] Developers, 2015</a></h1><div class="post-content"><p class="date">23 Mar 2015 <span class="edit"> <a href="/2015/03/23/a-baseline-for-front-end-developers-2015/edit">edit</a></span></p><p>It&#39;s been almost three years since I wrote <a href="http://rmurphey.com/blog/2012/04/12/a-baseline-for-front-end-developers/">A Baseline for Front-End Developers</a>, probably my most popular post ever. Three years later, I still get Twitter mentions from people who are discovering it for the first time.</p>
+<p>In some ways, my words have aged well: there is, shockingly, nothing from that 2012 post that has me hanging my head in shame. Still, though: three years is a long time, and a whole lot has changed. In 2012 I encouraged people to learn browser dev tools and get on the module bandwagon; CSS pre-processors and client-side templating were still worthy of mention as new-ish things that people might not be sold on; and JSHint was a welcome relief from the #getoffmylawn admonitions -- accurate though they may have been -- of JSLint.</p>
+<p>It&#39;s 2015. I want to write an update, but as I sit down to do just that, I realize a couple of things. One, it&#39;s arguably not fair to call this stuff a &quot;baseline&quot; -- if you thought that about the original post, you&#39;ll find it doubly true for this one. One could argue we should consider the good-enough-to-get-a-job skills to be the &quot;baseline.&quot; But there are a whole lot of front-end jobs to choose from, and getting one doesn&#39;t establish much of a baseline. For me, I don&#39;t want to get a job; I want to get invited to great jobs. I don&#39;t want to go to work; I want to go to work with talented people. And I don&#39;t want to be satisfied with knowing enough to do the work that needed to be done yesterday; I want to know how to do the work that will need to get done tomorrow.</p>
+<p>Two, my world has become entirely JavaScript-centric: knowledge of the ins and outs of CSS has become less and less relevant to my day-to-day work, except where performance is concerned. I know there are plenty of very smart front-end developers for whom this isn&#39;t true, but I have also noticed a growing gulf between those who focus on CSS and those who focus on JavaScript. That&#39;s probably a subject for another blog post, but I bring it up just to say: I am woefully unequipped to make recommendations about what you should know about CSS these days, so I&#39;m not going to try.</p>
+<p>In short: if this list of things doesn&#39;t fit your vision of the front-end world, that&#39;s OK! We&#39;re both still good people. Promise.</p>
+<h2>JavaScript</h2><p>Remember back in 2009 when you read that HTML5 would be ready to use in 2014, and that seemed like a day that would never come? If so, you&#39;re well prepared for the slow-but-steady emergence of ES6 (which is now called <a href="https://esdiscuss.org/topic/javascript-2015">ES2015</a>, a name that is sure to catch on any day now), the next version of JavaScript. Getting my bearings with ES6 -- er, ES2015 -- is hands-down my biggest JavaScript to-do item at the moment; it is going to be somewhere between game-changing and life-altering, what with classes, real privacy, better functions and arguments, <code>import</code>-able modules, and so much more. Those who are competent and productive with the new syntax will have no trouble standing out in the JS community. Required reading:</p>
+<ul>
+<li><a href="https://leanpub.com/understandinges6/read/">Understanding ES6</a>, a work-in-progress book being developed in the open by Nicholas Zakas.</li>
+<li><a href="http://babeljs.io/">BabelJS</a>, a tool that lets you write ES6 today and &quot;compile&quot; it to ES5 that will run in current browsers. They also have a good <a href="http://babeljs.io/docs/learn-es6/">learning</a> section.</li>
+<li><a href="http://es6rocks.com/">ES6 Rocks</a>, with various posts that explore ES6 features, semantics, and gotchas.</li>
+</ul>
+<p>Do you need to be an ES6/ES2015 expert? Probably not today, but you should know at least as much about it as your peers, and possibly more. It&#39;s also worth at least entertaining the possibility of writing your next greenfield project using ES6; the future will be here before you know it.</p>
+<p>New language features aside, you should be able to speak fluently about the asynchronicity of JavaScript, and using callbacks and promises to manage it. You should have well-formed opinions about strategies for loading applications in the browser and communicating between pieces of an application. You should maybe have a favorite application development framework, but not at the expense of having a general understanding of how other frameworks operate, and the tradeoffs you accept when you choose one.</p>
+<h2>Modules &amp; Build Tools</h2><p>There&#39;s no debate that modules should be the building blocks of client-side web applications. Back in 2012, there was lots of debate about what <em>kind</em> of modules we should use for building apps destined for the browser -- <a href="https://github.com/amdjs/amdjs-api/blob/master/AMD.md">AMD</a> or <a href="http://webpack.github.io/docs/commonjs.html">CommonJS</a>. The somewhat-gross <a href="https://github.com/umdjs/umd">UMD</a> wrapper arose to try to avoid answering the question while still allowing code reuse -- because hey, what&#39;s a few more bytes between friends?</p>
+<p>I don&#39;t feel like this debate is anywhere near resolved, but this is the area where I feel like we&#39;ve seen the largest transformation since my 2012 article, though perhaps that&#39;s a reflection of my personal change of heart. I&#39;m not ready to say that I&#39;m done with AMD, but let&#39;s just say I&#39;m floored by how practical it has become to develop and deploy web applications using CommonJS, including modules imported with <code>npm</code>.</p>
+<p>With much love for all that <a href="http://requirejs.org/">RequireJS</a> has contributed to the module conversation, I&#39;m a bit enamored of <a href="http://webpack.github.io/">webpack</a> right now. Its features -- such as easy-to-understand build flags -- feel more accessible than RequireJS. Its hot-swap builds via its built-in dev server make for a fast and delightful development story. It doesn&#39;t force an AMD vs. CommonJS decision, because it supports both. It also comes with a ton of loaders, making it fairly trivial to do lots of common tasks. <a href="http://browserify.org/">Browserify</a> is worth knowing about, but lags far behind Webpack in my opinion. Smart people I trust tell me that <a href="https://github.com/systemjs/systemjs">systemjs</a> is also a serious contender in this space, but I haven&#39;t used it yet, and its docs leave me wanting. Its companion package manager <a href="http://jspm.io/">jspm</a> is intriguing, allowing you to pull in modules from multiple sources including npm, but I&#39;m a bit wary of combining those two concerns. Then again, I never thought I&#39;d break up with AMD, yet here I seem to be, so we&#39;ll see.</p>
+<p>I still long for a day when we stop having module and build tool debates, and there is a single module system and sharing code between arbitrary projects becomes realistic and trivial without the overhead of UMD. Ideally, the arrival of <a href="http://www.2ality.com/2014/09/es6-modules-final.html">ES6 modules</a> will bring that day -- and transpilers will fill in the gaps as the day draws closer -- but I find it just as likely that we&#39;ll keep finding ways to make it complicated.</p>
+<p>In the meantime, front-end developers need to have an opinion about at least a couple of build tools and the associated module system, and that opinion should be backed up by experience. For better or worse, JavaScript is still in a state where the module decision you make will inform the rest of your project.</p>
+<h2>Testing</h2><p>Testing of client-side code has become more commonplace, and a few new testing frameworks have arrived on the scene, including <a href="http://karma-runner.github.io/0.12/index.html">Karma</a> and <a href="https://theintern.github.io/">Intern</a>. I find Intern&#39;s promise-based approach to async testing to be particulary pleasing, though I confess that I still write most of my tests using <a href="http://mochajs.org/">Mocha</a> -- sometimes I&#39;m just a creature of habit.</p>
+<p>The main blocker to testing is the code that front-end devs tend to write. I gave a talk toward the end of 2012 about <a href="https://www.youtube.com/watch?v=OzjogCFO4Zo">writing testable JavaScript</a>, and followed up with an <a href="http://alistapart.com/article/writing-testable-javascript">article</a> on the topic a few months later.</p>
+<p>The second biggest blocker to testing remains the tooling. Webdriver is still a huge pain to work with. Continuous automated testing of a complex UI across all supported browsers continues to be either impossible, or so practically expensive that it might as well be impossible -- and never mind mobile. We&#39;re still largely stuck doing lightweight automated functional tests on a small subset of supported browser/device/OS combinations, and leaning as hard as we can on lower-level tests that can run quickly and inexpensively. This is a bummer.</p>
+<p>If you&#39;re interested in improving the problem of untested -- or untestable -- code, the single most valuable book you can read is <a href="http://www.amazon.com/Working-Effectively-Legacy-Michael-Feathers/dp/0131177052">Working Effectively with Legacy Code</a>. The author, Michael Feathers, defines &quot;legacy code&quot; as any code that does not have tests. On the topic of testing, the baseline is to accept the truth of that statement, even if other constraints are preventing you from addressing it.</p>
+<h2>Process Automation</h2><p>You, hopefully, take for granted the existence of <a href="http://gruntjs.com/">Grunt</a> for task automation. <a href="http://gulpjs.com/">Gulp</a> and <a href="http://broccolijs.com/">Broccoli</a> provide a different approach to automating builds in particular. I haven&#39;t used Broccoli, and I&#39;ve only dabbled in Gulp, but I&#39;ve definitely come to appreciate some of the limitations of Grunt when it comes to automating complex tasks that depend on other services -- especially when that task needs to run thousands of times a day.</p>
+<p>The arrival of <a href="http://yeoman.io/">Yeoman</a> was a mere 45 days away when I wrote my 2012 post. I confess I didn&#39;t use it when it first came out, but recently I&#39;ve been a) starting projects from scratch using unfamiliar tech; and b) trying to figure out how to standardize our approach to developing third-party JS apps at Bazaarvoice. Yeoman really shines in both of these cases. A simple <code>yo react-webpack</code> from the command line creates a whole new project for you, with all the bells and whistles you could possibly want -- tests, a dev server, a hello world app, and more. If React and Webpack aren&#39;t your thing, there&#39;s probably a generator to meet your needs, and it&#39;s also easy to create your own.</p>
+<p>Given that Yeoman is a tool that you generally use only at the start of a project, and given that new projects don&#39;t get started all the time, it&#39;s mostly just something worth knowing about. Unless, of course, you&#39;re also trying to standardize practices across projects -- then it might be a bit more valuable.</p>
+<p>Broccoli has gotten its biggest adoption as the basis for ember-cli, and  folks I trust suggest that pairing may get a makeover -- and a new name -- to form the basis of a Grunt/Yeoman replacement in the future. Development on both Grunt and Yeoman has certainly slowed down, so it will be interesting to see what the future brings there.</p>
+<h2>Code Quality</h2><p>If you, like me, start to twitch when you see code that violates a project&#39;s well-documented style guide, then tools like <a href="http://jscs.info/">JSCS</a> and <a href="http://eslint.org/">ESLint</a> are godsends, and neither of them existed for you to know about them back in 2012. They both provide a means to document your style guide rules, and then verify your code against those rules automatically, before it ever makes it into a pull request. Which brings me to &hellip;</p>
+<h2>Git</h2><p>I don&#39;t think a whole lot has changed in the world of Git workflows since 2012, and I&#39;d like to point out Github <em>still</em> hasn&#39;t made branch names linkable on the pull request page, for f@#$s sake.</p>
+<p>You should obviously be comfortable working with feature branches, rebasing your work on the work of others, squashing commits using interactive rebase, and doing work in small units that are unlikely to cause conflicts whenever possible. Another Git tool to add to your toolbox if you haven&#39;t already is the ability to run hooks -- specifically, pre-push and pre-commit hooks to run your tests and execute any code quality checks. You can write them yourself, but tools like <a href="https://www.npmjs.com/package/ghooks">ghooks</a> make it so trivial that there&#39;s little excuse not to integrate them into your workflow.</p>
+<h2>Client-Side Templating</h2><p>This may be the thing I got the most wrong in my original post, for some definition of &quot;wrong.&quot; Client-side templating is still highly valuable, of course -- so valuable that it will be built-in to ES2015 -- but there can be too much of a good thing. It&#39;s been a hard-earned lesson for lots of teams that moving all rendering to the browser has high costs when it comes to performance, and thus has the &quot;generate all the HTML client-side&quot; approach rightfully fallen out of favor. Smart projects are now generating HTML server-side -- maybe even pre-generating it, and storing it as static files that can be served quickly -- and then &quot;hydrating&quot; that HTML client-side, updating it with client-side templates as events warrant.</p>
+<p>The new expectation here -- and I say this to myself as much as to anyone else -- is that you are considering the performance implications of your decisions, and maybe not restricting yourself quite so thoroughly to the realm of the browser. Which, conveniently, leads to &hellip;</p>
+<h2>Node</h2><p>You say you know JavaScript, so these days I expect that you can hop on over to the Node side of things and at least pitch in, if not get at least knee-deep. Yes, there are file systems and streams and servers -- and some paradigms that are fundamentally different from front-end dev -- but front-end developers who keep the back end at arm&#39;s length are definitely limiting their potential.</p>
+<p>Even if your actual production back-end doesn&#39;t use Node, it&#39;s an invaluable tool when it comes to keeping you from getting blocked by back-end development. At the very least, you should be familiar with how to <a href="https://docs.npmjs.com/cli/init">initialize a Node project</a>; how to set up an <a href="http://expressjs.com/">Express</a> server and routes; and how use the <a href="https://www.npmjs.com/package/request">request</a> module to proxy requests.</p>
+<h2>The End</h2><p>Thanks to Paul, Alex, Adam, and Ralph for their thorough review of this post, and for generously pointing out places where I could do better. Thank them for the good parts, and blame any errors on me.</p>
+<p>With that, good luck. See you again in another three years, perhaps.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>(function() { 
+var d = document, s = d.createElement('script');
+
+s.src = '//rmurphey.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();</script></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item projects"><h2>Projects</h2><ul><li><a href="https://github.com/rmurphey/js-assessment">js-assessment</a></li><li><a href="http://ttlpodcast.com/">TTL Podcast</a></li><li><a href="http://yayquery.com/">yayQuery</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a href="/feed.xml">RSS feed</a></li><li><a href="https://github.com/rmurphey">GitHub</a></li><li><a href="https://twitter.com/rmurphey">Twitter</a></li><li><a href="https://speakerdeck.com/rmurphey">Speaker Deck</a></li></ul></div><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey/rmurphey">on GitHub</a>.</p>
+</div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
+|  
+|  Carved up by hand using Harp and a shit load of hacking ❤
+|  
+|  Also, this:
+|  
+|  
+|  
+|                        \_            /;              _.._
+|                        `\~--.._     //'            ,(+=\\\\
+|                         `//////\  \\/;'             /~ (\\\\
+|                           ~/////\~\`)'             /;   ))))
+|                               `~'  |              ((`~/((((\
+|                               ;'_\'\             /'))   )))))
+|                              /~/ '" "'     _.  /'/\_ /^\`((( \
+|                             `\/'       _.-~/--/ (  =(   | ,  |
+|                                     _/~\_)_}___/^\/~`\.__\|==|
+|                                    /uUUU)        )        |  |
+|                                   (   / |      _-=o|\__ /'/~ \
+|                                   ' /'  |     /(((((\`\(  |~\/
+|                                   /'    |   /' )))))"`\`\|/_/---.._,$$,
+|                             .,ssS$$$Sss|._/_..-((('    )\)>>>      ~\$
+|                          ,sS$$$$$$$$$$$|$$$$$$$  |/    //'~`o        `\
+|                        ,$$$$$$$$$$$$$$|$$S$$$$'  (    /                \
+|                      ,$$$$$$$$$$$$S$$|$$$$$$$'   |   /              ,s$$$
+|                    s$$$$$S$$$$$$$$$S|$$$$$$$$    |  /              $$$$$$
+|                  _~,$S""''     ``"S|$$S$$$$$"    (_,`\,          ,$$$$$$$;
+|                /~ ,"'             / 'S$$$$$"      \_./|        s$$$$$$$$$$
+|             (~'      _,  \==~~)  /     """         \  |       $$$$$$$$$$$$
+|              (0\   /0/     \-' /'                   \ |  |  ,$$$$$$$$$$$$$,
+|              `/'  '         _-~                     |= \_-\ $$$$$$$$$$$$$$s
+|              (~~~)      _.-~_-   \             \  ,s|= |   `"$$$$$$$$$$$$$$$
+|             ( `-'  )/>-~  _/-__   |            |,$$$|_/,      `"$$$$$$$$$$$$
+|             /V^^^^V~/' _/~/~~  ~~-|            |$$$$$$$$         "$$$$$$$$$$,
+|            /  (^^^^),/' /'        )           /S$$$$$$$;         ,$$$$$$$$$$$,
+|          ,$$_  `~~~'.,/'         /     _-ss, /(/-(/-(/'        ,s$$$$$$$$$$$$$
+|        ,s$$$$$ssSS$$$'         ,$'.s$$$$$$$$'                  (/-(/-(/-(/-(/'
+|       S$$$$$$$$$$$$$$        ,$$$$$$$$$$$$$'
+|      (/-(/-(/-(/-(/'      _s$$$$$$$$$$$$$$
+|                          (/-(/-(/-(/-(/-'
+|  
+|  
+|  
+|      – Remy
+|  
+|  --></footer><!-- Env: production - static files--></body></html>
