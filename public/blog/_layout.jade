@@ -44,13 +44,16 @@ block content
         - if (yield) yield = yield.replace(/<h1>.*?<\/h1>/, '');
         != yield
 
-      if environment == "production"
+      if environment == 'production'
         .comments
           h2 Comments
           #disqus_thread
           script.
-            var disqus_shortname = 'rmurphey';
-            var disqus_url = 'http://rmurphey.com#{permalink}/';
-            var disqus_title = '#{safeTitle}';
-          noscript Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-          a.dsq-brlink(href="http://disqus.com") comments powered by <span class="logo-disqus">Disqus</span></a>
+            (function() { 
+            var d = document, s = d.createElement('script');
+
+            s.src = '//rmurphey.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+            })();
