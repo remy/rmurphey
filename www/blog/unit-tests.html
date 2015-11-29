@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Writing Unit Tests for Existing JavaScript</title><meta name="description" content="Writing Unit Tests for Existing JavaScript"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="My team at Bazaarvoice has been spending a lot of time lately thinking about quality and how we can have greater confidence that our software is working as it should.
 We&#39;ve long had functional tests in place that attempt to ask questions like &quot;When a user clicks a button, will The Widget do The Thing?&quot; These tests tell us a fair amount about the state of our product, but we&#39;ve found that they&#39;re brittle -- even after we abstracted away the CSS selectors that they rely on -- and that they take approximately forever to run, especially if we want to run them in all of the browsers we support. The quality of the tests themselves is all over the map, too -- some of them are in fact unit tests, not really testing anything functional at all.
-A few months ago we welcomed a new QA lead to our team as part of our renewed focus on quality. Having a team member who is taking a thoughtful, systematic approach to quality is a game-changer -- he&#39;s not just making sure that new features work, but rather has scrutinized our entire approach to delivering quality software, to great effect."><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Writing Unit Tests for Existing JavaScript"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+A few months ago we welcomed a new QA lead to our team as part of our renewed focus on quality. Having a team member who is taking a thoughtful, systematic approach to quality is a game-changer -- he&#39;s not just making sure that new features work, but rather has scrutinized our entire approach to delivering quality software, to great effect."><meta name="twitter:creator" content="@rmurphey"/><meta name="twitter:title" content="Writing Unit Tests for Existing JavaScript"/><meta name="twitter:site" content="@rmurphey"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
   body {
     margin: 5%;
   }
@@ -11,6 +11,10 @@ A few months ago we welcomed a new QA lead to our team as part of our renewed fo
     margin: 5% 20%;
     font-size: 120%;
   }
+}
+
+img.main {
+  width: 100%;
 }
 
 body {
@@ -46,6 +50,7 @@ a {
 pre, code {
   font-family: "Source Code Pro", monospace;
   font-weight: 400;
+  font-size: 90%;
 }
 
 pre strong, code strong {
@@ -58,10 +63,39 @@ h1.banner {
 
 h1.banner span {
   font-weight: 300;
+  text-transform: lowercase;
+}
+
+h1.banner a {
+  color: inherit;
 }
 
 .search input[type=submit] {
   margin-left: 1em;
+}
+
+.post-content p.date {
+  font-style: italic;
+}
+
+.post-content span.edit {
+  font-size: 80%;
+  color: #ccc;
+}
+
+.post-content span.edit a {
+  color: inherit;
+}
+
+.archives ul {
+  list-style-type: none;
+  text-indent: 0;
+  padding: 0;
+}
+
+.archives li {
+  display: inline-block;
+  margin-right: 1em;
 }
 </style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -69,7 +103,8 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-143877-10', 'auto');
-ga('send', 'pageview');</script></head><body id="blog-unit-tests-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2014/11/01/flying-lessons" title="Flying Lessons">Next</a></li><li class="prev"><a href="/blog/2012/12/10/js-conditionals" title="Two Things about Conditionals in JavaScript">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2014/07/13/unit-tests" rel="bookmark" title="Permanent Link: Writing Unit Tests for Existing JavaScript">Writing Unit Tests for Existing JavaScript</a></h1><div class="post-content"><p>My team at <a href="http://www.bazaarvoice.com/careers/">Bazaarvoice</a> has been spending a lot of time lately thinking about quality and how we can have greater confidence that our software is working as it should.</p>
+ga('send', 'pageview');
+</script></head><body id="blog-unit-tests-page"><h1 class="banner title"><a href="/">rmurphey&nbsp;</a><span><a href="/">Adventures in JavaScript</a></span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2014/11/01/flying-lessons" title="Flying Lessons">Next</a></li><li class="prev"><a href="/blog/2012/12/10/js-conditionals" title="Two Things about Conditionals in JavaScript">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2014/07/13/unit-tests" rel="bookmark" title="Permanent Link: Writing Unit Tests for Existing JavaScript">Writing Unit Tests for Existing JavaScript</a></h1><div class="post-content"><p class="date">13 Jul 2014 <span class="edit"> <a href="/2014/07/13/unit-tests/edit">edit</a></span></p><p>My team at <a href="http://www.bazaarvoice.com/careers/">Bazaarvoice</a> has been spending a lot of time lately thinking about quality and how we can have greater confidence that our software is working as it should.</p>
 <p>We&#39;ve long had functional tests in place that attempt to ask questions like &quot;When a user clicks a button, will The Widget do The Thing?&quot; These tests tell us a fair amount about the state of our product, but we&#39;ve found that they&#39;re brittle -- even after we abstracted away the CSS selectors that they rely on -- and that they take approximately forever to run, especially if we want to run them in all of the browsers we support. The quality of the tests themselves is all over the map, too -- some of them are in fact unit tests, not really testing anything <em>functional</em> at all.</p>
 <p>A few months ago we welcomed a new QA lead to our team as part of our renewed focus on quality. Having a team member who is taking a thoughtful, systematic approach to quality is a game-changer -- he&#39;s not just making sure that new features work, but rather has scrutinized our entire approach to delivering quality software, to great effect.</p>
 <p>One of the things he has repeatedly emphasized is the need to push our tests down the stack. Our functional tests should be black-box -- writing them shouldn&#39;t require detailed knowledge of how the software works under the hood. Our unit tests, on the other hand, should provide broad and detailed coverage of the actual code base. In an ideal world, functional tests can be few and slow-ish, because they serve as an infrequent smoke test of the application; unit tests should be thorough, but execute quickly enough that we run them all the time.</p>
@@ -381,9 +416,9 @@ define([
 <li><a href="http://stackoverflow.com/questions/3476054/can-unit-testing-be-successfully-added-into-an-existing-production-project-if-s">On adding unit tests to existing code</a></li>
 <li><a href="http://programmers.stackexchange.com/questions/207401/writing-tests-for-existing-code">On whether it&#39;s worth the effort</a></li>
 <li><a href="http://www.amazon.com/gp/product/0131177052">Working Effectively with Legacy Code</a></li>
-</ul><p class="follow">Posted 13-Jul 2014.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+</ul></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
 var disqus_url = 'http://rmurphey.com/2014/07/13/unit-tests/';
-var disqus_title = 'Writing Unit Tests for Existing JavaScript';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+var disqus_title = 'Writing Unit Tests for Existing JavaScript';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item projects"><h2>Projects</h2><ul><li><a href="https://github.com/rmurphey/js-assessment">js-assessment</a></li><li><a href="http://ttlpodcast.com/">TTL Podcast</a></li><li><a href="http://yayquery.com/">yayQuery</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a href="/feed.xml">RSS feed</a></li><li><a href="https://github.com/rmurphey">GitHub</a></li><li><a href="https://twitter.com/rmurphey">Twitter</a></li><li><a href="https://speakerdeck.com/rmurphey">Speaker Deck</a></li></ul></div><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey/rmurphey">on GitHub</a>.</p>
 </div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
 |  
 |  Carved up by hand using Harp and a shit load of hacking ❤

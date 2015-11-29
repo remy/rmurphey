@@ -7,7 +7,7 @@ Full HTML version of jQuery Fundamentals book
 GitHub repo (exercises, solutions, and book source code)
 
 
-"><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Announcing jQuery Fundamentals: An Open-Source jQuery Training Curriculum"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:image:src" content="http://getfile2.posterous.com/getfile/files.posterous.com/import-vejw/bxqpHqGhgCJJadEpIijidbehCvswlGiiGvHwyiJGejyjvxwnEDdopGoHuswe/media_httpgyazocoma21_qFIfz.png.scaled500.png"/><meta name="twitter:card" content="summary_large_image"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+"><meta name="twitter:creator" content="@rmurphey"/><meta name="twitter:title" content="Announcing jQuery Fundamentals: An Open-Source jQuery Training Curriculum"/><meta name="twitter:site" content="@rmurphey"/><meta name="twitter:image:src" content="http://getfile2.posterous.com/getfile/files.posterous.com/import-vejw/bxqpHqGhgCJJadEpIijidbehCvswlGiiGvHwyiJGejyjvxwnEDdopGoHuswe/media_httpgyazocoma21_qFIfz.png.scaled500.png"/><meta name="twitter:card" content="summary_large_image"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
   body {
     margin: 5%;
   }
@@ -18,6 +18,10 @@ GitHub repo (exercises, solutions, and book source code)
     margin: 5% 20%;
     font-size: 120%;
   }
+}
+
+img.main {
+  width: 100%;
 }
 
 body {
@@ -53,6 +57,7 @@ a {
 pre, code {
   font-family: "Source Code Pro", monospace;
   font-weight: 400;
+  font-size: 90%;
 }
 
 pre strong, code strong {
@@ -65,10 +70,39 @@ h1.banner {
 
 h1.banner span {
   font-weight: 300;
+  text-transform: lowercase;
+}
+
+h1.banner a {
+  color: inherit;
 }
 
 .search input[type=submit] {
   margin-left: 1em;
+}
+
+.post-content p.date {
+  font-style: italic;
+}
+
+.post-content span.edit {
+  font-size: 80%;
+  color: #ccc;
+}
+
+.post-content span.edit a {
+  color: inherit;
+}
+
+.archives ul {
+  list-style-type: none;
+  text-indent: 0;
+  padding: 0;
+}
+
+.archives li {
+  display: inline-block;
+  margin-right: 1em;
 }
 </style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -76,7 +110,8 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-143877-10', 'auto');
-ga('send', 'pageview');</script></head><body id="blog-announcing-jquery-fundamentals-an-open-source-jquery-training-curriculum-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2010/07/12/patterns-for-dry-er-javascript" title="Patterns for DRY-er JavaScript">Next</a></li><li class="prev"><a href="/blog/2010/04/03/lessons-learned-from-taking-on-a-project-in-crisis" title="Lessons Learned from Taking On a Project in Crisis ">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2010/06/17/announcing-jquery-fundamentals-an-open-source-jquery-training-curriculum" rel="bookmark" title="Permanent Link: Announcing jQuery Fundamentals: An Open-Source jQuery Training Curriculum">Announcing jQuery Fundamentals: An Open-Source jQuery Training Curriculum</a></h1><div class="post-content"><p>I&#39;ve been leading <a href="http://www.rebeccamurphey.com/training">jQuery trainings</a> for more than a year now, from tiny gatherings that I organized myself at the local coworking space, to intensive two-day sessions at local web companies, to whirlwind one-day classes at governmental agencies. Over the course of those trainings, I&#39;ve developed what I&#39;d like to think is a decent curriculum -- training material that&#39;s the size of a small book, exercises that demonstrate core concepts, and solutions to those exercises that students can peek at later or when they get stuck.</p>
+ga('send', 'pageview');
+</script></head><body id="blog-announcing-jquery-fundamentals-an-open-source-jquery-training-curriculum-page"><h1 class="banner title"><a href="/">rmurphey&nbsp;</a><span><a href="/">Adventures in JavaScript</a></span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2010/07/12/patterns-for-dry-er-javascript" title="Patterns for DRY-er JavaScript">Next</a></li><li class="prev"><a href="/blog/2010/04/03/lessons-learned-from-taking-on-a-project-in-crisis" title="Lessons Learned from Taking On a Project in Crisis ">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2010/06/17/announcing-jquery-fundamentals-an-open-source-jquery-training-curriculum" rel="bookmark" title="Permanent Link: Announcing jQuery Fundamentals: An Open-Source jQuery Training Curriculum">Announcing jQuery Fundamentals: An Open-Source jQuery Training Curriculum</a></h1><div class="post-content"><p class="date">17 Jun 2010 <span class="edit"> <a href="/2010/06/17/announcing-jquery-fundamentals-an-open-source-jquery-training-curriculum/edit">edit</a></span></p><p>I&#39;ve been leading <a href="http://www.rebeccamurphey.com/training">jQuery trainings</a> for more than a year now, from tiny gatherings that I organized myself at the local coworking space, to intensive two-day sessions at local web companies, to whirlwind one-day classes at governmental agencies. Over the course of those trainings, I&#39;ve developed what I&#39;d like to think is a decent curriculum -- training material that&#39;s the size of a small book, exercises that demonstrate core concepts, and solutions to those exercises that students can peek at later or when they get stuck.</p>
 <p>I decided recently that it was time for all of this material to see the light of day, so I spent the last several days converting it all to DocBook files that allow for easy publication to HTML and PDF (and other formats, if I&#39;m later so inclined). I also fleshed out some topics that I&#39;d given short shrift, and started planning sections covering advanced topics such as plugin authoring, code organization, best practices, and more. There&#39;s more to come in the next few days, but I think what I&#39;ve done so far is worth sharing. I hope you&#39;ll agree.</p>
 <ul>
 <li><a href="http://rebeccamurphey.com/jqfundamentals/">Full HTML version of jQuery Fundamentals book</a></li>
@@ -94,9 +129,9 @@ ga('send', 'pageview');</script></head><body id="blog-announcing-jquery-fundamen
 <p>My goals in releasing this are several. First and foremost, I want to see people writing better jQuery. The free resources for learning jQuery are scattered across the internets, and my personal experience of learning the library was haphazard — it was a long time before I learned some things I wish I&#39;d known from the get-go. In addition, I want people who are writing jQuery to understand JavaScript. To that end, the book begins with a survey of JavaScript itself before jumping into jQuery.  Finally, I want to enlist the bright minds of the jQuery community to help developing a robust, authoritative, in-depth jQuery curriculum, and in exchange it only seemed fair to make it available to everyone.</p>
 <p>I should mention that the goal of this material is to serve as a companion to a human instructor. That said, individuals may find it useful for self-study, especially if they&#39;re diligent about doing the exercises at the end of each chapter.</p>
 <p>If you&#39;re inclined to help -- by adding a chapter, a section, a paragraph, an exercise, or even just a correction -- fork the repo and send me a pull request. I look forward to seeing how this project might evolve with the community&#39;s help.</p>
-<p><strong>Note</strong>: If you comment on this post pointing out an issue with the material, I will do my best to tend to the issue, but I probably won&#39;t publish your comment, as this post isn&#39;t the right place for reporting issues in the code. You can <a href="http://github.com/rmurphey/jqfundamentals/issues">report issues at the repository</a>, but if it&#39;s important to you, <em>please</em> fork the repository, make the change, and send me a pull request.</p><p class="follow">Posted 17-Jun 2010.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+<p><strong>Note</strong>: If you comment on this post pointing out an issue with the material, I will do my best to tend to the issue, but I probably won&#39;t publish your comment, as this post isn&#39;t the right place for reporting issues in the code. You can <a href="http://github.com/rmurphey/jqfundamentals/issues">report issues at the repository</a>, but if it&#39;s important to you, <em>please</em> fork the repository, make the change, and send me a pull request.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
 var disqus_url = 'http://rmurphey.com/2010/06/17/announcing-jquery-fundamentals-an-open-source-jquery-training-curriculum/';
-var disqus_title = 'Announcing jQuery Fundamentals: An Open-Source jQuery Training Curriculum';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+var disqus_title = 'Announcing jQuery Fundamentals: An Open-Source jQuery Training Curriculum';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item projects"><h2>Projects</h2><ul><li><a href="https://github.com/rmurphey/js-assessment">js-assessment</a></li><li><a href="http://ttlpodcast.com/">TTL Podcast</a></li><li><a href="http://yayquery.com/">yayQuery</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a href="/feed.xml">RSS feed</a></li><li><a href="https://github.com/rmurphey">GitHub</a></li><li><a href="https://twitter.com/rmurphey">Twitter</a></li><li><a href="https://speakerdeck.com/rmurphey">Speaker Deck</a></li></ul></div><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey/rmurphey">on GitHub</a>.</p>
 </div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
 |  
 |  Carved up by hand using Harp and a shit load of hacking ❤

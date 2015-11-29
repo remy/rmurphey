@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Using ems for font sizing in css</title><meta name="description" content="Using ems for font sizing in css"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="A List Apart had a great article recently on using &#39;em&#39; for CSS font-size declarations, which served as great back-up for some conversations I&#39;d been having among coworkers. (It turns out that people who didn&#39;t have a former life in print don&#39;t necessarily understand what an em is: a self-referential unit of font size measurement, equal to the height of the capital letter M. Back in the typesetting days, it was a unit for measuring space, especially horizontal space, in the form of an &quot;em dash&quot; (rendered now as &amp;mdash;) or an &quot;em space.&quot; There was also a sister unit, the &quot;en.&quot;)
 Anyway: I just came across this post, by someone trying to put ems into practice; at the end, he gets into tools for doing conversions from pixels to ems, and it struck a surprising nerve with me.
-Here&#39;s the thing: While I can see how pixel conversion seems useful when you first make the switch from px to em, I think the whole point of using ems instead of pixels is to embrace the concept that, on the web, sizes are relative, not absolute. If you&#39;re focused on matching an absolute size in a mockup by converting pixels to ems, the chances seem good that you&#39;re dealing with a layout that wasn&#39;t intended to work with relatively sized text to begin with, and/or that your ultimate product won&#39;t work if the user makes a different decision than you about how they will consume it."><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Using ems for font sizing in css"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+Here&#39;s the thing: While I can see how pixel conversion seems useful when you first make the switch from px to em, I think the whole point of using ems instead of pixels is to embrace the concept that, on the web, sizes are relative, not absolute. If you&#39;re focused on matching an absolute size in a mockup by converting pixels to ems, the chances seem good that you&#39;re dealing with a layout that wasn&#39;t intended to work with relatively sized text to begin with, and/or that your ultimate product won&#39;t work if the user makes a different decision than you about how they will consume it."><meta name="twitter:creator" content="@rmurphey"/><meta name="twitter:title" content="Using ems for font sizing in css"/><meta name="twitter:site" content="@rmurphey"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
   body {
     margin: 5%;
   }
@@ -11,6 +11,10 @@ Here&#39;s the thing: While I can see how pixel conversion seems useful when you
     margin: 5% 20%;
     font-size: 120%;
   }
+}
+
+img.main {
+  width: 100%;
 }
 
 body {
@@ -46,6 +50,7 @@ a {
 pre, code {
   font-family: "Source Code Pro", monospace;
   font-weight: 400;
+  font-size: 90%;
 }
 
 pre strong, code strong {
@@ -58,10 +63,39 @@ h1.banner {
 
 h1.banner span {
   font-weight: 300;
+  text-transform: lowercase;
+}
+
+h1.banner a {
+  color: inherit;
 }
 
 .search input[type=submit] {
   margin-left: 1em;
+}
+
+.post-content p.date {
+  font-style: italic;
+}
+
+.post-content span.edit {
+  font-size: 80%;
+  color: #ccc;
+}
+
+.post-content span.edit a {
+  color: inherit;
+}
+
+.archives ul {
+  list-style-type: none;
+  text-indent: 0;
+  padding: 0;
+}
+
+.archives li {
+  display: inline-block;
+  margin-right: 1em;
 }
 </style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -69,7 +103,8 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-143877-10', 'auto');
-ga('send', 'pageview');</script></head><body id="blog-using-ems-for-font-sizing-in-css-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2007/12/10/insert-jquery-into-any-page-using-a-bookmarklet" title="Insert jQuery into any page using a bookmarklet">Next</a></li><li class="prev"><a href="/blog/2007/12/09/for-only-25-more-this-gift-card-comes-in-green" title="For only $25 more, this gift card comes in green">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2007/12/09/using-ems-for-font-sizing-in-css" rel="bookmark" title="Permanent Link: Using ems for font sizing in css">Using ems for font sizing in css</a></h1><div class="post-content"><p>A List Apart had a great article recently on <a href="http://www.alistapart.com/articles/howtosizetextincss/">using &#39;em&#39; for CSS font-size declarations</a>, which served as great back-up for some conversations I&#39;d been having among coworkers. (It turns out that people who didn&#39;t have a former life in print don&#39;t necessarily understand what an em is: a self-referential unit of font size measurement, equal to the height of the capital letter M. Back in the typesetting days, it was a unit for measuring space, especially horizontal space, in the form of an &quot;em dash&quot; (rendered now as <code>&amp;mdash;</code>) or an &quot;em space.&quot; There was also a sister unit, the &quot;en.&quot;)</p>
+ga('send', 'pageview');
+</script></head><body id="blog-using-ems-for-font-sizing-in-css-page"><h1 class="banner title"><a href="/">rmurphey&nbsp;</a><span><a href="/">Adventures in JavaScript</a></span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2007/12/10/insert-jquery-into-any-page-using-a-bookmarklet" title="Insert jQuery into any page using a bookmarklet">Next</a></li><li class="prev"><a href="/blog/2007/12/09/for-only-25-more-this-gift-card-comes-in-green" title="For only $25 more, this gift card comes in green">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2007/12/09/using-ems-for-font-sizing-in-css" rel="bookmark" title="Permanent Link: Using ems for font sizing in css">Using ems for font sizing in css</a></h1><div class="post-content"><p class="date">9 Dec 2007 <span class="edit"> <a href="/2007/12/09/using-ems-for-font-sizing-in-css/edit">edit</a></span></p><p>A List Apart had a great article recently on <a href="http://www.alistapart.com/articles/howtosizetextincss/">using &#39;em&#39; for CSS font-size declarations</a>, which served as great back-up for some conversations I&#39;d been having among coworkers. (It turns out that people who didn&#39;t have a former life in print don&#39;t necessarily understand what an em is: a self-referential unit of font size measurement, equal to the height of the capital letter M. Back in the typesetting days, it was a unit for measuring space, especially horizontal space, in the form of an &quot;em dash&quot; (rendered now as <code>&amp;mdash;</code>) or an &quot;em space.&quot; There was also a sister unit, the &quot;en.&quot;)</p>
 <p>Anyway: I just came across <a href="http://benjaminsterling.com/using-em-for-font-size-learning-on-the-go/">this post</a>, by someone trying to put ems into practice; at the end, he gets into tools for doing conversions from pixels to ems, and it struck a surprising nerve with me.</p>
 <p>Here&#39;s the thing: While I can see how pixel conversion seems useful when you first make the switch from px to em, I think the whole point of using ems instead of pixels is to embrace the concept that, on the web, sizes are relative, not absolute. If you&#39;re focused on matching an absolute size in a mockup by converting pixels to ems, the chances seem good that you&#39;re dealing with a layout that wasn&#39;t intended to work with relatively sized text to begin with, and/or that your ultimate product won&#39;t work if the user makes a different decision than you about how they will consume it.</p>
 <p>If you receive a Photoshop mockup where body copy is 10px tall, I think it&#39;s a tremendous waste of time to measure that 10px and convert it to ems -- 10px on my 1024x768 monitor is a far cry from 10px on my 1600x1200 monitor, nevermind on the HDTV sitting across the room.</p>
@@ -80,9 +115,9 @@ ga('send', 'pageview');</script></head><body id="blog-using-ems-for-font-sizing-
 <li>Assume that the user knows better than you what a good base text size is for them.</li>
 <li>Use a reset styleheet — I like <a href="http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/">Eric Meyer&#39;s CSS Reset Reloaded</a> — to set everything to that base size.</li>
 <li>Vary the sizes of elements <em>relatively</em> using ems.</li>
-</ul><p class="follow">Posted 9-Dec 2007.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+</ul></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
 var disqus_url = 'http://rmurphey.com/2007/12/09/using-ems-for-font-sizing-in-css/';
-var disqus_title = 'Using ems for font sizing in css';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+var disqus_title = 'Using ems for font sizing in css';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item projects"><h2>Projects</h2><ul><li><a href="https://github.com/rmurphey/js-assessment">js-assessment</a></li><li><a href="http://ttlpodcast.com/">TTL Podcast</a></li><li><a href="http://yayquery.com/">yayQuery</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a href="/feed.xml">RSS feed</a></li><li><a href="https://github.com/rmurphey">GitHub</a></li><li><a href="https://twitter.com/rmurphey">Twitter</a></li><li><a href="https://speakerdeck.com/rmurphey">Speaker Deck</a></li></ul></div><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey/rmurphey">on GitHub</a>.</p>
 </div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
 |  
 |  Carved up by hand using Harp and a shit load of hacking ❤

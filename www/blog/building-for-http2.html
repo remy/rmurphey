@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "Uncompressed source: https://github.com/rmurphey"><html id="rmurphey-com"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Building for HTTP/2</title><meta name="description" content="Building for HTTP/2"/><meta name="HandheldFriendly" content="True"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="twitter:description" content="Earlier this year, I got the chance to speak with Google&#39;s Ilya Grigorik about HTTP/2 for the 1.10 episode of the TTL Podcast. It was a great primer for me on how HTTP/2 works and what it means for how we build the web, but it wasn&#39;t until more recently that I started to think about what it means for how we build the web — that is, how we generate and deploy the HTML, CSS, and JS that power web applications.
 If you&#39;re not familiar with HTTP/2, the basics are simultaneously simple and mind-boggling. Whereas its predecessors allowed each connection to a server to serve only one request at a time, HTTP/2 allows a connection to serve multiple requests simultaneously. A connection can also be used for a server to push a resource to a client — a protocol-level replacement for the technique we currently call “inlining.”
-This is everything-you-thought-you-knew-is-wrong kind of stuff. In an HTTP/2 world, there are few benefits to concatenating a bunch of JS files together, and in many cases the practice will be actively harmful. Domain sharding becomes an anti-pattern. Throwing a bunch of &lt;script&gt; tags in your HTML is suddenly not a laughably terrible idea. Inlining of resources is a thing of the past. Browser caching — and cache busting — can occur on a per-module basis."><meta name="twitter:creator" content="@rem"/><meta name="twitter:title" content="Building for HTTP/2"/><meta name="twitter:site" content="@rem"/><meta name="twitter:domain" content="Remy's b:log"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
+This is everything-you-thought-you-knew-is-wrong kind of stuff. In an HTTP/2 world, there are few benefits to concatenating a bunch of JS files together, and in many cases the practice will be actively harmful. Domain sharding becomes an anti-pattern. Throwing a bunch of &lt;script&gt; tags in your HTML is suddenly not a laughably terrible idea. Inlining of resources is a thing of the past. Browser caching — and cache busting — can occur on a per-module basis."><meta name="twitter:creator" content="@rmurphey"/><meta name="twitter:title" content="Building for HTTP/2"/><meta name="twitter:site" content="@rmurphey"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/favicon.ico"/><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,300,800|Source+Code+Pro:400,700,300" rel="stylesheet" type="text/css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css"/><style>@media (max-width: 800px) {
   body {
     margin: 5%;
   }
@@ -11,6 +11,10 @@ This is everything-you-thought-you-knew-is-wrong kind of stuff. In an HTTP/2 wor
     margin: 5% 20%;
     font-size: 120%;
   }
+}
+
+img.main {
+  width: 100%;
 }
 
 body {
@@ -46,6 +50,7 @@ a {
 pre, code {
   font-family: "Source Code Pro", monospace;
   font-weight: 400;
+  font-size: 90%;
 }
 
 pre strong, code strong {
@@ -58,10 +63,39 @@ h1.banner {
 
 h1.banner span {
   font-weight: 300;
+  text-transform: lowercase;
+}
+
+h1.banner a {
+  color: inherit;
 }
 
 .search input[type=submit] {
   margin-left: 1em;
+}
+
+.post-content p.date {
+  font-style: italic;
+}
+
+.post-content span.edit {
+  font-size: 80%;
+  color: #ccc;
+}
+
+.post-content span.edit a {
+  color: inherit;
+}
+
+.archives ul {
+  list-style-type: none;
+  text-indent: 0;
+  padding: 0;
+}
+
+.archives li {
+  display: inline-block;
+  margin-right: 1em;
 }
 </style><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -69,7 +103,8 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-143877-10', 'auto');
-ga('send', 'pageview');</script></head><body id="blog-building-for-http2-page"><h1 class="banner title">rmurphey&nbsp;<span>adventures in javascript</span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li>Latest</li><li class="prev"><a href="/blog/2015/10/08/five-questions" title="Five Questions">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2015/11/25/building-for-http2" rel="bookmark" title="Permanent Link: Building for HTTP/2">Building for HTTP/2</a></h1><div class="post-content"><p>Earlier this year, I got the chance to speak with Google&#39;s Ilya Grigorik about HTTP/2 for the <a href="http://ttlpodcast.com/episodes/ilya-grigorik.html">1.10 episode of the TTL Podcast</a>. It was a great primer for me on how HTTP/2 works and what it means for how we build the web, but it wasn&#39;t until more recently that I started to think about what it means for how we <em>build</em> the web — that is, how we generate and deploy the HTML, CSS, and JS that power web applications.</p>
+ga('send', 'pageview');
+</script></head><body id="blog-building-for-http2-page"><h1 class="banner title"><a href="/">rmurphey&nbsp;</a><span><a href="/">Adventures in JavaScript</a></span></h1><nav class="main-nav clearfix subpanel"><form action="https://google.com/search" class="search"><input type="hidden" name="q" value="site:rmurphey.com"/><input type="text" name="q" placeholder="Search for..."/><input type="submit" value="Search"/></form><ul class="post-nav"><li class="home"><a href="/">Home</a></li><li class="next"><a href="/blog/2015/11/28/chrome-http2-log-parser" title="Chrome HTTP/2 Log Parser">Next</a></li><li class="prev"><a href="/blog/2015/10/08/five-questions" title="Five Questions">Previous</a></li></ul></nav><main role="main" class="content"><article class="post"><h1 class="title"><a href="/2015/11/25/building-for-http2" rel="bookmark" title="Permanent Link: Building for HTTP/2">Building for HTTP/2</a></h1><div class="post-content"><p class="date">25 Nov 2015 <span class="edit"> <a href="/2015/11/25/building-for-http2/edit">edit</a></span></p><p>Earlier this year, I got the chance to speak with Google&#39;s Ilya Grigorik about HTTP/2 for the <a href="http://ttlpodcast.com/episodes/ilya-grigorik.html">1.10 episode of the TTL Podcast</a>. It was a great primer for me on how HTTP/2 works and what it means for how we build the web, but it wasn&#39;t until more recently that I started to think about what it means for how we <em>build</em> the web — that is, how we generate and deploy the HTML, CSS, and JS that power web applications.</p>
 <p>If you&#39;re not familiar with <a href="https://httpwg.github.io/specs/rfc7540.html">HTTP/2</a>, the basics are simultaneously simple and mind-boggling. Whereas its predecessors allowed each connection to a server to serve only one request at a time, HTTP/2 allows a connection to serve multiple requests simultaneously. A connection can also be used for a server to <em>push</em> a resource to a client — a protocol-level replacement for the technique we currently call “inlining.”</p>
 <p>This is everything-you-thought-you-knew-is-wrong kind of stuff. In an HTTP/2 world, there are few benefits to concatenating a bunch of JS files together, and in many cases the practice will be actively harmful. <a href="http://www.stevesouders.com/blog/2013/09/05/domain-sharding-revisited/">Domain sharding</a> becomes an anti-pattern. Throwing a bunch of <code>&lt;script&gt;</code> tags in your HTML is suddenly not a laughably terrible idea. Inlining of resources is a thing of the past. Browser caching — and cache busting — can occur on a per-module basis.</p>
 <p>What does this mean for how we build and deploy applications? Let&#39;s start by looking at the state of the art in client-side application deployment prior to HTTP/2.</p>
@@ -198,9 +233,9 @@ ga('send', 'pageview');</script></head><body id="blog-building-for-http2-page"><
 <p>The developer story for HTTP/2 also leaves a lot to be desired as of this writing. Front-end developers are among the most likely in an organization to advocate for this new technology, but my experiences over a few weeks of learning about HTTP/2 suggest that the effort required to set up even a local environment will stretch the comfort zone for many. With a working local environment in hand, the tools to understand the differences between HTTP/2 and HTTP/1 behavior are limited and often confusing. Chrome presents information in its network tab that seems to conflict with the wall of text in its net-internals tool, especially when it comes to server push . Charles Proxy doesn&#39;t yet speak HTTP/2. Firefox shows pushed resources as an entry in the network tab, but they appear as though they were never received. <a href="https://nghttp2.org/">nghttp2</a> provides great insight into how an HTTP/2 server is behaving, but it doesn&#39;t speak HTTP/1.1, so you can&#39;t use it to do comparisons. Measuring performance using a tool like WebPagetest requires a real certificate, which you may not have handy if you&#39;re just trying to experiment.</p>
 <p>Alex wrote his 2013 post to document the product of years of experience in creating performant HTTP/1.1 deployments. HTTP/2 means we need to rethink everything we know about shipping applications to the web, and while the building blocks are there, there&#39;s still much to figure out about how we&#39;ll use them; the &quot;right&quot; answers are, in many cases, still TBD while we wait for vendors to act.</p>
 <h2>Further Reading</h2><p>I&#39;ve been bookmarking useful <a href="https://pinboard.in/u:rmurphey/t:http2/">HTTP/2 resources</a> as I come across them.</p>
-<h2>Thanks</h2><p>Thanks to the many folks who have talked to me about the ideas in this post, but especially to Lon Ingram, Jake Archibald, and Andy Davies.</p><p class="follow">Posted 25-Nov 2015.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
+<h2>Thanks</h2><p>Thanks to the many folks who have talked to me about the ideas in this post, but especially to Lon Ingram, Jake Archibald, and Andy Davies.</p></div><div class="comments"><h2>Comments</h2><div id="disqus_thread"></div><script>var disqus_shortname = 'rmurphey';
 var disqus_url = 'http://rmurphey.com/2015/11/25/building-for-http2/';
-var disqus_title = 'Building for HTTP/2';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a target="_blank" href="/feed.xml">RSS feed</a></li><li><a target="_blank" href="https://github.com/rmurphey">On GitHub</a></li><li><a target="_blank" href="https://twitter.com/rmurphey">On Twitter</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey">on GitHub</a>.</p>
+var disqus_title = 'Building for HTTP/2';</script><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></a></div></article></main><footer class="site-footer clearfix flex subpanel"><div class="flex-item projects"><h2>Projects</h2><ul><li><a href="https://github.com/rmurphey/js-assessment">js-assessment</a></li><li><a href="http://ttlpodcast.com/">TTL Podcast</a></li><li><a href="http://yayquery.com/">yayQuery</a></li></ul></div><div class="flex-item links"><h2>Links</h2><ul><li><a href="/about.html">About</a></li><li><a href="/feed.xml">RSS feed</a></li><li><a href="https://github.com/rmurphey">GitHub</a></li><li><a href="https://twitter.com/rmurphey">Twitter</a></li><li><a href="https://speakerdeck.com/rmurphey">Speaker Deck</a></li></ul></div><div class="flex-item archives"><h2>Archives</h2><ul><li><a href="/archives">All years</a></li><li><a href="/2015">2015</a></li><li><a href="/2014">2014</a></li><li><a href="/2013">2013</a></li><li><a href="/2012">2012</a></li><li><a href="/2011">2011</a></li><li><a href="/2010">2010</a></li><li><a href="/2009">2009</a></li><li><a href="/2008">2008</a></li><li><a href="/2007">2007</a></li></ul></div><div class="flex-item license"><h2>License</h2><p class="vcard">Copyright © 2015 <a class="url fn" href="http://rmurphey.com">Rebecca Murphey</a>.</p><p>All code and content for this blog is available <a href="https://github.com/rmurphey/rmurphey">on GitHub</a>.</p>
 </div><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><!--|  
 |  
 |  Carved up by hand using Harp and a shit load of hacking ❤

@@ -1,4 +1,153 @@
-<?xml version="1.0" encoding="utf-8" ?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/"><channel><title>Adventures in JavaScript</title><atom:link href="http://rmurphey.com/feed/" rel="self" type="application/rss+xml"></atom:link><link>http://rmurphey.com</link><description></description><lastBuildDate>Wed, 25 Nov 2015 14:00:00 +0000</lastBuildDate><language>en-US</language><sy:updatePeriod>hourly</sy:updatePeriod><sy:updateFrequency>1</sy:updateFrequency><item><title>Building for HTTP/2</title><guid isPermaLink="false">building-for-http2</guid><link>http://rmurphey.com/2015/11/25/building-for-http2</link><pubDate>Wed, 25 Nov 2015 14:00:00 +0000</pubDate><description><![CDATA[Earlier this year, I got the chance to speak with Google&#39;s Ilya Grigorik about HTTP/2 for the 1.10 episode of the TTL Podcast. It was a great primer for me on how HTTP/2 works and what it means for how we build the web, but it wasn&#39;t until more recently that I started to think about what it means for how we build the web — that is, how we generate and deploy the HTML, CSS, and JS that power web applications.
+<?xml version="1.0" encoding="utf-8" ?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/"><channel><title>rmurphey: Adventures in JavaScript</title><atom:link href="http://rmurphey.com/feed/" rel="self" type="application/rss+xml"></atom:link><link>http://rmurphey.com</link><description></description><lastBuildDate>Sat, 28 Nov 2015 21:11:40 +0000</lastBuildDate><language>en-US</language><sy:updatePeriod>hourly</sy:updatePeriod><sy:updateFrequency>1</sy:updateFrequency><item><title>Chrome HTTP/2 Log Parser</title><guid isPermaLink="false">chrome-http2-log-parser</guid><link>http://rmurphey.com/2015/11/28/chrome-http2-log-parser</link><pubDate>Sat, 28 Nov 2015 21:11:40 +0000</pubDate><description><![CDATA[When I wrote about HTTP/2 earlier this week,
+one of my complaints was that there wasn&#39;t a great way to visualize what
+was going on with an HTTP/2 connection — and that Chrome&#39;s dev tools often
+tell a story that seems to conflict with the story told by Chrome&#39;s
+net-internals log.
+I spoke with Andy Davies the day after I published that post, and he pointed
+me to a tweet from Moto Ishizawa
+from October, showing a screenshot of an &quot;HTTP/2 Stream Analyzer.&quot; As far as I
+can tell, the thing in the screenshot hasn&#39;t been released. I hope it will be,
+but in the meantime I&#39;ve written chrome-http2-log-parser,
+a Node module that takes the text from Chrome&#39;s net-internals HTTP/2 tab and
+spits out more useful data, including some basic text visualizations.
+
+If you&#39;re not familiar, the output of Chrome&#39;s HTTP/2 net-internals log,
+here&#39;s a little bit of one:
+t=    6952 [st=       0]    HTTP2_STREAM_UPDATE_RECV_WINDOW
+                            --&gt; delta = 15663105
+                            --&gt; window_size = 15728640
+t=    6952 [st=       0]    HTTP2_SESSION_SENT_WINDOW_UPDATE_FRAME
+                            --&gt; delta = 15663105
+                            --&gt; stream_id = 0
+t=    6953 [st=       1]    HTTP2_SESSION_SEND_HEADERS
+                            --&gt; fin = true
+                            --&gt; :authority: 52.23.178.48
+                                :method: GET
+                                :path: /index-separate.html?push=/common/libs/combined.js
+                                :scheme: https
+                                accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+                                accept-encoding: gzip, deflate, sdch
+                                accept-language: en-US,en;q=0.8
+                                upgrade-insecure-requests: 1
+                                user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36
+                            --&gt; priority = 4
+                            --&gt; stream_id = 1
+                            --&gt; unidirectional = false
+t=    7020 [st=      68]    HTTP2_SESSION_RECV_SETTINGS
+                            --&gt; clear_persisted = false
+                            --&gt; host = &quot;52.23.178.48:443&quot;
+t=    7020 [st=      68]    HTTP2_SESSION_RECV_SETTING
+                            --&gt; flags = 0
+                            --&gt; id = 2
+                            --&gt; value = 0
+
+This goes on for hundreds of lines, making it essentially impossible to
+visualize what&#39;s happening.
+The chrome-http2-log-parser module reads a file that contains this log and
+turns it into:
+
+An array of objects, one for each log entry.
+An object with a property for each stream ID, where the value of the
+property is an array of objects representing each log entry for the stream.
+
+It also offers two text-based reporters (I&#39;m hoping to also make an HTML reporter
+soo); they provide time-based visualizations of the data at a resolution of
+your choosing:
+0:                 *
+1:    S            R                     D         D
+2:                 PDR       DDDD       DDDDDD   DDDDDD                                  A
+3:                                          S          DRDDDDDDDDDDDD
+5:                                            S             R  DDDDDDDDDD                              DDDD          D
+7:                                            S               R     DDDDDDDD                           DDD           D
+9:                                            S               R        DDDDDDDD                        DDD           D
+11:                                            S                R         DDDDDD  DD                    DDD           D
+13:                                            S                R                  DDDDDDDD              DDDD         D
+15:                                            S                R                     DDDDDDDD            DDD         D
+17:                                            S                R                       DDDDDDDD          DDD         D
+19:                                            S                R                         DDDDD       DDDDDDDD        D
+21:                                            S                R                                     DDDDDDDDDDDDDD  DD
+You can grab it on
+npm — note that
+you&#39;ll need Node 4.2 or greater:
+npm install chrome-http2-log-parser
+If this is useful to you, I&#39;d love to hear about it; likewise if you have ideas
+about how to make it better. I&#39;ve written up a couple of TODO items at the end
+of the README, if you&#39;re so inclined :)]]></description><content:encoded><![CDATA[<p>When <a href="/blog/building-for-http2">I wrote about HTTP/2 earlier this week</a>,
+one of my complaints was that there wasn&#39;t a great way to visualize what
+was going on with an HTTP/2 connection — and that Chrome&#39;s dev tools often
+tell a story that seems to conflict with the story told by Chrome&#39;s
+net-internals log.</p>
+<p>I spoke with Andy Davies the day after I published that post, and he pointed
+me to <a href="https://twitter.com/summerwind/status/653579247152271360">a tweet from Moto Ishizawa</a>
+from October, showing a screenshot of an &quot;HTTP/2 Stream Analyzer.&quot; As far as I
+can tell, the thing in the screenshot hasn&#39;t been released. I hope it will be,
+but in the meantime I&#39;ve written <a href="https://www.npmjs.com/package/chrome-http2-log-parser">chrome-http2-log-parser</a>,
+a Node module that takes the text from Chrome&#39;s net-internals HTTP/2 tab and
+spits out more useful data, including some basic text visualizations.</p>
+<p><img src="/img/chrome-http2-log-parser.png" class="main"/></p>
+<p>If you&#39;re not familiar, the output of Chrome&#39;s HTTP/2 net-internals log,
+here&#39;s a little bit of one:</p>
+<pre><code class="language-log">t=    6952 [st=       0]    HTTP2_STREAM_UPDATE_RECV_WINDOW
+                            --&gt; delta = 15663105
+                            --&gt; window_size = 15728640
+t=    6952 [st=       0]    HTTP2_SESSION_SENT_WINDOW_UPDATE_FRAME
+                            --&gt; delta = 15663105
+                            --&gt; stream_id = 0
+t=    6953 [st=       1]    HTTP2_SESSION_SEND_HEADERS
+                            --&gt; fin = true
+                            --&gt; :authority: 52.23.178.48
+                                :method: GET
+                                :path: /index-separate.html?push=/common/libs/combined.js
+                                :scheme: https
+                                accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+                                accept-encoding: gzip, deflate, sdch
+                                accept-language: en-US,en;q=0.8
+                                upgrade-insecure-requests: 1
+                                user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36
+                            --&gt; priority = 4
+                            --&gt; stream_id = 1
+                            --&gt; unidirectional = false
+t=    7020 [st=      68]    HTTP2_SESSION_RECV_SETTINGS
+                            --&gt; clear_persisted = false
+                            --&gt; host = &quot;52.23.178.48:443&quot;
+t=    7020 [st=      68]    HTTP2_SESSION_RECV_SETTING
+                            --&gt; flags = 0
+                            --&gt; id = 2
+                            --&gt; value = 0
+</code></pre>
+<p>This goes on for hundreds of lines, making it essentially impossible to
+visualize what&#39;s happening.</p>
+<p>The chrome-http2-log-parser module reads a file that contains this log and
+turns it into:</p>
+<ul>
+<li>An array of objects, one for each log entry.</li>
+<li>An object with a property for each stream ID, where the value of the
+property is an array of objects representing each log entry for the stream.</li>
+</ul>
+<p>It also offers two text-based reporters (I&#39;m hoping to also make an HTML reporter
+soo); they provide time-based visualizations of the data at a resolution of
+your choosing:</p>
+<pre><code>0:                 *
+1:    S            R                     D         D
+2:                 PDR       DDDD       DDDDDD   DDDDDD                                  A
+3:                                          S          DRDDDDDDDDDDDD
+5:                                            S             R  DDDDDDDDDD                              DDDD          D
+7:                                            S               R     DDDDDDDD                           DDD           D
+9:                                            S               R        DDDDDDDD                        DDD           D
+11:                                            S                R         DDDDDD  DD                    DDD           D
+13:                                            S                R                  DDDDDDDD              DDDD         D
+15:                                            S                R                     DDDDDDDD            DDD         D
+17:                                            S                R                       DDDDDDDD          DDD         D
+19:                                            S                R                         DDDDD       DDDDDDDD        D
+21:                                            S                R                                     DDDDDDDDDDDDDD  DD
+</code></pre><p>You can grab it on
+<a href="https://www.npmjs.com/package/chrome-http2-log-parser">npm</a> — note that
+you&#39;ll need Node 4.2 or greater:</p>
+<pre><code>npm install chrome-http2-log-parser
+</code></pre><p>If this is useful to you, I&#39;d love to hear about it; likewise if you have ideas
+about how to make it better. I&#39;ve written up a couple of TODO items at the end
+of the README, if you&#39;re so inclined :)</p>
+]]></content:encoded></item><item><title>Building for HTTP/2</title><guid isPermaLink="false">building-for-http2</guid><link>http://rmurphey.com/2015/11/25/building-for-http2</link><pubDate>Wed, 25 Nov 2015 14:00:00 +0000</pubDate><description><![CDATA[Earlier this year, I got the chance to speak with Google&#39;s Ilya Grigorik about HTTP/2 for the 1.10 episode of the TTL Podcast. It was a great primer for me on how HTTP/2 works and what it means for how we build the web, but it wasn&#39;t until more recently that I started to think about what it means for how we build the web — that is, how we generate and deploy the HTML, CSS, and JS that power web applications.
 If you&#39;re not familiar with HTTP/2, the basics are simultaneously simple and mind-boggling. Whereas its predecessors allowed each connection to a server to serve only one request at a time, HTTP/2 allows a connection to serve multiple requests simultaneously. A connection can also be used for a server to push a resource to a client — a protocol-level replacement for the technique we currently call “inlining.”
 This is everything-you-thought-you-knew-is-wrong kind of stuff. In an HTTP/2 world, there are few benefits to concatenating a bunch of JS files together, and in many cases the practice will be actively harmful. Domain sharding becomes an anti-pattern. Throwing a bunch of &lt;script&gt; tags in your HTML is suddenly not a laughably terrible idea. Inlining of resources is a thing of the past. Browser caching — and cache busting — can occur on a per-module basis.
 What does this mean for how we build and deploy applications? Let&#39;s start by looking at the state of the art in client-side application deployment prior to HTTP/2.
@@ -2457,167 +2606,4 @@ Also: we&rsquo;re hiring :)]]></description><content:encoded><![CDATA[<p>It was 
 
 <p>By the way, I&rsquo;ll be talking about the rewrite at both <a href="http://2011.texasjavascript.com">TXJS</a> and <a href="http://gothamjs.com">GothamJS</a> in the next few weeks.</p>
 
-<p>Also: <a href="http://toura.com/about/jobs/">we&rsquo;re hiring</a> :)</p>]]></content:encoded></item><item><title>Getting Better at JavaScript</title><guid isPermaLink="false">getting-better-at-javascript</guid><link>http://rmurphey.com/2011/05/20/getting-better-at-javascript</link><pubDate>Fri, 20 May 2011 0:00:00 +0000</pubDate><description><![CDATA[I seem to be getting a lot of emails these days asking a deceptively simple
-question: “How do I get better at JavaScript?” What follows are some
-semi-random thoughts on the subject:
-The thing that I’ve come to realize about these questions is that some things
-just take time. I wish I could write down “Ten Things You Need to Know to Make
-You Amazing at the JavaScript,” but it doesn’t work that way. Books are
-fantastic at exposing you to guiding principles and patterns, but if your brain
-isn’t ready to connect them with real-world problems, it won’t.
-The number one thing that will make you better at writing JavaScript is writing
-JavaScript. It’s OK if you cringe at it six months from now. It’s OK if you
-know it could be better if you only understood X, Y, or Z a little bit better.
- Cultivate dissatisfaction , and fear the day when you aren’t disappointed with
-the code you wrote last month.
-Encounters with new concepts are almost always eventually rewarding, but in the
-short term I’ve found they can be downright demoralizing if you’re not aware of
-the bigger picture. The first step to being better at a thing is realizing you
-could be better at that thing, and initially that realization tends to involve
-being overwhelmed with all you don’t know. The first  JSConf , in 2009, was
-exactly this for me. I showed up eager to learn but feeling pretty cocky about
-my skills. I left brutally aware of the smallness of my knowledge, and it was a
-transformational experience: getting good at a thing involves seeking out
-opportunities to feel small.
-One of the most helpful things in my learning has been having access to smart
-people who are willing to answer my questions and help me when I get stuck.
-Meeting these people and maintaining relationships with them is hard work, and
-it generally involves interacting with them in real life, not just on the
-internet, but the dividends of this investment are unfathomable.
-To that end, attend conferences. Talk to the speakers and ask them questions.
-Write them emails afterwards saying that it was nice to meet them. Subscribe to
-their blogs. Pay attention to what they’re doing and evangelize their good
-work.
-Remember, too, that local meetups can be good exposure to new ideas too, even
-if on a smaller scale. The added bonus of local meetups is that the people
-you’ll meet there are … local! It’s easy to maintain relationships with them
-and share in learning with them in real life.
-(An aside: If your company won’t pay for you to attend any conferences, make
-clear how short-sighted your company’s decision is and start looking for a new
-job, because your company does not deserve you. Then, if you can, cough up the
-money and go anyway. As a self-employed consultant, I still managed to find
-something like $10,000 to spend on travel- and conference-related expenses last
-year, and I consider every penny of it to be money spent on being better at
-what I do. When I hear about big companies that won’t fork over even a fraction
-of that for an employee who is raising their hand and saying “help me be better
-at what I do!”, I rage.)
-Make a point of following the bug tracker and repository for an active
-open-source project. Read the bug reports. Try the test cases. Understand the
-commits. I admit that I have never been able to make myself do this for
-extended periods of time, but I try to drop in on certain projects now and then
-because it exposes me to arbitrary code and concepts that I might not otherwise
-run into.
-Read the source for your favorite library, and refer to it when you need to
-know how a method works. Consult the documentation when there’s some part of
-the source you don’t understand. When choosing tools and plugins, read the
-source, and see whether there are things you’d do differently.
-Eavesdrop on communities, and participate when you have something helpful to
-add. Lurk on a mailing list or a forum or in an IRC channel, help other people
-solve problems. If you’re not a  help vampire  — if you give more than you take —
-the “elders” of a community will notice, and you will be rewarded with their
-willingness to help you when it matters.
-Finally, books:
-
-JavaScript: The Good Parts, by Douglas Crockford. It took me more than one
-try to get through this not-very-thick book, and it is not gospel. However,
-it is mandatory reading for any serious JavaScript developer.
- Eloquent JavaScript , Marijn Haverbeke (also in print). This is another book
-that I consider mandatory; you may not read straight through it, but you
-should have it close at hand. I like it so much that I actually bought the
-print version, and then was lucky enough to get a signed copy from Marijn at
-JSConf 2011.
-JavaScript Patterns, by Stoyan Stefanov. This was the book that showed me
-there were names for so many patterns that I’d discovered purely through
-fumbling around with my own code. I read it on the flight to the 2010 Boston
-jQuery Conference, and it’s definitely the kind of book that I wouldn’t have
-gotten as much out of a year earlier, when I had a lot less experience with
-the kinds of problems it addresses.
-Object-Oriented JavaScript, by Stoyan Stefanov. It’s been ages since I read
-this book, and so I confess that I don’t have a strong recollection of it,
-but it was probably the first book I read that got me thinking about
-structuring JavaScript code beyond the “get some elements, do something with
-them” paradigm of jQuery.
-
-Good luck.]]></description><content:encoded><![CDATA[<p>I seem to be getting a lot of emails these days asking a deceptively simple
-question: “How do I get better at JavaScript?” What follows are some
-semi-random thoughts on the subject:</p>
-<p>The thing that I’ve come to realize about these questions is that some things
-just take time. I wish I could write down “Ten Things You Need to Know to Make
-You Amazing at the JavaScript,” but it doesn’t work that way. Books are
-fantastic at exposing you to guiding principles and patterns, but if your brain
-isn’t ready to connect them with real-world problems, it won’t.</p>
-<p><strong>The number one thing that will make you better at writing JavaScript is writing
-JavaScript.</strong> It’s OK if you cringe at it six months from now. It’s OK if you
-know it could be better if you only understood X, Y, or Z a little bit better.
-<a href="http://www.paulgraham.com/taste.html"> Cultivate dissatisfaction </a>, and fear the day when you aren’t disappointed with
-the code you wrote last month.</p>
-<p>Encounters with new concepts are almost always eventually rewarding, but in the
-short term I’ve found they can be downright demoralizing if you’re not aware of
-the bigger picture. The first step to being better at a thing is realizing you
-could be better at that thing, and initially that realization tends to involve
-being overwhelmed with all you don’t know. The first <a href="http://jsconf.us/2009/"> JSConf </a>, in 2009, was
-exactly this for me. I showed up eager to learn but feeling pretty cocky about
-my skills. I left brutally aware of the smallness of my knowledge, and it was a
-transformational experience: getting good at a thing involves seeking out
-opportunities to feel small.</p>
-<p>One of the most helpful things in my learning has been having access to smart
-people who are willing to answer my questions and help me when I get stuck.
-Meeting these people and maintaining relationships with them is hard work, and
-it generally involves interacting with them in real life, not just on the
-internet, but the dividends of this investment are unfathomable.</p>
-<p>To that end, attend conferences. Talk to the speakers and ask them questions.
-Write them emails afterwards saying that it was nice to meet them. Subscribe to
-their blogs. Pay attention to what they’re doing and evangelize their good
-work.</p>
-<p>Remember, too, that local meetups can be good exposure to new ideas too, even
-if on a smaller scale. The added bonus of local meetups is that the people
-you’ll meet there are … local! It’s easy to maintain relationships with them
-and share in learning with them in real life.</p>
-<p>(An aside: If your company won’t pay for you to attend any conferences, make
-clear how short-sighted your company’s decision is and start looking for a new
-job, because your company does not deserve you. Then, if you can, cough up the
-money and go anyway. As a self-employed consultant, I still managed to find
-something like $10,000 to spend on travel- and conference-related expenses last
-year, and I consider every penny of it to be money spent on being better at
-what I do. When I hear about big companies that won’t fork over even a fraction
-of that for an employee who is raising their hand and saying “help me be better
-at what I do!”, I rage.)</p>
-<p>Make a point of following the bug tracker and repository for an active
-open-source project. Read the bug reports. Try the test cases. Understand the
-commits. I admit that I have never been able to make myself do this for
-extended periods of time, but I try to drop in on certain projects now and then
-because it exposes me to arbitrary code and concepts that I might not otherwise
-run into.</p>
-<p>Read the source for your favorite library, and refer to it when you need to
-know how a method works. Consult the documentation when there’s some part of
-the source you don’t understand. When choosing tools and plugins, read the
-source, and see whether there are things you’d do differently.</p>
-<p>Eavesdrop on communities, and participate when you have something helpful to
-add. Lurk on a mailing list or a forum or in an IRC channel, help other people
-solve problems. If you’re not a <a href="http://slash7.com/2006/12/22/vampires/"> help vampire </a> — if you give more than you take —
-the “elders” of a community will notice, and you will be rewarded with their
-willingness to help you when it matters.</p>
-<p>Finally, books:</p>
-<ul>
-<li>JavaScript: The Good Parts, by Douglas Crockford. It took me more than one
-try to get through this not-very-thick book, and it is not gospel. However,
-it is mandatory reading for any serious JavaScript developer.</li>
-<li><a href="http://eloquentjavascript.net/"> Eloquent JavaScript </a>, Marijn Haverbeke (also in print). This is another book
-that I consider mandatory; you may not read straight through it, but you
-should have it close at hand. I like it so much that I actually bought the
-print version, and then was lucky enough to get a signed copy from Marijn at
-JSConf 2011.</li>
-<li>JavaScript Patterns, by Stoyan Stefanov. This was the book that showed me
-there were names for so many patterns that I’d discovered purely through
-fumbling around with my own code. I read it on the flight to the 2010 Boston
-jQuery Conference, and it’s definitely the kind of book that I wouldn’t have
-gotten as much out of a year earlier, when I had a lot less experience with
-the kinds of problems it addresses.</li>
-<li>Object-Oriented JavaScript, by Stoyan Stefanov. It’s been ages since I read
-this book, and so I confess that I don’t have a strong recollection of it,
-but it was probably the first book I read that got me thinking about
-structuring JavaScript code beyond the “get some elements, do something with
-them” paradigm of jQuery.</li>
-</ul>
-<p>Good luck.</p>
-]]></content:encoded></item></channel></rss>
+<p>Also: <a href="http://toura.com/about/jobs/">we&rsquo;re hiring</a> :)</p>]]></content:encoded></item></channel></rss>
