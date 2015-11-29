@@ -779,7 +779,7 @@
   },
   "flying-lessons": {
     "title": "Flying Lessons",
-    "published": true,
+    "published": false,
     "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/flying-lessons.md",
     "date": "2014-11-01 00:00:00"
   },
