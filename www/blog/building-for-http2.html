@@ -121,7 +121,7 @@ ga('send', 'pageview');
 <li>All users have to download the whole large file again whenever something changes — even something small.</li>
 <li>Even when <em>nothing</em> changes, a short cache time means repeat visitors may end up re-downloading the scout frequently.</li>
 </ul>
-<p>Adding HTTP/2 to the mix — that is, flipping the switch that gets your server to start speaking HTTP/2 to browsers that understand it — has a nominal positive impact the performance of an app crafted for maximum performance on HTTP/1. Indeed, the applications most likely to see big improvements without big changes are applications whose deployments were poorly designed in the first place.</p>
+<p>Adding HTTP/2 to the mix — that is, flipping the switch that gets your server to start speaking HTTP/2 to browsers that understand it — has a nominal positive impact on the performance of an app crafted for maximum performance on HTTP/1. Indeed, the applications most likely to see big improvements without big changes are applications whose deployments were poorly designed in the first place.</p>
 <p>To see performance gains in a well-engineered deployment, we&#39;ll have to re-engineer the deployment itself.</p>
 <h2>Splitting it up</h2><p>One of the most obvious opportunities is presented by HTTP/2&#39;s ability to handle multiple requests over the same connection. Rather than shipping a single large application file over the wire, what if we tell the scout to load the individual modules that make up the application? We would no longer have to invalidate the cache for the whole application every time we make a change.</p>
 <p>A few reasons come to mind why this might be a bad idea.</p>
