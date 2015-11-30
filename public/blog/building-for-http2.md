@@ -30,7 +30,7 @@ There are a few shortcomings inherent to this approach, which are difficult to o
 - All users have to download the whole large file again whenever something changes — even something small.
 - Even when *nothing* changes, a short cache time means repeat visitors may end up re-downloading the scout frequently.
 
-Adding HTTP/2 to the mix — that is, flipping the switch that gets your server to start speaking HTTP/2 to browsers that understand it — has a nominal positive impact the performance of an app crafted for maximum performance on HTTP/1. Indeed, the applications most likely to see big improvements without big changes are applications whose deployments were poorly designed in the first place.
+Adding HTTP/2 to the mix — that is, flipping the switch that gets your server to start speaking HTTP/2 to browsers that understand it — has a nominal positive impact on the performance of an app crafted for maximum performance on HTTP/1. Indeed, the applications most likely to see big improvements without big changes are applications whose deployments were poorly designed in the first place.
 
 To see performance gains in a well-engineered deployment, we'll have to re-engineer the deployment itself.
 
