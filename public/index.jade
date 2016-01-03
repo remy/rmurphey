@@ -28,4 +28,4 @@ article.post.lists
       each post in recent
         li
           a(href="#{ public.blog._data[post.slug].relative }") #{ public.blog._data[post.slug].title }
-          small &nbsp; updated #{ moment(post.date).format('D-MMM YYYY') }
+          small &nbsp; #{ moment(post.created).format('D-MMM YYYY') }

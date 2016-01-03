@@ -294,13 +294,22 @@ function run() {
   }
 }
 
-function stat(filename) {
+function stat(slug) {
   return new Promise(function (resolve) {
-    fs.stat(__dirname + '/public/blog/' + filename + '.md', function (error, stat) {
+    fs.stat(__dirname + '/public/blog/' + slug + '.md', function (error, stat) {
       if (error) {
-        resolve({ slug: filename, date: new Date(0) });
+        console.log(error);
+        resolve({
+          slug: filename,
+          date: new Date(0),
+          created: new Date(blogs[slug].date)
+        });
       } else {
-        resolve({ slug: filename, date: stat.mtime });
+        resolve({
+          slug: slug,
+          date: stat.mtime,
+          created: new Date(blogs[slug].date)
+        });
       }
     });
   });
@@ -308,7 +317,7 @@ function stat(filename) {
 
 Promise.all(slugs.map(stat)).then(function (dates) {
   global.recent = dates.sort(function (a, b) {
-    return a.date.getTime() - b.date.getTime();
+    return a.created.getTime() - b.created.getTime();
   }).reverse().slice(0, 3);
 
   if (process.argv[2] === 'compile') {
