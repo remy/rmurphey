@@ -846,8 +846,12 @@
     "title": "Chrome HTTP/2 Log Parser",
     "date": "2015-11-28 21:11:40",
     "published": true,
-    "tags": [
-      ""
-    ]
+    "tags": []
+  },
+  "speaker-economics": {
+    "title": "Speaker Economics",
+    "date": "2016-01-02 21:00:00",
+    "published": true,
+    "tags": []
   }
 }

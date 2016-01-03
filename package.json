@@ -9,7 +9,8 @@
   "scripts": {
     "test": "node_modules/.bin/harp compile",
     "build": "node server.js compile",
-    "start": "node server"
+    "start": "node server",
+    "heroku": "npm run build && npm start"
   },
   "bin": {
     "blog": "./bin/cli.js"

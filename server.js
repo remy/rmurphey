@@ -19,7 +19,6 @@ var mount;
 var moment = require('moment');
 var pkg = require('./package');
 var htmlFiles = [];
-var elasticsearch = require('elasticsearch');
 
 // this line, although dirty, ensures that Harp templates
 // have access to moment - which given the whole partial
