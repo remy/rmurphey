@@ -159,6 +159,10 @@ route.all('/{blog}?/{post}', function (req, res, next) {
   next();
 });
 
+route.all(/^\/([0-9]{4})\/([0-9]{1,2})\/([0-9]{1,2})\/([a-z0-9\-].*?)(\/)?$/, function (req, res, next) {
+  redirect(res, '/blog' + req.url);
+});
+
 /* main url handler: /{year}/{month}/{day}/{slug} */
 route.all(/^\/blog\/([0-9]{4})\/([0-9]{1,2})\/([0-9]{1,2})\/([a-z0-9\-].*?)(\/)?$/, function (req, res, next) {
   var params = req.params;
