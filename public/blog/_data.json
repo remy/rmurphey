@@ -56,7 +56,9 @@
     "date": "2007-12-05 00:00:00",
     "title": "Software without which I'd be hard-pressed to do my job",
     "comments": true,
-    "categories": ["systems"],
+    "categories": [
+      "systems"
+    ],
     "published": true,
     "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/software-without-which-i-d-be-hard-pressed-to-do-my-job.md"
   },
@@ -677,7 +679,9 @@
     "title": "Community Conferences",
     "date": "2012-03-08 08:29:00",
     "comments": true,
-    "categories": [ "conferences" ]
+    "categories": [
+      "conferences"
+    ]
   },
   "thoughts-on-a-very-small-project-with-backbone-and-backbone-boilerplate": {
     "title": "Thoughts on a (very) small project with Backbone and Backbone Boilerplate",
@@ -762,7 +766,9 @@
     "title": "Refactoring setInterval-based polling",
     "date": "2013-02-04 15:30:00",
     "comments": true,
-    "categories": ["javascript"]
+    "categories": [
+      "javascript"
+    ]
   },
   "austin": {
     "title": "Austin",
@@ -853,5 +859,13 @@
     "date": "2016-01-02 21:00:00",
     "published": true,
     "tags": []
+  },
+  "indeed": {
+    "title": "Indeed",
+    "date": "2016-01-04 20:43:38",
+    "tags": [
+      ""
+    ],
+    "published": true
   }
 }
