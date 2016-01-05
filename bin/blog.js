@@ -9,7 +9,6 @@ var path = require('path');
 var moment = require('moment');
 var Promise = require('promise'); // jshint ignore:line
 var readline = require('readline');
-var elasticsearch = require('elasticsearch');
 var fs = require('then-fs');
 var exec = require('child_process').exec;
 var rl = readline.createInterface({
@@ -111,12 +110,7 @@ function publish(title) {
             return fs.writeFile(draftData, JSON.stringify(drafts, '', 2));
           });
         }).then(function () {
-          return fs.readFile(source, 'utf8').then(addToSearch.bind(null, {
-            slug: slug,
-            title: post.title,
-            tags: post.tags,
-            date: post.date,
-          }));
+          return fs.readFile(source, 'utf8');
         }).then(function () {
           return new Promise(function (resolve, reject) {
             exec('git mv ' + source + ' ' + target, function (error, stdout, stderr) {
@@ -169,41 +163,6 @@ function prompt() {
     }).catch(function (error) {
       console.error(error);
       process.exit(1);
-    });
-  });
-}
-
-function addToSearch(json, doc) {
-  return new Promise(function (resolve, reject) {
-    if (!process.env.BONSAI_URL) {
-      console.log('Need to manually insert search data');
-      resolve();
-    }
-
-    var client = new elasticsearch.Client({
-      host: process.env.BONSAI_URL,
-      log: 'trace',
-    });
-
-    client.create({
-      index: 'blog-posts',
-      type: 'blog',
-      id: json.slug,
-      body: {
-        title: json.title,
-        tags: json.tags,
-        published: true,
-        date: json.date,
-        body: doc.replace(/<(?:.|\n)*?>/gm, ''), // strip html
-        counter: 1,
-      },
-    }, function (error, response) {
-      client.close();
-      if (error) {
-        return reject(error);
-      }
-
-      resolve();
     });
   });
 }
