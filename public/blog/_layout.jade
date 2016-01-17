@@ -34,10 +34,10 @@ block content
       h1.title
         a(href="#{permalink}" rel="bookmark" title="Permanent Link: #{title}")= title
 
-      //- small.edit: a(href="https://github.com/remy/remysharp.com/blob/master/public/blog/#{current.source}.md") (edit)
+      //- small.edit: a(href="https://github.com/rmurphey/rmurphey/blob/master/public/blog/#{current.source}.md") (edit)
       .post-content
         p.date #{moment(date).format('D MMM YYYY')} 
-          span.edit 
+          span.edit
             a(href="#{permalink}/edit") edit
 
         //- strip the h1 out of the body as we printed it above as the permalink
@@ -49,7 +49,7 @@ block content
           h2 Comments
           #disqus_thread
           script.
-            (function() { 
+            (function() {
             var d = document, s = d.createElement('script');
 
             s.src = '//rmurphey.disqus.com/embed.js';
