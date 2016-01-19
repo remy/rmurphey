@@ -43,6 +43,8 @@ Next, I needed to create my Webpack config. Traditionally, this file goes in the
 /js-games
   /client
     /number-guessing
+      index.html
+      index.js
     webpack.config.js
   /content
   package.json
