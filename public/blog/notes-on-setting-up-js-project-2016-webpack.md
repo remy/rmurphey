@@ -39,7 +39,7 @@ npm install --save-dev webpack webpack-dev-server
 
 Next, I needed to create my Webpack config. Traditionally, this file goes in the root directory of a project, alongside the package.json; however, for a project like this, I felt like it made more sense for the Webpack configuration file to be with the client files, so I created client/webpack.config.js.
 
-```
+```none
 /js-games
   /client
     /number-guessing
