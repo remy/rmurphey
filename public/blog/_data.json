@@ -870,12 +870,18 @@
   },
   "notes-on-setting-up-js-project-2016-webpack": {
     "title": "Notes on setting up a JS project, circa 2016: Webpack",
-    "filename": "/Users/rmurphey/personal/rmurphey/public/blog/notes-on-setting-up-js-project-2016-webpack.md",
     "date": "2016-01-19 14:20:43",
-    "complete": false,
-    "inprogress": true,
+    "published": true,
     "tags": [
-      ""
+      "js-games"
+    ]
+  },
+  "notes-on-setting-up-js-project-2016-babel-es6": {
+    "title": "Notes on setting up a JS project, circa 2016: Babel and ES6",
+    "date": "2016-01-20 12:00:00",
+    "published": true,
+    "tags": [
+      "js-games"
     ]
   }
 }

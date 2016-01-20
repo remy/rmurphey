@@ -214,3 +214,5 @@ Lastly, I added a script to generate a build:
 Setting this all up took less time than writing this post, but that's due largely to the fact that I've done this kind of setup several times before. I knew what I needed, and past experience gave me good instincts when something wasn't working quite like I hoped. The Webpack docs are pretty good if you already know what you're doing, but I can imagine they're painfully opaque if you don't.
 
 If you don't want to use one of the many boilerplates that exist, then my main advice would be: "baby steps." Get a tiny thing working, and commit that; then move on to the next tiny thing. It's the process I followed in the setup I outlined above, and it helped me have confidence each step of the way.
+
+You can see the code as of this post [here](https://github.com/rmurphey/js-games/tree/503f10cbc144fa73b114a56eb8cf44ab68728758).
