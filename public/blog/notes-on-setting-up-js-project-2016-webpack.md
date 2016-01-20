@@ -197,10 +197,16 @@ module.exports = {
 
 With this change, my npm script was now showing the same thing I was seeing earlier, when I ran the command to start the dev server directly.
 
-Lastly, I made two more small changes: adding the `--hot` option, to enable [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html); and adding the `--open` option, to automatically open a browser to the dev server whenever I run it:
+I made two more small changes: adding the `--hot` option, to enable [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html); and adding the `--open` option, to automatically open a browser to the dev server whenever I run it:
 
 ```
 "serve": "webpack-dev-server --hot --open --config ./client/webpack.config.js",
+```
+
+Lastly, I added a script to generate a build:
+
+```
+"build": "webpack --config ./client/webpack.config.js"
 ```
 
 ## Closing Thoughts
