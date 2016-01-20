@@ -12,7 +12,7 @@ The project is going to consist of both code and content, so, to start, I create
   package.json
 ```
 
-I knew that I was going to be using [Webpack](https://webpack.github.io/) so that I could use modules in client-side code. Knowing that I was going to use Webpack, I wanted to make sure I got it set up before I got too far with anything else. To verify that Webpack was working, I'd need some basic JS and HTML. I created a file client/number-guessing/index.js, and put a simple `console.log` inside; I also created a file client/number-guessing/index.html, and added the following:
+I knew that I wanted to use [Webpack](https://webpack.github.io/), and I wanted to make sure I got it set up before I got too far with anything else. To verify that Webpack was working, I'd need some basic JS and HTML. I created a file client/number-guessing/index.js, and put a simple `console.log('it works')` inside; I also created a file client/number-guessing/index.html, and added the following:
 
 ```html
 <!DOCTYPE html>
@@ -84,7 +84,7 @@ number-guessing.js  1.41 kB       0  [emitted]  number-guessing
    [0] ./number-guessing/index.js 25 bytes {0} [built]
 ```
 
-Seems good. I opened the file client/dist/number-guessing.js and inspected it; after the Webpack loader code, at the very end of the file I saw my `console.log` statement. My file had been built.
+Seems good. I opened the file client/dist/number-guessing.js and inspected it; after the Webpack loader code, at the very end of the file I saw my `console.log` statement. My simple file had been built as expected; later, I could use that file to load other modules, and configure Webpack to Uglify the output, transpile ES6 code to ES5, and more.
 
 ## Setting up the Webpack dev server
 
@@ -151,7 +151,7 @@ When I ran `npm run serve`, this was the output:
 -> % npm run serve
 
 > js-games@0.0.1 serve /Users/rmurphey/personal/js-games
-> webpack-dev-server --hot --config ./client/webpack.config.js
+> webpack-dev-server --config ./client/webpack.config.js
 
 Hash: b74b27e56bc0a032a890
 Version: webpack 1.12.11
