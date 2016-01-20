@@ -113,9 +113,9 @@ chunk    {0} number-guessing.js (number-guessing) 25 bytes [rendered]
 webpack: bundle is now VALID.
 ```
 
-I opened the URL from the output (http://localhost:8080/webpack-dev-server/), which presented me with a simple UI provided by the Webpack server. I clicked on the number-guessing link, and when the page loaded, I saw my message in the console. However, the URL was still http://localhost:8080/webpack-dev-server/ -- I wanted to be able to access my test page directly.
+I opened the URL from the output (http://localhost:8080/webpack-dev-server/), which presented me with a simple UI provided by the Webpack server. I clicked on the number-guessing link, and when the page loaded, I saw my message in the console. However, the URL was still http://localhost:8080/webpack-dev-server/, and my actual HTML wasn't being loaded.
 
-I tried navigating to http://localhost:8080/number-guessing/, and while it loaded, there was now an error in the console: the page was trying to access http://localhost:8080/number-guessing/number-guessing.js, and was getting a 404 in response. It seemed that if I wanted to be able to access my test page directly, I was going to need to change the reference to my script in the HTML.
+I wanted to be able to access my test page directly, so I tried navigating to http://localhost:8080/number-guessing/. It loaded, but there was now an error in the console: the page was trying to access http://localhost:8080/number-guessing/number-guessing.js, and was getting a 404 in response. It seemed that if I wanted to be able to access my test page directly, I was going to need to change the reference to my script in the HTML.
 
 Looking back at the output from when I started the Webpack server, I saw `webpack result is served from /` -- this means that my "built" JavaScript was served from the server root. I tried loading http://localhost:8080/number-guessing.js and, indeed, it worked. I changed the script tag in my HTML to reflect the actual location of my built JavaScript bundle, one level up from the HTML file:
 
@@ -124,14 +124,6 @@ Looking back at the output from when I started the Webpack server, I saw `webpac
 ```
 
 With this change, the number-guessing HTML now worked whether I accessed it via the http://localhost:8080/number-guessing/ URL or by clicking on the link in the Webpack server UI.
-
-Some more experimenting showed me that, if I only wanted to use the Webpack server's UI to access my test page, I could just have the script tag point to the *unbuilt* JS file; the Webpack dev server would automatically load the built file in its place:
-
-```html
-<script src="./index.js"></script>
-```
-
-I decided to go with this approach for the time being, though I don't rule out that I'll find the development server to be limiting in some way that will make me want to access the test page directly, in which case I'll need to change my approach.
 
 ## Adding an npm script
 
