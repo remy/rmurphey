@@ -883,5 +883,12 @@
     "tags": [
       "js-games"
     ]
-  }
-}
+  },
+  "notes-on-setting-up-js-project-2016-eslint": {
+    "title": "Notes on setting up a JS project, circa 2016: ESLint",
+    "date": "2016-01-20 21:00:00",
+    "published": true,
+    "tags": [
+      "js-games"
+    ]
+  }}
