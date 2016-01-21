@@ -67,6 +67,16 @@ The generated file was indented at four spaces, and that's when I realized that 
 // ...
 ```
 
+In reading the documentation, I learned that even though my config file said I wanted ES6 support, this support didn't include ES6 modules — if I used `import` or `export` in my code, ESLint would treat it as a syntax error. To allow modules, I needed to add another property to my config: [`ecmaFeatures`](http://eslint.org/docs/user-guide/configuring#specifying-language-options).
+
+```js
+// ...
+"ecmaFeatures": {
+  "modules": true
+}
+// ...
+```
+
 It's also worth noting one of the last lines in the file: `"extends": "eslint:recommended"`. ESLint has a set of recommended rules — such as disallowing `console` statements — that are automatically enforced when this `extends` is present. I can override them if I want by setting new values for those rules in my .eslintrc.js file.
 
 I wanted to try out my setup, but I didn't want to keep typing the full path to the ESLint executable, so I added a new npm script to lint all the files in the client/ directory:
