@@ -197,10 +197,10 @@ module.exports = {
 
 With this change, my npm script was now showing the same thing I was seeing earlier, when I ran the command to start the dev server directly.
 
-I made two more small changes: adding the `--hot` option, to enable [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html); and adding the `--open` option, to automatically open a browser to the dev server whenever I run it:
+I made three more small changes: adding the `--hot` option, to enable [hot module replacement](https://webpack.github.io/docs/hot-module-replacement-with-webpack.html); adding the `--open` option, to automatically open a browser to the dev server whenever I run it; and adding the [`--inline`](https://webpack.github.io/docs/webpack-dev-server.html#inline-mode) option to automatically reload the page when I make changes to the JavaScript:
 
 ```
-"serve": "webpack-dev-server --hot --open --config ./client/webpack.config.js",
+"serve": "webpack-dev-server --hot --open --inline --config ./client/webpack.config.js"
 ```
 
 Lastly, I added a script to generate a build:
@@ -215,4 +215,4 @@ Setting this all up took less time than writing this post, but that's due largel
 
 If you don't want to use one of the many boilerplates that exist, then my main advice would be: "baby steps." Get a tiny thing working, and commit that; then move on to the next tiny thing. It's the process I followed in the setup I outlined above, and it helped me have confidence each step of the way.
 
-You can see the code as of this post [here](https://github.com/rmurphey/js-games/tree/503f10cbc144fa73b114a56eb8cf44ab68728758).
+You can see the code as of this post [here](https://github.com/rmurphey/js-games/tree/1fe5862861181749f53ba54ff74698f3d4499f8e).

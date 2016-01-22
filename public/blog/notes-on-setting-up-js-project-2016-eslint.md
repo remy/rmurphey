@@ -103,4 +103,4 @@ None of this would be very valuable if I had to remember to lint my files whenev
 
 I love how well the [ESLint rules are documented](http://eslint.org/docs/rules/), and the error output of ESLint makes it easy to find the documentation when you want to learn more about the rule that your code has violated. ESLint also makes it easy to [override a rule](http://eslint.org/docs/user-guide/configuring#configuring-rules) for a file or even for a single line. Adding ghooks to the mix allows for future improvements, such as enforcing commit message formats, running tests pre-push, etc.
 
-You can see the code as of this post [here](https://github.com/rmurphey/js-games/tree/4b744613241831ea88576057d6f8c4f20bd7863c).
+You can see the code as of this post [here](https://github.com/rmurphey/js-games/tree/a8b572df9bc1d7812959deb6cc17f949744fbff8).
