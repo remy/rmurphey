@@ -1,18 +1,18 @@
 # Using Objects to Organize Your Code
 
-<p>This is a reprint of an article that originally appeared in the March 2009 issue of <a href="http://jsmag.com">JSMag</a>.</p>
+This is a reprint of an article that originally appeared in the March 2009 issue of [JSMag](http://jsmag.com).
 
-<p>When you move beyond simple snippets of jQuery and start developing more complex user interactions, your code can quickly become unwieldy and difficult to debug. This article shows you how to start thinking about these interactions in terms of the bits of behavior the feature comprises, using the object literal pattern.</p>
+When you move beyond simple snippets of jQuery and start developing more complex user interactions, your code can quickly become unwieldy and difficult to debug. This article shows you how to start thinking about these interactions in terms of the bits of behavior the feature comprises, using the object literal pattern.
 
-<p>In the past few years, JavaScript libraries have given beginning developers the ability to add elaborate interactions to their sites. Some, like jQuery, have a syntax so simple that people with zero programming experience can quickly add bells and whistles to their pages.  Adding all those bells and whistles, even some pretty elaborate ones, seems to be just a few Google searches away. A copy here, a paste there, a plugin or a few dozen lines of custom code — the client is duly impressed, and you’re adding jQuery to your resume.</p>
+In the past few years, JavaScript libraries have given beginning developers the ability to add elaborate interactions to their sites. Some, like jQuery, have a syntax so simple that people with zero programming experience can quickly add bells and whistles to their pages. Adding all those bells and whistles, even some pretty elaborate ones, seems to be just a few Google searches away. A copy here, a paste there, a plugin or a few dozen lines of custom code — the client is duly impressed, and you’re adding jQuery to your resume.
 
-<p>But wait. Now the requirements have changed. Now the thing that needed to work for three elements needs to work for ten. Now your code needs to be reused for a slightly different application where all the IDs are different.  We’ve all seen the snippets that make jQuery (and other libraries) look dead-simple. What those snippets leave out — and hey, they’re just snippets, right? — is how to design your code when your needs go beyond dropping in a plugin or doing some <code>show()</code> and <code>hide()</code>.</p>
+But wait. Now the requirements have changed. Now the thing that needed to work for three elements needs to work for ten. Now your code needs to be reused for a slightly different application where all the IDs are different.  We’ve all seen the snippets that make jQuery (and other libraries) look dead-simple. What those snippets leave out — and hey, they’re just snippets, right? — is how to design your code when your needs go beyond dropping in a plugin or doing some `show()` and `hide()`.
 
-<h2>Introducing the Object Literal pattern</h2>
+## Introducing the Object Literal pattern
 
-<p>The object literal pattern offers a way to organize code by the behaviors it comprises. It’s also a means to keep your code from “polluting the global namespace,” which is a good practice for all projects and imperative for larger ones. It forces you to think at the outset about what your code will do and what pieces need to be in place in order for you to do it. An object literal is a way to encapsulate related behaviors, as shown here:</p>
+The object literal pattern offers a way to organize code by the behaviors it comprises. It’s also a means to keep your code from “polluting the global namespace,” which is a good practice for all projects and imperative for larger ones. It forces you to think at the outset about what your code will do and what pieces need to be in place in order for you to do it. An object literal is a way to encapsulate related behaviors, as shown here:
 
-{% codeblock lang:javascript %}
+```javascript
 var myObjectLiteral = {
     myBehavior1 : function() {
         /* do something */
@@ -22,12 +22,11 @@ var myObjectLiteral = {
         /* do something else */
     }
 };
-{% endcodeblock %}
+```
 
+As an artificially simplistic example, suppose you had the jQuery shown in Listing 2 for showing and hiding content when a list item was clicked.
 
-<p>As an artificially simplistic example, suppose you had the jQuery shown in Listing 2 for showing and hiding content when a list item was clicked.</p>
-
-{% codeblock lang:javascript %}
+```javascript
 $(document).ready(function() {
     $('#myFeature li')
         .append('<div/>')
@@ -40,11 +39,11 @@ $(document).ready(function() {
         $(this).siblings().find('div').hide();
     });
 });
-{% endcodeblock %}
+```
 
-<p>Simple enough, and yet even in this example there are several things you might want to change later — for example, the way you determine the URL for loading the content, the destination of the loaded content, or the show and hide behavior.  An object literal representation of the feature cleanly separates these aspects. It might look like this:</p>
+Simple enough, and yet even in this example there are several things you might want to change later — for example, the way you determine the URL for loading the content, the destination of the loaded content, or the show and hide behavior.  An object literal representation of the feature cleanly separates these aspects. It might look like this:
 
-{% codeblock lang:javascript %}
+```javascript
 var myFeature = {
     config : {
         wrapper : '#myFeature',
@@ -84,32 +83,27 @@ var myFeature = {
 };
 
 $(document).ready(function() { myFeature.init(); });
-{% endcodeblock %}
+```
 
+Because the initial example was incredibly simplistic, the object literal incarnation is longer. Truth be told, the object literal method generally won’t save you lines of code. What it will save is headaches. By using an object literal, we’ve broken our code into its logical parts, making it easy to locate the things we might want to change down the road. We’ve made our feature extendable, by providing the ability to pass in overrides to the default configuration. And, we’ve done some limited self-documentation — it’s easy to see at a glance what the feature does. As your needs grow beyond the simplicity of this example the benefits of the structure will become clearer, as you’ll see below.
 
-<p>Because the initial example was incredibly simplistic, the object literal incarnation is longer. Truth be told, the object literal method generally won’t save you lines of code. What it will save is headaches. By using an object literal, we’ve broken our code into its logical parts, making it easy to locate the things we might want to change down the road. We’ve made our feature extendable, by providing the ability to pass in overrides to the default configuration. And, we’ve done some limited self-documentation — it’s easy to see at a glance what the feature does. As your needs grow beyond the simplicity of this example the benefits of the structure will become clearer, as you’ll see below.</p>
+_*Note: For an excellent primer on objects, properties, and methods, check out [Object-Oriented JavaScript: Create scalable, reusable high-quality JavaScript applications and libraries](http://www.amazon.com/Object-Oriented-JavaScript-high-quality-applications-libraries/dp/1847194141) by Stoyan Stefanov. You may also want to read up on JSON (JavaScript Object Notation).*_
 
-<p>_Note: For an excellent primer on objects, properties, and methods, check out <a href="http://www.amazon.com/Object-Oriented-JavaScript-high-quality-applications-libraries/dp/1847194141">Object-Oriented JavaScript: Create scalable, reusable high-quality JavaScript applications and libraries</a> by Stoyan Stefanov. You may also want to read up on JSON (JavaScript Object Notation)._</p>
+## An in-depth example
 
-<h2>An in-depth example</h2>
+Our mission will be to create a UI element that features multiple pieces of content divided into several sections. Clicking on a section will show a list of items in the section; clicking on an item in the left nav will show the item in the content area. Whenever a section is shown, the first item in the section should be shown. The first section should be shown when the page loads.
 
-<p>Our mission will be to create a UI element that features multiple pieces of content divided into several sections. Clicking on a section will show a list of items in the section; clicking on an item in the left nav will show the item in the content area. Whenever a section is shown, the first item in the section should be shown. The first section should be shown when the page loads.</p>
+### Step 1: Crafting the HTML
 
-<h3>Step 1: Crafting the HTML</h3>
+Writing good semantic HTML is a crucial prerequisite to writing good JavaScript, so let’s start by thinking about what the HTML for something like this might look like. The HTML should:
 
-<p>Writing good semantic HTML is a crucial prerequisite to writing good JavaScript, so let’s start by thinking about what the HTML for something like this might look like. The HTML should:</p>
-
-<ul>
-<li>Make sense (and work) when JavaScript isn’t available.</li>
-<li>Provide a predictable DOM to which we can attach JavaScript.</li>
-<li>Avoid unnecessary IDs and classes (and you might be surprised by how few are necessary).</li>
-</ul>
-
+* Make sense (and work) when JavaScript isn’t available.
+* Provide a predictable DOM to which we can attach JavaScript.
+* Avoid unnecessary IDs and classes (and you might be surprised by how few are necessary).
 
 With those guidelines in mind, we’ll start with this html.
 
-{% codeblock lang:html %}
-
+```html
 <h1>This is My Nifty Feature</h1>
 
 <div id="myFeature">
@@ -170,27 +164,23 @@ With those guidelines in mind, we’ll start with this html.
 
   </ul>
 </div>
-{% endcodeblock %}
+```
 
+Note that we haven’t included any markup to display the section navigation or the item navigation; those pieces will be added by jQuery since they will only work with jQuery; non-JavaScript users will get nice semantic markup. (If there’s anything surprising or confusing in that HTML, now would be a good time to read up on POSH (plain-old semantic HTML) and progressive enhancement.)
 
-Note that we haven’t included any markup to display the section navigation or the item navigation; those pieces will be added by jQuery since they will only work with jQuery; non-JavaScript users will get nice semantic markup. (If there’s anything surprising or confusing in that HTML, now would be a good time to read up on POSH (plain-old semantic HTML) and progressive enhancement.)</p>
+### Step 2: Scaffolding the Object
 
-<h3>Step 2: Scaffolding the Object</h3>
+My first step in creating an object for a feature is to create “stubs” within the object. Stubs are basically placeholders; they’re the outline for the feature we’re going to build. Our object will have the following methods:
 
-<p>My first step in creating an object for a feature is to create “stubs” within the object. Stubs are basically placeholders; they’re the outline for the feature we’re going to build. Our object will have the following methods:</p>
+* `myFeature.init()` will run on `$(document).ready()`. It will turn the semantic HTML we start with into a JavaScript-enabled user interface.
+* `myFeature.buildSectionNav()` will be called by `myFeature.init()`. It will take a jQuery object that contains all of the sections from the semantic HTML and use those sections to build the top navigation. It will bind the click handlers to the top navigation items so that clicking on them will show the appropriate section.
+* `myFeature.buildItemNav()` will be called by `myFeature.showSection()`. It will ake a jQuery object that contains all of the items associated with the section from the semantic HTML, and use them to build the side navigation. It will bind the click handlers to the side navigation items so that clicking on them will show the appropriate content.
+* `myFeature.showSection()` will be called when the user clicks on an item in the top navigation. It will use the navigation item that’s clicked on to figure out which section to show from the semantic HTML.
+* `myFeature.showContentItem()` will be called when the user clicks on an item in the side navigation. It will use the navigation item that’s clicked on to figure out which content item to show from the semantic HTML.
 
-<ul>
-<li><code>myFeature.init()</code> will run on <code>$(document).ready()</code>. It will turn the semantic HTML we start with into a JavaScript-enabled user interface.</li>
-<li><code>myFeature.buildSectionNav()</code> will be called by <code>myFeature.init()</code>. It will take a jQuery object that contains all of the sections from the semantic HTML and use those sections to build the top navigation. It will bind the click handlers to the top navigation items so that clicking on them will show the appropriate section.</li>
-<li><code>myFeature.buildItemNav()</code> will be called by <code>myFeature.showSection()</code>. It will ake a jQuery object that contains all of the items associated with the section from the semantic HTML, and use them to build the side navigation. It will bind the click handlers to the side navigation items so that clicking on them will show the appropriate content.</li>
-<li><code>myFeature.showSection()</code> will be called when the user clicks on an item in the top navigation. It will use the navigation item that’s clicked on to figure out which section to show from the semantic HTML.</li>
-<li><code>myFeature.showContentItem()</code> will be called when the user clicks on an item in the side navigation. It will use the navigation item that’s clicked on to figure out which content item to show from the semantic HTML.</li>
-</ul>
+We’ll also make room for a configuration property, `myFeature.config`, which will be a single location for setting default values rather than scattering them throughout the code. We’ll include the ability to override the defaults when we define the `myFeature.init()` method.
 
-
-<p>We’ll also make room for a configuration property, <code>myFeature.config</code>, which will be a single location for setting default values rather than scattering them throughout the code. We’ll include the ability to override the defaults when we define the <code>myFeature.init()</code> method.</p>
-
-{% codeblock lang:javascript %}
+```javascript
 var myFeature = {
     'config' : { },
     'init' : function() { },
@@ -199,14 +189,13 @@ var myFeature = {
     'showSection' : function() { },
     'showContentItem' : function() { }
 };
-{% endcodeblock %}
+```
 
-<h3>Step 3: The Code</h3>
+### Step 3: The Code
 
-<p>Once we’ve built this skeleton, it’s time to start coding. Let’s start by setting up a simple <code>myFeature.config</code> object and writing the <code>myFeature.init()</code> method:</p>
+Once we’ve built this skeleton, it’s time to start coding. Let’s start by setting up a simple `myFeature.config` object and writing the `myFeature.init()` method:
 
-
-{% codeblock lang:javascript %}
+```javascript
 'config' : {
     // default container is #myFeature
     'container' : $('#myFeature')
@@ -251,12 +240,11 @@ var myFeature = {
   // for this iteration, but it can come in handy
   myFeature.initialized = true;
 }
-{% endcodeblock %}
+```
 
+Next we’ll create the `myFeature.buildSectionNav()` method:
 
-<p>Next we’ll create the <code>myFeature.buildSectionNav()</code> method:</p>
-
-{% codeblock lang:javascript %}
+```javascript
 'buildSectionNav' : function($sections) {
 
     // iterate over the provided list of sections
@@ -286,11 +274,11 @@ var myFeature = {
           .click(myFeature.showSection);
     });
 }
-{% endcodeblock %}
+```
 
-<p>Next we’ll create the <code>myFeature.buildItemNav()</code> method:</p>
+Next we’ll create the `myFeature.buildItemNav()` method:
 
-{% codeblock lang:javascript %}
+```javascript
 // iterate over the provided list of items
 $items.each(function() {
 
@@ -320,11 +308,11 @@ $items.each(function() {
       .click(myFeature.showContentItem);
 
 });
-{% endcodeblock %}
+```
 
-<p>Finally, we’ll write the methods for showing sections and content items:</p>
+Finally, we’ll write the methods for showing sections and content items:
 
-{% codeblock lang:javascript %}
+```javascript
 'showSection' : function() {
     // capture the list item that was clicked on
   var $li = $(this);
@@ -368,20 +356,19 @@ $items.each(function() {
   // use the item's HTML to populate the content area
   myFeature.$content.html($item.html());
 }
-{% endcodeblock %}
+```
 
+All that’s left to do is to call the `myFeature.init()` method:
 
-<p>All that’s left to do is to call the myFeature.init() method:</p>
-
-{% codeblock lang:javascript %}
+```javascript
 $(document).ready(myFeature.init);
-{% endcodeblock %}
+```
 
-<h3>Step 4: Changing Requirements</h3>
+### Step 4: Changing Requirements
 
-<p>No project is complete without some last-minute change in the requirements, right? Here’s where the object literal approach really shines by making it quick and fairly painless to implement last-minute changes.  What if we need to get the content item excerpts via AJAX instead of from the HTML? Assuming the backend is set up to handle it, try this:</p>
+No project is complete without some last-minute change in the requirements, right? Here’s where the object literal approach really shines by making it quick and fairly painless to implement last-minute changes.  What if we need to get the content item excerpts via AJAX instead of from the HTML? Assuming the backend is set up to handle it, try this:
 
-{% codeblock lang:javascript %}
+```javascript
 var myFeature = {
 
     'config' : {
@@ -427,13 +414,11 @@ var myFeature = {
     }
 
 };
-{% endcodeblock %}
+```
 
+Do you need more flexibility? There’s a lot more you can configure (and therefore override) if you really want to make this flexible. For example, you can use `myFeature.config` to specify how to find and process the title text for each item in the left nav.
 
-<p>Do you need more flexibility? There’s a lot more you can configure (and therefore override) if you really want to make this flexible. For example, you can use myFeature.config to specify how to find and process the title text for each item in the left nav.</p>
-
-{% codeblock lang:javascript %}
-
+```javascript
 var myFeature = {
     'config' : {
         'container' : $('#myFeature'),
@@ -491,32 +476,28 @@ var myFeature = {
   }
 
 };
-{% endcodeblock %}
+```
 
+Once you’ve added defaults to the config object, you can override them when you call `myFeature.init()`:
 
-
-<p>Once you’ve added defaults to the config object, you can override them when you call <code>myFeature.init()</code>:</p>
-
-{% codeblock lang:javascript %}
+```javascript
 $(document).ready(function() {
     myFeature.init({ 'itemNavSelector' : 'h2' });
 });
-{% endcodeblock %}
+```
 
-<p>Beyond the scope of this article (but also interesting to contemplate and much easier with the object literal pattern) is this: making the back button retrace your path through the tabs using the jQuery history plugin. I leave it as an exercise for the reader.</p>
+Beyond the scope of this article (but also interesting to contemplate and much easier with the object literal pattern) is this: making the back button retrace your path through the tabs using the jQuery history plugin. I leave it as an exercise for the reader.
 
-<h2>Conclusion</h2>
+## Conclusion
 
-<p>If you’ve stepped through the code examples in this column, you should have a basic understanding of the object literal pattern and how it might prove useful to you as you develop more complex features and interactions. You also have access to some code that you can use to build on this basic foundation.</p>
+If you’ve stepped through the code examples in this column, you should have a basic understanding of the object literal pattern and how it might prove useful to you as you develop more complex features and interactions. You also have access to some code that you can use to build on this basic foundation.
 
-<p>I encourage you to give this pattern a try the next time you find yourself writing more than a few lines of JavaScript — it forces you to think through the elements and behaviors that make up a complex feature or interaction. Once you become proficient, it provides a sturdy foundation for extending and reusing your code.</p>
+I encourage you to give this pattern a try the next time you find yourself writing more than a few lines of JavaScript — it forces you to think through the elements and behaviors that make up a complex feature or interaction. Once you become proficient, it provides a sturdy foundation for extending and reusing your code.
 
-<h2>Learn More</h2>
+## Learn More
 
-<ul>
-<li><a href="http://docs.jquery.com/Data">More on the jQuery <code>data()</code> method</a></li>
-<li><a href="http://www.wait-till-i.com/2006/02/16/show-love-to-the-object-literal/">More praise for the object literal pattern</a></li>
-<li><a href="http://www.mikage.to/jquery/jquery_history.html">The jQuery History plugin</a></li>
-<li><a href="http://paulirish.com/2009/markup-based-unobtrusive-comprehensive-dom-ready-execution/">An interesting application of the object literal pattern for architecting code for multiple page types</a></li>
-<li><a href="http://www.slideshare.net/rmurphey/using-objects-to-organize-your-jquery-code">My presentation at the 2009 jQuery Conference about code organization</a></li>
-</ul>
+* [More on the jQuery `data()` method](http://docs.jquery.com/Data)
+* [More praise for the object literal pattern](http://www.wait-till-i.com/2006/02/16/show-love-to-the-object-literal/)
+* [The jQuery History plugin](http://www.mikage.to/jquery/jquery_history.html)
+* [An interesting application of the object literal pattern for architecting code for multiple page types](http://paulirish.com/2009/markup-based-unobtrusive-comprehensive-dom-ready-execution/)
+* [My presentation at the 2009 jQuery Conference about code organization](http://www.slideshare.net/rmurphey/using-objects-to-organize-your-jquery-code)

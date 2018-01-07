@@ -1,15 +1,16 @@
 {
-  "name": "remysharp.com",
+  "name": "rmurphey.com",
   "version": "2.33.10",
-  "description": "Remy Sharp's b:log",
+  "description": "Rebecca Murphey's blog",
   "main": "server.js",
   "engines": {
-    "node": ">=0.10.3 <0.12"
+    "node": ">=0.12 <1"
   },
   "scripts": {
     "test": "node_modules/.bin/harp compile",
     "build": "node server.js compile",
-    "start": "node_modules/.bin/harp start"
+    "start": "node server",
+    "heroku": "npm run build && npm start"
   },
   "bin": {
     "blog": "./bin/cli.js"
@@ -22,6 +23,7 @@
     "glob": "~4.0.5",
     "harp": "^0.17.0",
     "moment": "~2.8.2",
+    "node-sass": "^3.4.2",
     "promise": "^6.0.1",
     "router-stupid": "~0.7.0",
     "semver": "~3.0.1",

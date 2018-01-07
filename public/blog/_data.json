@@ -11,7 +11,7 @@
       "thoughts"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/my-case-for-standards-based-web-layouts.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/my-case-for-standards-based-web-layouts.md"
   },
   "remixing-trac-with-jquery": {
     "date": "2007-12-03 00:00:00",
@@ -24,7 +24,7 @@
       "trac"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/remixing-trac-with-jquery.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/remixing-trac-with-jquery.md"
   },
   "getting-non-developers-on-the-subversion-bandwagon": {
     "date": "2007-12-04 00:00:00",
@@ -36,7 +36,7 @@
       "systems"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/getting-non-developers-on-the-subversion-bandwagon.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/getting-non-developers-on-the-subversion-bandwagon.md"
   },
   "13-seconds-attribute-vs-id-selectors-in-jquery": {
     "date": "2007-12-05 00:00:00",
@@ -50,15 +50,17 @@
       "vim"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/13-seconds-attribute-vs-id-selectors-in-jquery.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/13-seconds-attribute-vs-id-selectors-in-jquery.md"
   },
   "software-without-which-i-d-be-hard-pressed-to-do-my-job": {
     "date": "2007-12-05 00:00:00",
     "title": "Software without which I'd be hard-pressed to do my job",
     "comments": true,
-    "categories": "systems",
+    "categories": [
+      "systems"
+    ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/software-without-which-i-d-be-hard-pressed-to-do-my-job.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/software-without-which-i-d-be-hard-pressed-to-do-my-job.md"
   },
   "more-on-jquery-selectors": {
     "date": "2007-12-07 00:00:00",
@@ -70,7 +72,7 @@
       "selectors"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/more-on-jquery-selectors.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/more-on-jquery-selectors.md"
   },
   "standards-for-html-emails": {
     "date": "2007-12-07 00:00:00",
@@ -82,7 +84,7 @@
       "standards"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/standards-for-html-emails.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/standards-for-html-emails.md"
   },
   "datejs": {
     "date": "2007-12-09 00:00:00",
@@ -94,14 +96,14 @@
       "javascript"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/datejs.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/datejs.md"
   },
   "for-only-25-more-this-gift-card-comes-in-green": {
     "date": "2007-12-09 00:00:00",
     "title": "For only $25 more, this gift card comes in green",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/for-only-25-more-this-gift-card-comes-in-green.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/for-only-25-more-this-gift-card-comes-in-green.md"
   },
   "using-ems-for-font-sizing-in-css": {
     "date": "2007-12-09 00:00:00",
@@ -114,7 +116,7 @@
       "thoughts"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/using-ems-for-font-sizing-in-css.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/using-ems-for-font-sizing-in-css.md"
   },
   "insert-jquery-into-any-page-using-a-bookmarklet": {
     "date": "2007-12-10 00:00:00",
@@ -127,7 +129,7 @@
       "jquery"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/insert-jquery-into-any-page-using-a-bookmarklet.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/insert-jquery-into-any-page-using-a-bookmarklet.md"
   },
   "in-case-you-thought-ie6-was-going-away": {
     "date": "2007-12-11 00:00:00",
@@ -135,7 +137,7 @@
     "comments": true,
     "categories": "front-end development",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/in-case-you-thought-ie6-was-going-away.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/in-case-you-thought-ie6-was-going-away.md"
   },
   "jquery-build-table-from-json-data": {
     "date": "2007-12-12 00:00:00",
@@ -146,7 +148,7 @@
       "jquery"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/jquery-build-table-from-json-data.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/jquery-build-table-from-json-data.md"
   },
   "jquery-ie7-operation-aborted-error": {
     "date": "2007-12-14 00:00:00",
@@ -158,7 +160,7 @@
       "troubleshooting"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/jquery-ie7-operation-aborted-error.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/jquery-ie7-operation-aborted-error.md"
   },
   "how-i-learned-css": {
     "date": "2007-12-24 00:00:00",
@@ -170,7 +172,7 @@
       "thoughts"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/how-i-learned-css.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/how-i-learned-css.md"
   },
   "determine-the-order-of-two-dom-elements": {
     "date": "2007-12-30 00:00:00",
@@ -182,31 +184,45 @@
       "plugins"
     ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/determine-the-order-of-two-dom-elements.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/determine-the-order-of-two-dom-elements.md"
   },
   "update-page-using-json-data": {
     "date": "2008-01-02 00:00:00",
     "title": "Update page using JSON data",
     "comments": true,
-    "categories": "howto, jquery, plugins",
+    "categories": [
+      "howto",
+      "jquery",
+      "plugins"
+    ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/update-page-using-json-data.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/update-page-using-json-data.md"
   },
   "suspicious-stumbleupon-bounce-rates": {
     "date": "2008-01-03 00:00:00",
     "title": "Suspicious StumbleUpon Bounce Rates?",
     "comments": true,
-    "categories": "analytics, blogging, bounce rate, google, stumbleupon",
+    "categories": [
+      "analytics",
+      "blogging",
+      "bounce rate",
+      "google",
+      "stumbleupon"
+    ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/suspicious-stumbleupon-bounce-rates.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/suspicious-stumbleupon-bounce-rates.md"
   },
   "salivating-over-server-side-javascript": {
     "date": "2008-01-04 00:00:00",
     "title": "Salivating over server-side Javascript",
     "comments": true,
-    "categories": "front-end development, javascript, thoughts",
+    "categories": [
+      "front-end development",
+      "javascript",
+      "thoughts"
+    ],
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/salivating-over-server-side-javascript.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/salivating-over-server-side-javascript.md"
   },
   "unobtrusive-cross-browser-method-to-add-icons-to-links": {
     "date": "2008-01-06 00:00:00",
@@ -214,7 +230,7 @@
     "comments": true,
     "categories": "front-end development, howto, jquery",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/unobtrusive-cross-browser-method-to-add-icons-to-links.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/unobtrusive-cross-browser-method-to-add-icons-to-links.md"
   },
   "cycle-through-list-elements-with-jquery": {
     "date": "2008-01-08 00:00:00",
@@ -222,7 +238,7 @@
     "comments": true,
     "categories": "howto, jquery",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/cycle-through-list-elements-with-jquery.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/cycle-through-list-elements-with-jquery.md"
   },
   "solved-ajax-returns-bad-results-in-internet-explorer": {
     "date": "2008-01-10 00:00:00",
@@ -230,7 +246,7 @@
     "comments": true,
     "categories": "ajax, ie6, internet explorer, javascript",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/solved-ajax-returns-bad-results-in-internet-explorer.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/solved-ajax-returns-bad-results-in-internet-explorer.md"
   },
   "fix-uneven-line-lengths-in-headlines": {
     "date": "2008-01-13 00:00:00",
@@ -238,7 +254,7 @@
     "comments": true,
     "categories": "howto, jquery",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/fix-uneven-line-lengths-in-headlines.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/fix-uneven-line-lengths-in-headlines.md"
   },
   "i-have-discovered-a-use-for-dreamweaver-s-design-view-no-really": {
     "date": "2008-01-18 00:00:00",
@@ -246,7 +262,7 @@
     "comments": true,
     "categories": "front-end development",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/i-have-discovered-a-use-for-dreamweaver-s-design-view-no-really.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/i-have-discovered-a-use-for-dreamweaver-s-design-view-no-really.md"
   },
   "cache-regexes-in-javascript": {
     "date": "2008-01-29 00:00:00",
@@ -254,7 +270,7 @@
     "comments": true,
     "categories": "javascript",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/cache-regexes-in-javascript.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/cache-regexes-in-javascript.md"
   },
   "selectors-in-jquery": {
     "date": "2008-02-05 00:00:00",
@@ -262,7 +278,7 @@
     "comments": true,
     "categories": "jquery",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/selectors-in-jquery.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/selectors-in-jquery.md"
   },
   "back-on-the-air": {
     "date": "2008-02-22 00:00:00",
@@ -270,7 +286,7 @@
     "comments": true,
     "categories": "",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/back-on-the-air.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/back-on-the-air.md"
   },
   "bye-bye-yui-bloat": {
     "date": "2008-03-14 00:00:00",
@@ -278,7 +294,7 @@
     "comments": true,
     "categories": "front-end development, javascript, yui",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/bye-bye-yui-bloat.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/bye-bye-yui-bloat.md"
   },
   "fix-for-slow-loading-google-ads": {
     "date": "2008-04-07 00:00:00",
@@ -286,7 +302,7 @@
     "comments": true,
     "categories": "howto, javascript, troubleshooting",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/fix-for-slow-loading-google-ads.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/fix-for-slow-loading-google-ads.md"
   },
   "remote-javascript-with-document-write-is-killing-me": {
     "date": "2008-04-11 00:00:00",
@@ -294,7 +310,7 @@
     "comments": true,
     "categories": "front-end development, javascript",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/remote-javascript-with-document-write-is-killing-me.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/remote-javascript-with-document-write-is-killing-me.md"
   },
   "another-cautionary-remote-javascript-tale": {
     "date": "2008-05-19 00:00:00",
@@ -302,7 +318,7 @@
     "comments": true,
     "categories": "front-end development, javascript",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/another-cautionary-remote-javascript-tale.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/another-cautionary-remote-javascript-tale.md"
   },
   "skipping-photoshop-for-web-design": {
     "date": "2008-06-06 00:00:00",
@@ -310,7 +326,7 @@
     "comments": true,
     "categories": "css",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/skipping-photoshop-for-web-design.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/skipping-photoshop-for-web-design.md"
   },
   "centering-images": {
     "date": "2008-06-13 00:00:00",
@@ -318,7 +334,7 @@
     "comments": true,
     "categories": "css, front-end development",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/centering-images.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/centering-images.md"
   },
   "seeking-a-web-designer": {
     "date": "2008-07-14 00:00:00",
@@ -326,7 +342,7 @@
     "comments": true,
     "categories": "",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/seeking-a-web-designer.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/seeking-a-web-designer.md"
   },
   "5-reasons-you-don-t-really-want-a-jack-of-all-trades-developer": {
     "date": "2008-08-02 00:00:00",
@@ -334,7 +350,7 @@
     "comments": true,
     "categories": "front-end development, hiring tips, thoughts, web developer",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/5-reasons-you-don-t-really-want-a-jack-of-all-trades-developer.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/5-reasons-you-don-t-really-want-a-jack-of-all-trades-developer.md"
   },
   "planning-a-wordpress-cms-site": {
     "date": "2008-09-21 00:00:00",
@@ -342,7 +358,7 @@
     "comments": true,
     "categories": "howto, small business websites",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/planning-a-wordpress-cms-site.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/planning-a-wordpress-cms-site.md"
   },
   "notes-on-handing-off-a-design-to-a-front-end-developer": {
     "date": "2008-09-22 00:00:00",
@@ -350,7 +366,7 @@
     "comments": true,
     "categories": "freelancing, front-end development",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/notes-on-handing-off-a-design-to-a-front-end-developer.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/notes-on-handing-off-a-design-to-a-front-end-developer.md"
   },
   "solution-for-google-map-contents-not-showing": {
     "date": "2008-11-16 00:00:00",
@@ -358,7 +374,7 @@
     "comments": true,
     "categories": "front-end development, troubleshooting",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/solution-for-google-map-contents-not-showing.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/solution-for-google-map-contents-not-showing.md"
   },
   "avoid-bare-class-selectors-in-jquery": {
     "date": "2008-12-05 00:00:00",
@@ -366,7 +382,7 @@
     "comments": true,
     "categories": "jquery, optimization, selectors",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/avoid-bare-class-selectors-in-jquery.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/avoid-bare-class-selectors-in-jquery.md"
   },
   "update-tracking-outbound-clicks-with-google-analytics-and-jquery": {
     "date": "2008-12-05 00:00:00",
@@ -374,7 +390,7 @@
     "comments": true,
     "categories": "analytics, jquery",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/update-tracking-outbound-clicks-with-google-analytics-and-jquery.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/update-tracking-outbound-clicks-with-google-analytics-and-jquery.md"
   },
   "jquery-style-guide-from-benjamin-sterling": {
     "date": "2008-12-07 00:00:00",
@@ -382,7 +398,7 @@
     "comments": true,
     "categories": "jquery",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/jquery-style-guide-from-benjamin-sterling.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/jquery-style-guide-from-benjamin-sterling.md"
   },
   "jquery-validation-and-tinymce": {
     "date": "2009-01-12 00:00:00",
@@ -390,7 +406,7 @@
     "comments": true,
     "categories": "howto, jquery",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/jquery-validation-and-tinymce.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/jquery-validation-and-tinymce.md"
   },
   "css-vs-tables-maybe-the-design-is-to-blame": {
     "date": "2009-02-14 00:00:00",
@@ -398,7 +414,7 @@
     "comments": true,
     "categories": "css, front-end development",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/css-vs-tables-maybe-the-design-is-to-blame.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/css-vs-tables-maybe-the-design-is-to-blame.md"
   },
   "on-gaining-respect-as-a-front-end-developer": {
     "date": "2009-04-13 00:00:00",
@@ -406,7 +422,7 @@
     "comments": true,
     "categories": "front-end development, thoughts",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/on-gaining-respect-as-a-front-end-developer.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/on-gaining-respect-as-a-front-end-developer.md"
   },
   "jquery-validation-indicate-that-at-least-one-element-in-a-group-is-required": {
     "date": "2009-04-15 00:00:00",
@@ -414,7 +430,7 @@
     "comments": true,
     "categories": "form validation, jquery, plugins",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/jquery-validation-indicate-that-at-least-one-element-in-a-group-is-required.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/jquery-validation-indicate-that-at-least-one-element-in-a-group-is-required.md"
   },
   "on-speaking-at-the-2009-jquery-conference": {
     "date": "2009-09-16 00:00:00",
@@ -422,7 +438,7 @@
     "comments": true,
     "categories": "jquery, speaking, thoughts",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/on-speaking-at-the-2009-jquery-conference.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/on-speaking-at-the-2009-jquery-conference.md"
   },
   "inaugural-north-carolina-jquery-camp": {
     "date": "2009-09-19 00:00:00",
@@ -430,7 +446,7 @@
     "comments": true,
     "categories": "jquery, speaking",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/inaugural-north-carolina-jquery-camp.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/inaugural-north-carolina-jquery-camp.md"
   },
   "using-objects-to-organize-your-code": {
     "date": "2009-10-15 00:00:00",
@@ -438,7 +454,7 @@
     "comments": true,
     "categories": "howto, jquery",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/using-objects-to-organize-your-code.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/using-objects-to-organize-your-code.md"
   },
   "introducing-yayquery-a-jquery-podcast": {
     "date": "2009-11-06 00:00:00",
@@ -446,7 +462,7 @@
     "comments": true,
     "categories": "jquery, speaking",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/introducing-yayquery-a-jquery-podcast.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/introducing-yayquery-a-jquery-podcast.md"
   },
   "dojo-confessions-or-how-i-gave-up-my-jquery-security-blanket-and-lived-to-tell-the-tale": {
     "date": "2009-11-12 00:00:00",
@@ -454,7 +470,7 @@
     "comments": true,
     "categories": "dojo, jquery",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/dojo-confessions-or-how-i-gave-up-my-jquery-security-blanket-and-lived-to-tell-the-tale.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/dojo-confessions-or-how-i-gave-up-my-jquery-security-blanket-and-lived-to-tell-the-tale.md"
   },
   "txjs-js-bbq-you": {
     "date": "2010-03-18 00:00:00",
@@ -462,7 +478,7 @@
     "comments": true,
     "categories": "javascript, txjs",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/txjs-js-bbq-you.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/txjs-js-bbq-you.md"
   },
   "lessons-learned-from-taking-on-a-project-in-crisis": {
     "date": "2010-04-03 00:00:00",
@@ -470,7 +486,7 @@
     "comments": true,
     "categories": "dojo, freelancing, front-end development, thoughts",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/lessons-learned-from-taking-on-a-project-in-crisis.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/lessons-learned-from-taking-on-a-project-in-crisis.md"
   },
   "announcing-jquery-fundamentals-an-open-source-jquery-training-curriculum": {
     "date": "2010-06-17 00:00:00",
@@ -478,7 +494,7 @@
     "comments": true,
     "categories": "front-end development, howto, javascript, jquery, jquery fundamentals, training",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/announcing-jquery-fundamentals-an-open-source-jquery-training-curriculum.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/announcing-jquery-fundamentals-an-open-source-jquery-training-curriculum.md"
   },
   "patterns-for-dry-er-javascript": {
     "date": "2010-07-12 00:00:00",
@@ -486,7 +502,7 @@
     "comments": true,
     "categories": "front-end development, howto, javascript",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/patterns-for-dry-er-javascript.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/patterns-for-dry-er-javascript.md"
   },
   "i-need-to-say-a-few-things": {
     "date": "2010-07-27 00:00:00",
@@ -494,7 +510,7 @@
     "comments": true,
     "categories": "speaking, thoughts",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/i-need-to-say-a-few-things.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/i-need-to-say-a-few-things.md"
   },
   "on-jquery-large-applications": {
     "date": "2010-08-09 00:00:00",
@@ -502,7 +518,7 @@
     "comments": true,
     "categories": "jquery, large-applications",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/on-jquery-large-applications.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/on-jquery-large-applications.md"
   },
   "on-rolling-your-own": {
     "date": "2010-08-11 00:00:00",
@@ -510,7 +526,7 @@
     "comments": true,
     "categories": "dojo, jquery, large-applications",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/on-rolling-your-own.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/on-rolling-your-own.md"
   },
   "2-years-in-some-thoughts-on-working-for-yourself": {
     "date": "2010-08-14 00:00:00",
@@ -518,7 +534,7 @@
     "comments": true,
     "categories": "",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/2-years-in-some-thoughts-on-working-for-yourself.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/2-years-in-some-thoughts-on-working-for-yourself.md"
   },
   "enterprisedojo-com-uses-jquery": {
     "date": "2010-08-21 00:00:00",
@@ -526,7 +542,7 @@
     "comments": true,
     "categories": "dojo, jquery, large-applications",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/enterprisedojo-com-uses-jquery.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/enterprisedojo-com-uses-jquery.md"
   },
   "dear-conference-organizer": {
     "date": "2010-08-24 00:00:00",
@@ -534,7 +550,7 @@
     "comments": true,
     "categories": "conferences",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/dear-conference-organizer.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/dear-conference-organizer.md"
   },
   "code-org-take-2-structuring-javascript-applications": {
     "date": "2010-08-27 00:00:00",
@@ -542,7 +558,7 @@
     "comments": true,
     "categories": "javascript, large-applications",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/code-org-take-2-structuring-javascript-applications.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/code-org-take-2-structuring-javascript-applications.md"
   },
   "making-sense-of-dojo-when-a-simple-xhr-caching-example": {
     "date": "2010-08-29 00:00:00",
@@ -550,7 +566,7 @@
     "comments": true,
     "categories": "deferreds, dojo, dojo.when, promises",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/making-sense-of-dojo-when-a-simple-xhr-caching-example.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/making-sense-of-dojo-when-a-simple-xhr-caching-example.md"
   },
   "in-search-of-javascript-developers-a-gist": {
     "date": "2010-09-15 00:00:00",
@@ -558,31 +574,31 @@
     "comments": true,
     "categories": "javascript, performance, refactoring",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/in-search-of-javascript-developers-a-gist.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/in-search-of-javascript-developers-a-gist.md"
   },
   "functionality-focused-code-organization": {
     "title": "Functionality-Focused Code Organization",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/functionality-focused-code-organization.md",
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/functionality-focused-code-organization.md",
     "date": "2010-10-17 00:00:00"
   },
   "jquery-breakout-women-and-conferences": {
     "title": "jQuery Conference Breakout Session: Women & Conferences",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/jquery-breakout-women-and-conferences.md",
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/jquery-breakout-women-and-conferences.md",
     "date": "2010-10-19 00:00:00"
   },
   "on-conferencing": {
     "title": "On Conferencing",
     "date": "2010-11-20 00:00:00",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/on-conferencing.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/on-conferencing.md"
   },
   "deferreds-coming-to-jquery": {
     "title": "Deferreds coming to jQuery 1.5?",
     "date": "2010-12-25 00:00:00",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/deferreds-coming-to-jquery.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/deferreds-coming-to-jquery.md"
   },
   "the-future-of-jquery-fundamentals-and-a-confession": {
     "date": "2011-03-17 00:00:00",
@@ -590,7 +606,7 @@
     "comments": true,
     "categories": "jquery fundamentals, training",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/the-future-of-jquery-fundamentals-and-a-confession.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/the-future-of-jquery-fundamentals-and-a-confession.md"
   },
   "when-you-re-building-a-non-trivial-js-application": {
     "date": "2011-03-30 00:00:00",
@@ -598,7 +614,7 @@
     "comments": true,
     "categories": "javascript",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/when-you-re-building-a-non-trivial-js-application.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/when-you-re-building-a-non-trivial-js-application.md"
   },
   "a-dojo-boilerplate": {
     "date": "2011-04-04 00:00:00",
@@ -606,7 +622,7 @@
     "comments": true,
     "categories": "",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/a-dojo-boilerplate.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/a-dojo-boilerplate.md"
   },
   "modern-javascript": {
     "title": "Modern JavaScript",
@@ -614,7 +630,7 @@
     "comments": false,
     "categories": "javascript",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/modern-javascript.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/modern-javascript.md"
   },
   "objects-as-arguments": {
     "title": "Objects as Arguments: Where do you draw the line?",
@@ -622,14 +638,14 @@
     "comments": false,
     "categories": "javascript",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/objects-as-arguments.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/objects-as-arguments.md"
   },
   "getting-better-at-javascript": {
     "title": "Getting Better at JavaScript",
     "comments": false,
     "categories": "javascript",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/getting-better-at-javascript.md",
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/getting-better-at-javascript.md",
     "date": "2011-05-20 00:00:00"
   },
   "a-new-chapter": {
@@ -638,7 +654,7 @@
     "comments": true,
     "categories": "",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/a-new-chapter.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/a-new-chapter.md"
   },
   "lessons-from-a-rewrite": {
     "title": "Lessons From a Rewrite",
@@ -646,67 +662,131 @@
     "comments": true,
     "categories": "toura, javascript, dojo, large apps",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/lessons-from-a-rewrite.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/lessons-from-a-rewrite.md"
   },
   "object-literals": {
     "title": "Using object literals for flow control and settings",
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/object-literals.md",
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/object-literals.md",
     "date": "2011-07-24 00:00:00"
+  },
+  "switching-to-octopress": {
+    "title": "Switching to Octopress",
+    "date": "2011-07-25 08:14:00",
+    "comments": true
+  },
+  "community-conferences": {
+    "title": "Community Conferences",
+    "date": "2012-03-08 08:29:00",
+    "comments": true,
+    "categories": [
+      "conferences"
+    ]
+  },
+  "thoughts-on-a-very-small-project-with-backbone-and-backbone-boilerplate": {
+    "title": "Thoughts on a (very) small project with Backbone and Backbone Boilerplate",
+    "date": "2012-03-11 21:30:00",
+    "comments": true
+  },
+  "girls-and-computers": {
+    "title": "Girls and Computers",
+    "date": "2012-03-25 12:00:00",
+    "comments": true
+  },
+  "bocoup": {
+    "title": "Bocoup",
+    "published": true,
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/bocoup.md",
+    "date": "2012-03-26 10:00:00"
+  },
+  "javascript-a-language-not-a-religion": {
+    "title": "JavaScript: It's a language, not a religion",
+    "date": "2012-04-04 11:18:00",
+    "comments": false
+  },
+  "greenfielding": {
+    "title": "Greenfielding",
+    "date": "2012-04-10 12:19:00",
+    "comments": false
+  },
+  "a-baseline-for-front-end-developers": {
+    "title": "A Baseline for Front-End Developers",
+    "date": "2012-04-12 11:30:00",
+    "publised": true,
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/a-baseline-for-front-end-developers.md"
   },
   "this-is-the-cup-of-coffee": {
     "title": "This is the Cup of Coffee",
     "date": "2012-11-14 10:40:00",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/this-is-the-cup-of-coffee.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/this-is-the-cup-of-coffee.md"
   },
   "recent-talks": {
     "title": "Recent Talks",
     "date": "2012-11-21 10:40:00",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/recent-talks.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/recent-talks.md"
   },
   "times-open-science-fair": {
     "title": "Show & Tell",
     "date": "2012-11-25 20:20:00",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/times-open-science-fair.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/times-open-science-fair.md"
   },
   "choosing-presentation-color-scheme": {
     "title": "On Choosing a Syntax Highlighting Scheme for Your Next Presentation",
     "date": "2012-11-29 20:20:00",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/choosing-presentation-color-scheme.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/choosing-presentation-color-scheme.md"
   },
   "js-conditionals": {
     "title": "Two Things about Conditionals in JavaScript",
     "date": "2012-12-10 21:40:00",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/js-conditionals.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/js-conditionals.md"
   },
   "this-is-the-cigarette": {
     "title": "This is the Cigarette",
     "date": "2012-12-09 19:40:00",
     "comments": false,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/this-is-the-cigarette.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/this-is-the-cigarette.md"
+  },
+  "onward": {
+    "title": "Onward",
+    "date": "2013-01-18 10:30:00",
+    "comments": true
+  },
+  "refactoring-setInterval-polling": {
+    "title": "Refactoring setInterval-based polling",
+    "date": "2013-02-04 15:30:00",
+    "comments": true,
+    "categories": [
+      "javascript"
+    ]
+  },
+  "austin": {
+    "title": "Austin",
+    "date": "2014-01-01 19:03:00",
+    "published": true,
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/austin.md"
   },
   "unit-tests": {
     "title": "Writing Unit Tests for Existing JavaScript",
     "date": "2014-07-13 20:21:00",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/unit-tests.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/unit-tests.md"
   },
   "flying-lessons": {
     "title": "Flying Lessons",
-    "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/flying-lessons.md",
+    "published": false,
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/flying-lessons.md",
     "date": "2014-11-01 00:00:00"
   },
   "office-hours": {
@@ -714,48 +794,101 @@
     "date": "2015-01-11 21:00:00",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/office-hours.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/office-hours.md"
   },
   "writing-conference-proposals": {
     "title": "Writing Conference Proposals",
     "date": "2015-01-26 21:00:00",
     "comments": true,
-    "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/writing-conference-proposals.md"
+    "published": true
+  },
+  "a-baseline-for-front-end-developers-2015": {
+    "title": "A Baseline for Front-End [JS] Developers, 2015",
+    "date": "2015-03-23 21:12:00",
+    "published": true
   },
   "ttl-podcast": {
     "title": "The TTL Podcast",
     "date": "2015-05-11 20:12:00",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/ttl-podcast.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/ttl-podcast.md"
   },
   "karma-webpack-tape-code-coverage": {
     "title": "Browser Testing and Code Coverage with Karma, Tape, and Webpack",
     "date": "2015-07-20 13:00:00",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/karma-webpack-tape-code-coverage.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/karma-webpack-tape-code-coverage.md"
   },
   "tech-podcast-recording-tips": {
     "title": "So You're Going on a Podcast",
     "date": "2015-07-27 20:00:00",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/tech-podcast-recording-tips.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/tech-podcast-recording-tips.md"
   },
   "pausing-office-hours": {
     "title": "Pausing Office Hours",
     "date": "2015-08-04 20:00:00",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/pausing-office-hours.md"
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/pausing-office-hours.md"
   },
   "five-questions": {
     "title": "Five Questions",
     "date": "2015-10-08 22:00:00",
     "comments": true,
     "published": true,
-    "filename": "/Users/remy/Sites/rmurphey/bin/../public/blog/five-questions.md"
-  }
-}
+    "filename": "/Users/rmurphey/personal/rmurphey/bin/../public/blog/five-questions.md"
+  },
+  "building-for-http2": {
+    "title": "Building for HTTP/2",
+    "date": "2015-11-25 14:00:00",
+    "comments": true,
+    "published": true
+  },
+  "chrome-http2-log-parser": {
+    "title": "Chrome HTTP/2 Log Parser",
+    "date": "2015-11-28 21:11:40",
+    "published": true,
+    "tags": []
+  },
+  "speaker-economics": {
+    "title": "Speaker Economics",
+    "date": "2016-01-02 21:00:00",
+    "published": true,
+    "tags": []
+  },
+  "indeed": {
+    "title": "Indeed",
+    "date": "2016-01-04 20:43:38",
+    "tags": [
+      ""
+    ],
+    "published": true
+  },
+  "notes-on-setting-up-js-project-2016-webpack": {
+    "title": "Notes on setting up a JS project, circa 2016: Webpack",
+    "date": "2016-01-19 14:20:43",
+    "published": true,
+    "tags": [
+      "js-games"
+    ]
+  },
+  "notes-on-setting-up-js-project-2016-babel-es6": {
+    "title": "Notes on setting up a JS project, circa 2016: Babel and ES6",
+    "date": "2016-01-20 12:00:00",
+    "published": true,
+    "tags": [
+      "js-games"
+    ]
+  },
+  "notes-on-setting-up-js-project-2016-eslint": {
+    "title": "Notes on setting up a JS project, circa 2016: ESLint",
+    "date": "2016-01-20 21:00:00",
+    "published": true,
+    "tags": [
+      "js-games"
+    ]
+  }}

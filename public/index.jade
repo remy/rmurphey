@@ -1,11 +1,8 @@
 - posts = partial('_partials/posts', { postlimit: 1 })
 - latest = posts[0]
 
-h1.title Welcome!
-
 .post-content.addr
   :markdown
-    Hello and welcome....
 
 article.post
   header.post-header
@@ -31,10 +28,4 @@ article.post.lists
       each post in recent
         li
           a(href="#{ public.blog._data[post.slug].relative }") #{ public.blog._data[post.slug].title }
-          small &nbsp; updated #{ moment(post.date).format('D-MMM YYYY') }
-
-article.post.lists
-  header.post-header
-    h2.title Rebecca Elsewhere
-  .post-content
-    //- ul.links
+          small &nbsp; #{ moment(post.created).format('D-MMM YYYY') }

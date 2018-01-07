@@ -11,10 +11,9 @@ block meta
   if summary
     - summary = '<meta name="twitter:description" content="' + summary.replace(/<(?:.|\n)*?>/gm, '') + '">';
     != summary
-  meta(name="twitter:creator" content="@rem")
+  meta(name="twitter:creator" content="@rmurphey")
   meta(name="twitter:title" content="#{title}")
-  meta(name="twitter:site" content="@rem")
-  meta(name="twitter:domain" content="Remy's b:log")
+  meta(name="twitter:site" content="@rmurphey")
   - var img = image;
   - if (!img && yield.indexOf('<img') !== -1) img = (yield.replace(/\n/g, '').match(/<img\b[^>]+?src\s*=\s*['"]?([^\s'"?#>]+)/) || [,])[1];
   - if (img && img.indexOf('http') !== 0) img = site_url + img;
@@ -35,21 +34,26 @@ block content
       h1.title
         a(href="#{permalink}" rel="bookmark" title="Permanent Link: #{title}")= title
 
-      //- small.edit: a(href="https://github.com/remy/remysharp.com/blob/master/public/blog/#{current.source}.md") (edit)
+      //- small.edit: a(href="https://github.com/rmurphey/rmurphey/blob/master/public/blog/#{current.source}.md") (edit)
       .post-content
+        p.date #{moment(date).format('D MMM YYYY')} 
+          span.edit
+            a(href="#{permalink}/edit") edit
+
         //- strip the h1 out of the body as we printed it above as the permalink
         - if (yield) yield = yield.replace(/<h1>.*?<\/h1>/, '');
         != yield
 
-        p.follow Posted #{moment(date).format('D-MMM YYYY')} under #{(categories||[]).join(' & ')}.
-
-      if environment == "production"
+      if environment == 'production'
         .comments
           h2 Comments
           #disqus_thread
           script.
-            var disqus_shortname = 'remysharp';
-            var disqus_url = 'http://remysharp.com#{permalink}/';
-            var disqus_title = '#{safeTitle}';
-          noscript Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-          a.dsq-brlink(href="http://disqus.com") comments powered by <span class="logo-disqus">Disqus</span></a>
+            (function() {
+            var d = document, s = d.createElement('script');
+
+            s.src = '//rmurphey.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+            })();

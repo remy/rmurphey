@@ -1,8 +1,8 @@
-# About
+# Rebecca Murphey
 
 *Austin, Texas*
 
-I am a staff software engineer at Bazaarvoice, where I lead a
+I am a senior staff software engineer at Bazaarvoice, where I lead a
 team that shepherds third-party JavaScript application development for
 products with a reach of hundreds of millions of visitors across billions of
 pageviews every month.
@@ -38,7 +38,10 @@ many others. I live in Austin, Texas.
 ## Career
 
 ### Bazaarvoice, Austin TX
-*Staff Software Engineer &mdash; September 2013 - present*
+
+*Senior Staff Software Engineer &mdash; June 2015 - present*
+
+*Staff Software Engineer &mdash; September 2013 - June 2015*
 
 I lead a team responsible for promoting and ensuring best practices for
 consumer-facing client-side application development, and coordinate key
@@ -171,7 +174,6 @@ in 1995, its URL was featured in a print magazine.
 ## Tools
 
 I do my work on a 2015 Retina MacBook Pro with a 27" Cinema Display. I use
-Sublime Text 3 and vim as my editors, the Chrome Dev Channel as my primary
-development browser, and git for version control of all the things. I stay in
-touch with colleagues via IRC, using irssi running inside a screen session on
-a server. I write just about everything in Markdown, including this document.
+Atom and vim as my editors, the Chrome Dev Channel as my primary
+development browser, and git for version control of all the things. I write
+just about everything in Markdown, including this document.
